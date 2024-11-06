@@ -9,7 +9,7 @@ their budget.
 
 This is the application that will solve those problem!
 
-## API Key Setup
+## API Key Setup : GOOGLE MAP
 
 This application project uses the Google API for search feature,
 To use it on Desktop, you need to obtain an API key :
