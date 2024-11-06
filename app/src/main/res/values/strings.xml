@@ -3,5 +3,5 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="mapAPI">AIzaSyDZTCg3nVNwgOw_V_avWz0dNuHrDqg6wUY</string>
+    <string name="mapAPI">ADD_API_KEY</string>
 </resources>
