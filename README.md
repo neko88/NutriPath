@@ -1,6 +1,6 @@
 # CMPT362-FinalProject
 
-# Overview
+## Overview
 NutriPath is an application that addresses a common challenge: Maintaing a healthy diet
 without overspending. People often find it difficult to balance their nutrition needs with
 their budget, especially when healthier choices can sometimes be more expensive. The 
