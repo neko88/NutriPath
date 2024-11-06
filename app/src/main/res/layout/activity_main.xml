@@ -15,6 +15,16 @@
         android:layout_centerInParent="true"
         tools:ignore="MissingConstraints" />
 
+    <Button
+        android:id="@+id/openBarcodeScannerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Open Barcode Scanner"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="128dp" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"

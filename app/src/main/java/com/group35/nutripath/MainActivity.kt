@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.group35.nutripath.databinding.ActivityMainBinding
+import com.group35.nutripath.util.BarcodeScannerActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         // Set up the button to open MapSearch activity
         binding.openMapButton.setOnClickListener {
             val intent = Intent(this, MapSearch::class.java)
+            startActivity(intent)
+        }
+        binding.openBarcodeScannerButton.setOnClickListener{
+            val intent = Intent(this, BarcodeScannerActivity::class.java)
             startActivity(intent)
         }
     }

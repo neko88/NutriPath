@@ -1,0 +1,25 @@
+<!-- activity_barcode_scanner.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- PreviewView for displaying the camera feed -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="Camera preview" />
+
+    <!-- Optional overlay text or UI elements (e.g., a guide for barcode positioning) -->
+    <TextView
+        android:id="@+id/instructionsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Align the barcode within the frame to scan"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="16dp"
+        android:textColor="#FFFFFF"
+        android:background="#80000000" />
+
+</RelativeLayout>
