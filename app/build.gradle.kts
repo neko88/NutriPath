@@ -56,13 +56,22 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Camera Dependencies
     implementation("com.google.android.gms:play-services-maps:19.0.0")
     implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation ("com.google.android.libraries.places:places:3.1.0")
 
+    // Camera Dependencies
+    implementation (libs.androidx.camera.camera2)
+    implementation (libs.androidx.camera.video)
+    implementation (libs.androidx.camera.extensions)
+
     // Barcode
-    implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.1")
-    implementation("com.google.mlkit:barcode-scanning:17.3.0")
-    implementation("com.google.mlkit:barcode-scanning-common:17.0.0")
+    implementation(libs.play.services.mlkit.barcode.scanning)
+    implementation(libs.barcode.scanning)
+    implementation(libs.barcode.scanning.common)
+
+    // API Caller
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+
 }

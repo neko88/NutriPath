@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     android:paddingTop="?attr/actionBarSize">
 
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
     <Button
         android:id="@+id/openMapButton"
         android:layout_width="wrap_content"
@@ -21,9 +26,11 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="Open Barcode Scanner"
+        app:layout_constraintBaseline_toBottomOf="@id/openMapButton"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="128dp" />
+        tools:layout_editor_absoluteY="125dp" />
+     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
