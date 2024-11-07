@@ -1,6 +1,6 @@
 import com.group35.nutripath.api.meal.Meal
-import com.group35.nutripath.api.meal.ReturnedMeal
-import com.group35.nutripath.api.meal.ReturnedMealInformation
+import com.group35.nutripath.api.meal.ResponseMeal
+import com.group35.nutripath.api.meal.ResponseMealInformation
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -10,14 +10,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 // The Meal DB API provides meal data
 interface TheMealDBApi {
-    @GET("filter.php")
-    fun getMealsByIngredient(@Query("i") ingredient: String): Call<ReturnedMeal>
+    @GET("search.php?s=")
+    fun getMealsByIngredient(@Query("i") ingredient: String): Call<ResponseMeal>
 
-    @GET("lookup.php")
-    fun getMealInformation(@Query("i") mealId: String): Call<ReturnedMealInformation>
+    @GET("lookup.php?s=")
+    fun getMealInformation(@Query("i") mealId: String): Call<ResponseMealInformation>
 
-    @GET("filter.php")
-    fun getMealsByCategory(@Query("c") category: String): Call<ReturnedMeal>
+    @GET("filter.php?s=")
+    fun getMealsByCategory(@Query("c") category: String): Call<ResponseMeal>
 }
 
 // API Caller

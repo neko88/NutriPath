@@ -23,16 +23,16 @@ class MealActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meal)
 
+        // Binding views
         binding = ActivityMealBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_meal)
-        viewModel = ViewModelProvider(this)[MealViewModel::class.java]
-
         ingredientInput = binding.ingredientInput
         ingredientInputTextView = binding.ingredientInputTextView
 
+        viewModel = ViewModelProvider(this)[MealViewModel::class.java]
+
         // Fetch meals based on user-selected ingredients
         val selectedIngredient = viewModel.getMealByIngredient(ingredientInput.text.toString())
-        ingredientInputTextView.text = selectedIngredient.toString()
+        ingredientInputTextView.text = selectedIngredient.toString() // preview selection
 
         // Recycler view to display the meal list
         val recyclerView = findViewById<RecyclerView>(R.id.mealRecycleView)

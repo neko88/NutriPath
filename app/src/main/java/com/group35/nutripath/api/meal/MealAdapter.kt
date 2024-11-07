@@ -29,16 +29,16 @@ class MealAdapter : ListAdapter<Meal, MealAdapter.MealViewHolder>(MealDiffCallba
         fun bind(meal: Meal) {
             mealImageView = itemView.findViewById(R.id.mealImageView)
             mealNameTextView = itemView.findViewById(R.id.mealNameTextView)
-            mealNameTextView.text = meal.name
+            mealNameTextView.text = meal.strMeal
             Glide.with(itemView.context)
-                .load(meal.image)
+                .load(meal.strMealThumb)
                 .into(mealImageView)
         }
     }
 
     class MealDiffCallback : DiffUtil.ItemCallback<Meal>() {
         override fun areItemsTheSame(oldItem: Meal, newItem: Meal): Boolean {
-            return oldItem.iD == newItem.iD
+            return oldItem.idMeal == newItem.idMeal
         }
 
         override fun areContentsTheSame(oldItem: Meal, newItem: Meal): Boolean {

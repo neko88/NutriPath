@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.group35.nutripath.api.meal.MealActivity
 import com.group35.nutripath.databinding.ActivityMainBinding
+import com.group35.nutripath.models.MealDataActivity
 import com.group35.nutripath.util.BarcodeScannerActivity
 
 class MainActivity : AppCompatActivity() {
