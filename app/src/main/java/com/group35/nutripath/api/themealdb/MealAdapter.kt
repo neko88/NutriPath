@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.group35.nutripath.R
-import com.group35.nutripath.api.meal.Meal
+import com.group35.nutripath.api.themealdb.Meal
 
 class MealAdapter : ListAdapter<Meal, MealAdapter.MealViewHolder>(MealDiffCallback()) {
 

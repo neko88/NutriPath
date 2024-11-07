@@ -34,8 +34,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".util.BarcodeScannerActivity" />
-        <activity android:name=".models.MealDataActivity" />
-        <activity android:name=".api.meal.MealActivity" />
+        <activity android:name=".api.openfoodfacts.FoodProductActivity" />
+        <activity android:name=".api.themealdb.MealActivity" />
         <activity android:name=".MapSearch"
                   android:exported="true">
         </activity>

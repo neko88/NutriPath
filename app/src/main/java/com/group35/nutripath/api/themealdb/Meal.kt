@@ -1,4 +1,4 @@
-package com.group35.nutripath.api.meal
+package com.group35.nutripath.api.themealdb
 
 // DATA CLASSES: Storing / organizing meal information and data received.
 

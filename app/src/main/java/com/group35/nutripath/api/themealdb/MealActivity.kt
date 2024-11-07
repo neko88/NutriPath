@@ -1,11 +1,10 @@
-package com.group35.nutripath.api.meal
+package com.group35.nutripath.api.themealdb
 
 import MealAdapter
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,8 +43,5 @@ class MealActivity: AppCompatActivity() {
             // Update RecyclerView adapter with the new meal list
             mealAdapter.submitList(updatedMeals)
         }
-
-
     }
-
 }

@@ -1,4 +1,4 @@
-package com.group35.nutripath.api.meal
+package com.group35.nutripath.api.themealdb
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -20,9 +20,6 @@ class MealViewModel : ViewModel(){
                     mealRecommendationList.value?.let {
                         Log.d("MealViewModel", "getMealByIngredient Response Successful : ${mealRecommendationList.value}")
                     }
-                      //  Log.d("Meal", "Meal Name: ${it.get()}")
-                     //    Log.d("Meal", "Category: ${it.strCategory}")
-                     //   Log.d("Meal", "Instructions: ${it.strInstructions}")
                 }
             }
             override fun onFailure(call: Call<ResponseMeal>, t: Throwable) {

@@ -2,17 +2,14 @@ package com.group35.nutripath
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.group35.nutripath.api.meal.MealActivity
+import com.group35.nutripath.api.themealdb.MealActivity
 import com.group35.nutripath.databinding.ActivityMainBinding
-import com.group35.nutripath.models.MealDataActivity
 import com.group35.nutripath.util.BarcodeScannerActivity
 
 class MainActivity : AppCompatActivity() {
