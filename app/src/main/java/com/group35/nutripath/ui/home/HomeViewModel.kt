@@ -1,13 +1,25 @@
 package com.group35.nutripath.ui.home
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.PieEntry
+import com.group35.nutripath.data.BudgetRepository
 
 class HomeViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    private val repository = BudgetRepository()
+
+    // Exposing LiveData for budget and expense entries
+    val budgetAllocations: LiveData<List<PieEntry>> get() = repository.budgetAllocations
+    val expenseEntries: LiveData<List<Entry>> get() = repository.expenseEntries
+
+    // Updating budget allocations and expenses by delegating to the repository
+    fun updateBudgetAllocations(monthlyBudget: Float) {
+        repository.updateBudgetAllocations(monthlyBudget)
     }
-    val text: LiveData<String> = _text
+
+    fun addExpense(expenseAmount: Float) {
+        repository.addExpense(expenseAmount)
+    }
 }
