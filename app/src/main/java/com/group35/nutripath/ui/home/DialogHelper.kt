@@ -21,6 +21,7 @@ object DialogHelper {
         builder.show()
     }
 
+    //new e
     fun showAddExpenseDialog(context: Context, onExpenseEntered: (Float) -> Unit) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Add Expense")
