@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.group35.nutripath.api.meal.MealActivity
 import com.group35.nutripath.databinding.ActivityMainBinding
 import com.group35.nutripath.util.BarcodeScannerActivity
 
@@ -42,6 +43,10 @@ class MainActivity : AppCompatActivity() {
         }
         binding.openBarcodeScannerButton.setOnClickListener{
             val intent = Intent(this, BarcodeScannerActivity::class.java)
+            startActivity(intent)
+        }
+        binding.mealSuggestionButton.setOnClickListener{
+            val intent = Intent(this, MealActivity::class.java)
             startActivity(intent)
         }
     }

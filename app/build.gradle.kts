@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -16,6 +17,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildTypes {
         release {
@@ -36,6 +38,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -73,5 +76,13 @@ dependencies {
     // API Caller
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
+
+    // Glide Image Loader
+    implementation (libs.glide.v4160)
+    annotationProcessor (libs.compiler.v4160)
+
+    // CSV Processing
+    implementation (libs.opencsv)
+    implementation (libs.gson)
 
 }
