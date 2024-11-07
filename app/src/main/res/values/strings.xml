@@ -28,5 +28,5 @@
         <item>maintenance</item>
     </string-array>
 
-    <string name="mapAPI">AIzaSyAfXcrvFC_Zqw9EFPVuZjgtSwDdeHN_T3E</string>
+    <string name="mapAPI">ADD_API_KEY</string>
 </resources>
