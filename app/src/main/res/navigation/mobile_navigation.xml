@@ -18,8 +18,30 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.group35.nutripath.MapSearchFragment"
+        android:label="@string/title_map"
+        tools:layout="@layout/fragment_search"/>
+
+    <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.group35.nutripath.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.group35.nutripath.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/settings_to_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.group35.nutripath.ui.settings.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile"/>
 </navigation>
