@@ -18,9 +18,9 @@ class FoodItemViewModel(private val repository: FoodItemRepository) : ViewModel(
     private val _item = MutableLiveData<FoodItem?>()
 
 
-    fun insert(FoodItem: FoodItem) {
+    fun insert(foodItem: FoodItem) {
         viewModelScope.launch {
-            repository.insert(FoodItem)
+            repository.insert(foodItem)
         }
     }
 
@@ -33,7 +33,7 @@ class FoodItemViewModel(private val repository: FoodItemRepository) : ViewModel(
 
 }
 
-class ViewModelFactory (private val repository: FoodItemRepository) : ViewModelProvider.Factory {
+class FoodItemViewModelFactory (private val repository: FoodItemRepository) : ViewModelProvider.Factory {
     override fun<T: ViewModel> create(modelClass: Class<T>) : T{ //create() creates a new instance of the modelClass, which is CommentViewModel in this case.
         if(modelClass.isAssignableFrom(FoodItemViewModel::class.java))
             return FoodItemViewModel(repository) as T
