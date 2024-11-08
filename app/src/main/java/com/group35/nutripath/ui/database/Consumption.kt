@@ -4,8 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.google.android.libraries.places.api.model.LocalDate
-
 
 @Entity(
     tableName = "consumption_table",
@@ -19,7 +17,7 @@ data class Consumption(
     val foodId: Long,
 
     @ColumnInfo(name = "date")
-    val date: LocalDate // type may change
+    val date: Long // type may change
 
 
 

@@ -33,6 +33,7 @@ cameraLifecycle = "1.4.0"
 cameraView = "1.4.0"
 playServicesMlkitBarcodeScanning = "18.3.1"
 retrofit = "2.9.0"
+roomKtx = "2.6.1"
 
 [libraries]
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCoreVersion" }
@@ -43,6 +44,8 @@ androidx-camera-video = { module = "androidx.camera:camera-video", version.ref =
 androidx-camera-view-v122 = { module = "androidx.camera:camera-view", version.ref = "cameraViewVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 barcode-scanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "barcodeScanning" }
 barcode-scanning-common = { module = "com.google.mlkit:barcode-scanning-common", version.ref = "barcodeScanningCommon" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
