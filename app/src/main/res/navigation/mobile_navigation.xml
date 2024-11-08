@@ -20,7 +20,8 @@
     <fragment
         android:id="@+id/navigation_map"
         android:name="com.group35.nutripath.MapSearchFragment"
-        android:label="@string/title_map" />
+        android:label="@string/title_map"
+        tools:layout="@layout/fragment_search"/>
 
     <fragment
         android:id="@+id/navigation_notifications"
