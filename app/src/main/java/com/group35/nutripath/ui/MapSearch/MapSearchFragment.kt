@@ -22,6 +22,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
+import com.google.maps.android.PolyUtil
 import com.group35.nutripath.ui.MapSearch.GroceryStore
 import com.group35.nutripath.ui.MapSearch.GroceryStoreAdapter
 import retrofit2.Call
@@ -36,6 +38,7 @@ class MapSearchFragment : Fragment(), OnMapReadyCallback {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var groceryStoreAdapter: GroceryStoreAdapter
     private val groceryStores = mutableListOf<GroceryStore>()
+    private lateinit var currentLatLng: LatLng
 
     companion object {
         const val FINE_PERMISSION_CODE = 1
@@ -52,9 +55,12 @@ class MapSearchFragment : Fragment(), OnMapReadyCallback {
         //setting up RecyclerView for grocery stores
         val groceryListView = view.findViewById<RecyclerView>(R.id.grocery_list)
         groceryListView.layoutManager = LinearLayoutManager(requireContext())
+
+        //updated onItemClick to move map
         groceryStoreAdapter = GroceryStoreAdapter(groceryStores) { latLng ->
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+            moveToStoreAndDrawRoute(latLng)
         }
+
         groceryListView.adapter = groceryStoreAdapter
 
         //creating map
@@ -74,7 +80,7 @@ class MapSearchFragment : Fragment(), OnMapReadyCallback {
             == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
-                    val currentLatLng = LatLng(location.latitude, location.longitude)
+                    currentLatLng = LatLng(location.latitude, location.longitude)
                     mMap.addMarker(MarkerOptions().position(currentLatLng).title("My Location"))
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
 
@@ -120,7 +126,7 @@ class MapSearchFragment : Fragment(), OnMapReadyCallback {
 
         val call = service.getNearbyPlaces(
             location = locationString,
-            radius = 2000,
+            radius = 2000, // 2km radius
             keyword = "grocery store",
             apiKey = apiKey
         )
@@ -158,7 +164,54 @@ class MapSearchFragment : Fragment(), OnMapReadyCallback {
             }
         })
     }
+
+    //trying to implement the drawing direction features
+    private fun moveToStoreAndDrawRoute(storeLatLng: LatLng) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(storeLatLng, 15f))
+        getDirectionsToStore(storeLatLng)
+    }
+
+    private fun getDirectionsToStore(destinationLatLng: LatLng) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://maps.googleapis.com/maps/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(PlacesApiService::class.java)
+        val origin = "${currentLatLng.latitude},${currentLatLng.longitude}"
+        val destination = "${destinationLatLng.latitude},${destinationLatLng.longitude}"
+        val apiKey = getString(R.string.mapAPI)
+
+        val call = service.getDirections(
+            origin = origin,
+            destination = destination,
+            apiKey = apiKey
+        )
+
+        call.enqueue(object : retrofit2.Callback<DirectionsResponse> {
+            override fun onResponse(call: Call<DirectionsResponse>, response: retrofit2.Response<DirectionsResponse>) {
+                if (response.isSuccessful) {
+                    val route = response.body()?.routes?.firstOrNull()
+                    val polylinePoints = route?.overview_polyline?.points
+
+                    if (polylinePoints != null) {
+                        val decodedPath = PolyUtil.decode(polylinePoints)
+                        mMap.addPolyline(PolylineOptions().addAll(decodedPath))
+                    }
+                } else {
+                    Log.e("MapSearch", "Failed to retrieve directions: ${response.errorBody()}")
+                    showToast("Failed to retrieve directions.")
+                }
+            }
+
+            override fun onFailure(call: Call<DirectionsResponse>, t: Throwable) {
+                Log.e("MapSearch", "Error fetching directions: ${t.message}")
+                showToast("Error fetching directions.")
+            }
+        })
+    }
 }
+
 
 interface PlacesApiService {
     @GET("place/nearbysearch/json")
@@ -168,18 +221,20 @@ interface PlacesApiService {
         @Query("keyword") keyword: String,
         @Query("key") apiKey: String
     ): Call<NearbySearchResponse>
+
+    @GET("directions/json")
+    fun getDirections(
+        @Query("origin") origin: String,
+        @Query("destination") destination: String,
+        @Query("key") apiKey: String
+    ): Call<DirectionsResponse>
 }
 
+data class DirectionsResponse(val routes: List<Route>)
+data class Route(val overview_polyline: Polyline)
+data class Polyline(val points: String)
+
 data class NearbySearchResponse(val results: List<PlaceResult>)
-
-data class PlaceResult(
-    val name: String,
-    val geometry: Geometry
-)
-
+data class PlaceResult(val name: String, val geometry: Geometry)
 data class Geometry(val location: LocationLatLng)
-
-data class LocationLatLng(
-    val lat: Double,
-    val lng: Double
-)
+data class LocationLatLng(val lat: Double, val lng: Double)
