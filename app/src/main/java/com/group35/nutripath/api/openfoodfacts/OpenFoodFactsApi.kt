@@ -1,33 +1,26 @@
-import com.group35.nutripath.api.openfoodfacts.ResponseFoodProducts
-import com.group35.nutripath.api.themealdb.ResponseMeal
-import com.group35.nutripath.api.themealdb.ResponseMealInformation
+
+import com.group35.nutripath.api.openfoodfacts.ProductResponse
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.Path
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Path
 
 
-/*
-API build for OpenFoodFacts API
- */
-interface OpenFoodFactsApi {
-    @GET("api/v2/product/{barcode}")
-    fun getProductByBarcode(@Path("barcode") barcode: String): Call<ResponseFoodProducts>
+interface OpenFoodFactsService {
+    @GET("product/{barcode}.json")
+    suspend fun getProductByBarcode(@Path("barcode") barcode: String): ProductResponse
 }
 
-// API Caller
-object RetroFitCallerOpenFoodFacts{
-    private const val URL = "https://world.openfoodfacts.net/"
-    val api: OpenFoodFactsApi by lazy{
+object RetrofitInstance {
+    private const val BASE_URL = "https://world.openfoodfacts.org/api/v2/"
+
+    val api: OpenFoodFactsService by lazy {
         Retrofit.Builder()
-            .baseUrl(URL)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(OpenFoodFactsApi::class.java)
+            .create(OpenFoodFactsService::class.java)
     }
 }
-
-
 

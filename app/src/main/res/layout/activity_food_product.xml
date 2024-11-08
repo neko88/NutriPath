@@ -10,6 +10,14 @@
         android:layout_height="wrap_content"
         android:hint="Enter an ingredient" />
 
+    <Button
+        android:id="@+id/findFoodButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:enabled="true"
+        android:text="Find"/>
+
 
     <TextView
         android:id="@+id/barcodeInputTextView"

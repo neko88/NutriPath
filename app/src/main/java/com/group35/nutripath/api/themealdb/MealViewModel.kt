@@ -12,37 +12,18 @@ class MealViewModel : ViewModel(){
     val mealRecommendationList = MutableLiveData<List<Meal>>()
     val mealInformationList = MutableLiveData<List<MealInformation>>()
 
-    fun getMealByIngredient(ingredient: String) {
-        repository.getMealByIngredient(ingredient).enqueue(object : Callback<ResponseMeal> {
-            override fun onResponse(call: Call<ResponseMeal>, response: retrofit2.Response<ResponseMeal>){
-                if (response.isSuccessful) {
-                    mealRecommendationList.value = response.body()?.meals
-                    mealRecommendationList.value?.let {
-                        Log.d("MealViewModel", "getMealByIngredient Response Successful : ${mealRecommendationList.value}")
-                    }
-                }
-            }
-            override fun onFailure(call: Call<ResponseMeal>, t: Throwable) {
-                Log.d("MealViewModel", "getMealByIngredient Response Failed : ${t}")
-            }
-        })
+    suspend fun getMealByIngredient(ingredient: String) {
+        val result = repository.getMealByIngredient(ingredient)
+        if (result == null) {
+            Log.d("MealByIngredient", "No meals found for the ingredient: $ingredient")
+        } else {
+            Log.d("MealByIngredient", "Meals found: ${result}")
+            mealRecommendationList.value = result.meals
+        }
     }
 
-    fun getMealInformation(meal: String) {
-        repository.getMealInformation(meal).enqueue(object : Callback<ResponseMealInformation> {
-            override fun onResponse(call: Call<ResponseMealInformation>, response: retrofit2.Response<ResponseMealInformation>) {
-                if (response.isSuccessful) {
-                    mealInformationList.value = response.body()?.mealInformation
-                    mealInformationList.value?.let {
-                        Log.d("MealViewModel", "getMealByIngredient Response Successful : ${mealInformationList.value}")
-                    }
-                }
-            }
-            override fun onFailure(call: Call<ResponseMealInformation>, t: Throwable) {
-                Log.d("MealViewModel", "getMealByIngredient Response Failed : ${t}")
-            }
-        })
-    }
+    suspend fun getMealInformation(meal: String) {
 
+    }
 
 }

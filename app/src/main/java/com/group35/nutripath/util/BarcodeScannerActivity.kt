@@ -146,17 +146,16 @@ class BarcodeScannerActivity : AppCompatActivity() {
                     val valueType = barcode.valueType
                     when (valueType) {
                         Barcode.FORMAT_UPC_A -> {
-                            // call api
                         }
 
                         Barcode.FORMAT_EAN_13 -> {
-                            // call api
                         }
 
                         Barcode.FORMAT_QR_CODE -> {
-                            // TO DO?
                         }
                     }
+                    Log.e("BarcodeScannerActivity", "Detected: ${valueType}")
+                    Log.e("BarcodeScannerActivity", "Raw Value: ${rawValue}")
                 }
             }.addOnFailureListener { e ->
                 Log.e("BarcodeScannerActivity", "Barcode scanning failed", e)

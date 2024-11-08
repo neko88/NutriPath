@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.group35.nutripath.api.openfoodfacts.FoodProductActivity
 import com.group35.nutripath.api.themealdb.MealActivity
 import com.group35.nutripath.databinding.ActivityMainBinding
 import com.group35.nutripath.util.BarcodeScannerActivity

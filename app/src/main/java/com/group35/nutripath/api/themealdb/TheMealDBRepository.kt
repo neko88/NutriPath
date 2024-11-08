@@ -6,11 +6,11 @@ import retrofit2.Call
 class TheMealDBRepository {
     private val apiCall = RetroFitCallerTheMealDB.api
 
-    fun getMealByIngredient(ingredient: String): Call<ResponseMeal> {
+    suspend fun getMealByIngredient(ingredient: String): ResponseMeal{
         return apiCall.getMealsByIngredient(ingredient)
     }
 
-    fun getMealInformation(mealId: String): Call<ResponseMealInformation> {
+    suspend fun getMealInformation(mealId: String): ResponseMealInformation {
         return apiCall.getMealInformation(mealId)
     }
 }

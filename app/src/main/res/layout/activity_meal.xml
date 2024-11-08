@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/ingredientInput"
+    <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter an ingredient" />
-
-
-    <TextView
-        android:id="@+id/ingredientInputTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Selected Ingredient" />
+        android:id="@+id/mapSearch"
+        android:layout_margin="10dp"
+        android:queryHint="Search.."
+        android:iconifiedByDefault="false"
+        android:elevation="5dp"
+        android:background="@drawable/bg_search_view"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mealRecycleView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/mapSearch">
 
-</LinearLayout>
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</RelativeLayout>

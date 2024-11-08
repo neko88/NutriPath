@@ -41,6 +41,17 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="125dp" />
+
+    <Button
+        android:id="@+id/foodProductButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Find Food Product"
+        app:layout_constraintBaseline_toBottomOf="@id/mealSuggestionButton"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="125dp" />
      </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

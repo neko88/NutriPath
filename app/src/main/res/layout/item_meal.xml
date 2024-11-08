@@ -1,24 +1,133 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
-
+    style="@style/TextBoxStyle"
+    android:backgroundTint="#f1f2f0"
+    android:layout_marginTop="5dp"
+    android:useDefaultMargins="true"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:marqueeRepeatLimit="marquee_forever"
+    android:scrollHorizontally="true"
+    android:columnCount="6">
 
     <ImageView
         android:id="@+id/mealImageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"/>
 
     <TextView
-        android:id="@+id/mealNameTextView"
-        android:layout_width="0dp"
+        android:id="@+id/mealTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="8dp"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:text="Meal"
+        android:textColor="#262626"
+        android:layout_toRightOf="@id/mealImageView"
+        style="@style/MealListTextStyle"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/round_titles"/>
 
-</LinearLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@id/mealTitle"
+        android:layout_toRightOf="@id/mealImageView"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="50dp"
+        android:background="@color/quantum_grey"/>
+
+    <TextView
+        android:id="@+id/mealDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#979797"
+        android:textSize="14dp"
+        android:text="meal description"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/mealTitle"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:layout_toRightOf="@id/mealImageView"
+        style="@style/MealListTextStyle" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/mealDescription"
+        android:layout_toRightOf="@id/mealImageView"
+        android:gravity="center"
+        android:layout_marginStart="10dp">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#ddf7c2"
+            android:background="@drawable/circle_background_image">
+            <ImageView
+                android:id="@+id/ingredientImage1"
+                style="@style/MealIngredientTinyImage" />
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#e6f8f9"
+            android:background="@drawable/circle_background_image">
+            <ImageView
+                android:id="@+id/ingredientImage2"
+                style="@style/MealIngredientTinyImage"  />
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#ffffec"
+            android:background="@drawable/circle_background_image">
+            <ImageView
+                android:id="@+id/ingredientImage3"
+                style="@style/MealIngredientTinyImage"  />
+            </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#cfe6ff"
+            android:background="@drawable/circle_background_image">
+            <ImageView
+                android:id="@+id/ingredientImage4"
+                style="@style/MealIngredientTinyImage"  />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#ffffd9"
+            android:background="@drawable/circle_background_image">
+            <ImageView
+                android:id="@+id/ingredientImage5"
+                style="@style/MealIngredientTinyImage"  />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#def9b0"
+            android:background="@drawable/circle_background_image">
+            <ImageView
+                android:id="@+id/ingredientImage6"
+                style="@style/MealIngredientTinyImage"  />
+        </FrameLayout>
+
+    </LinearLayout>
+</RelativeLayout>

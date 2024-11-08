@@ -76,6 +76,11 @@ dependencies {
     // API Caller
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation (libs.moshi)
+    implementation (libs.moshi.kotlin)
+   // ksp (libs.moshi.kotlin.codegen)
 
     // Glide Image Loader
     implementation (libs.glide.v4160)
