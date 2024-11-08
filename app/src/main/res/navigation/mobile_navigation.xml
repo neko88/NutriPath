@@ -18,6 +18,11 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.group35.nutripath.MapSearchFragment"
+        android:label="@string/title_map" />
+
+    <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.group35.nutripath.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"

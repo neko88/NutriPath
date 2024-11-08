@@ -37,7 +37,8 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_settings
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_map, R.id.navigation_notifications,
+                R.id.navigation_settings
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -57,10 +58,10 @@ class MainActivity : AppCompatActivity() {
         createNotification()
 
         // Set up the button to open MapSearch activity
-        binding.openMapButton.setOnClickListener {
-            val intent = Intent(this, MapSearch::class.java)
-            startActivity(intent)
-        }
+//        binding.openMapButton.setOnClickListener {
+//            val intent = Intent(this, MapSearch::class.java)
+//            startActivity(intent)
+//        }
     }
 
     private fun createNotification() {

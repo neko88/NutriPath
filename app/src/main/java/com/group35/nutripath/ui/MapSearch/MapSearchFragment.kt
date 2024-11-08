@@ -5,10 +5,12 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -28,7 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-class MapSearch : AppCompatActivity(), OnMapReadyCallback {
+class MapSearchFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -39,21 +41,27 @@ class MapSearch : AppCompatActivity(), OnMapReadyCallback {
         const val FINE_PERMISSION_CODE = 1
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_search)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
-        mapFragment?.getMapAsync(this)
-
-        val groceryListView = findViewById<RecyclerView>(R.id.grocery_list)
-        groceryListView.layoutManager = LinearLayoutManager(this)
+        //setting up RecyclerView for grocery stores
+        val groceryListView = view.findViewById<RecyclerView>(R.id.grocery_list)
+        groceryListView.layoutManager = LinearLayoutManager(requireContext())
         groceryStoreAdapter = GroceryStoreAdapter(groceryStores) { latLng ->
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
         }
         groceryListView.adapter = groceryStoreAdapter
+
+        //creating map
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+        mapFragment?.getMapAsync(this)
+
+        return view
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -62,7 +70,7 @@ class MapSearch : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun getCurrLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
@@ -74,8 +82,7 @@ class MapSearch : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         } else {
-            ActivityCompat.requestPermissions(
-                this,
+            requestPermissions(
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 FINE_PERMISSION_CODE
             )
@@ -98,7 +105,7 @@ class MapSearch : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun findNearbyGroceryStores(currentLatLng: LatLng) {
