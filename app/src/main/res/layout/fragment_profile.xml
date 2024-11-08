@@ -61,6 +61,7 @@
                 android:id="@+id/gender_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
                 android:entries="@array/gender_options">
             </Spinner>
@@ -179,6 +180,7 @@
                 android:id="@+id/diettype_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
                 android:entries="@array/diettype_options">
             </Spinner>
@@ -269,6 +271,7 @@
                 android:id="@+id/healthgoal_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
                 android:entries="@array/healthgoal_options">
             </Spinner>
