@@ -8,13 +8,15 @@ import android.widget.TextView
 import com.group35.nutripath.R
 
 /*
+ * Nov 23, 2024 - Cameron Yee-Ping
+ *
  * When entering a food item, user can view a list of all the previously entered food items, and add it.
  * User can also choose to enter a new food item instead.
  */
 class FoodItemListAdapter(private val context: Context, private var foodItemList: List<FoodItem>) : BaseAdapter(){
 
     override fun getItem(position: Int): Any {
-        return foodItemList.get(position)
+        return foodItemList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -29,10 +31,11 @@ class FoodItemListAdapter(private val context: Context, private var foodItemList
         // TODO: implement view
         val view: View = View.inflate(context, R.layout.layout_food_adapter,null)
 
-        val foodName : TextView = view.findViewById(R.id.food_name)
-        val numCalories : TextView = view.findViewById(R.id.food_calories)
+        val foodName : TextView = view.findViewById(R.id.layout_adapter_food_name)
+        val numCalories : TextView = view.findViewById(R.id.layout_adapter_food_details)
 
         foodName.text = foodItemList[position].name
+        // TODO:
         numCalories.text = foodItemList[position].cals.toString()
 
         return view

@@ -5,15 +5,15 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/food_name"
+        android:id="@+id/layout_adapter_food_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="food name"/>
     <TextView
-        android:id="@+id/food_calories"
+        android:id="@+id/layout_adapter_food_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="number of calories"
-        android:layout_below="@id/food_name"/>
+        android:text="Details"
+        android:layout_below="@id/layout_adapter_food_name"/>
 
 </RelativeLayout>
