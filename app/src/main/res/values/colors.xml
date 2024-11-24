@@ -8,4 +8,26 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="app_color">#fbf3f3</color>
+
+    <!-- Nutropath App Theme -->
+    <color name="brown_dark">#46221A</color>
+    <color name="brown_mute_dark">#5D4C31</color>
+    <color name="green_med">#738E51</color>
+    <color name="green_dark">#526C3F</color>
+    <color name="brown_med">#9A6F1B</color>
+    <color name="green_sat_med">#98C84E</color>
+    <color name="green_sat_dark">#719737</color>
+    <color name="brown_milk">#956C3C</color>
+    <color name="beige_radish">#DFD7C4</color>
+    <color name="beige_light">#FFF8ED</color>
+    <color name="yellow_mute">#FFD18F</color>
+    <color name="yellow_orange">#EFAA4D</color>
+    <color name="cherry">#F95E5A</color>
+    <color name="purple_light">#C4AAF7</color>
+    <color name="purple_med">#AF8ABE</color>
+    <color name="salmon">#E67A67</color>
+    <color name="blue_mute">#8AB3BE</color>
+    <color name="blue_sat">#6CAFC0</color>
+    <color name="blue_sea">#6CC0BE</color>
+
 </resources>
