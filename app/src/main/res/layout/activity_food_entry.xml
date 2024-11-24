@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:labelFor="@id/food_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size"
+            android:text="Food Name"
+            android:textSize="@dimen/label_font_size" />
+        <EditText
+            android:id="@+id/food_name_text"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:importantForAutofill="no"
+            android:layout_margin="@dimen/margin_size">
+
+        </EditText>
+
+        <TextView
+            android:labelFor="@id/calories_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size"
+            android:text="Calories"
+            android:textSize="@dimen/label_font_size" />
+        <EditText
+            android:id="@+id/calories_text"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="@dimen/margin_size"
+            android:importantForAccessibility="no"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal">
+
+        </EditText>
+
+        <TextView
+            android:labelFor="@id/carbs_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size"
+            android:text="Carbohydrates"
+            android:textSize="@dimen/label_font_size" />
+        <EditText
+            android:id="@+id/carbs_text"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:layout_margin="@dimen/margin_size">
+
+        </EditText>
+
+        <TextView
+            android:labelFor="@id/fats_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size"
+            android:text="Fats"
+            android:textSize="@dimen/label_font_size" />
+        <EditText
+            android:id="@+id/fats_text"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:layout_margin="@dimen/margin_size">
+
+        </EditText>
+        <TextView
+            android:labelFor="@id/protein_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size"
+            android:text="Protein"
+            android:textSize="@dimen/label_font_size" />
+        <EditText
+            android:id="@+id/protein_text"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:layout_margin="@dimen/margin_size">
+
+        </EditText>
+        <TextView
+            android:labelFor="@id/sugars_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size"
+            android:text="Sugars"
+            android:textSize="@dimen/label_font_size" />
+        <EditText
+            android:id="@+id/sugars_text"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:layout_margin="@dimen/margin_size">
+
+        </EditText>
+        <TextView
+            android:labelFor="@id/price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size"
+            android:text="Price"
+            android:textSize="@dimen/label_font_size" />
+        <EditText
+            android:id="@+id/price_text"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:layout_margin="@dimen/margin_size">
+
+        </EditText>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginVertical="@dimen/activity_vertical_margin"
+            android:gravity="bottom">
+
+            <Button
+                android:id="@+id/save_food_entry"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_weight="1"
+                android:backgroundTint="@color/button_grey"
+                android:text="save"
+                android:layout_marginHorizontal="2dp"
+                android:textColor="@color/black">
+
+            </Button>
+            <Button
+                android:id="@+id/cancel_food_entry"
+                android:layout_width="0dp"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/button_grey"
+                android:text="cancel"
+                android:layout_marginHorizontal="2dp"
+                android:textColor="@color/black">
+
+            </Button>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

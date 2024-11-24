@@ -7,12 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.group35.nutripath.R
 import com.group35.nutripath.api.themealdb.MealActivity
+import com.group35.nutripath.ui.database.ConsumptionDao
+import com.group35.nutripath.ui.database.ConsumptionDatabase
+import com.group35.nutripath.ui.database.ConsumptionRepository
+import com.group35.nutripath.ui.database.ConsumptionViewModel
+import com.group35.nutripath.ui.database.ConsumptionViewModelFactory
+import com.group35.nutripath.util.Globals
 import com.group35.nutripath.utils.ChartHelper
 import com.group35.nutripath.utils.DialogHelper
 
@@ -21,6 +28,20 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var pieChart: PieChart
     private lateinit var lineChart: LineChart
+
+    private lateinit var consumptionDB: ConsumptionDatabase
+    private lateinit var consumptionViewModelFactory: ConsumptionViewModelFactory
+    private val consumptionViewModel: ConsumptionViewModel by activityViewModels { consumptionViewModelFactory }
+    private lateinit var consumptionDao: ConsumptionDao
+    private lateinit var consumptionRepository: ConsumptionRepository
+    private var caloriesForDay: Double = 0.0
+    private var proteinForDay: Double = 0.0
+    private var fatsForDay: Double = 0.0
+    private var sugarsForDay: Double = 0.0
+    private var spendingForMonth: Double = 0.0
+    private lateinit var dayInterval: Pair<Long, Long>
+    private lateinit var monthInterval: Pair<Long, Long>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,8 +52,19 @@ class HomeFragment : Fragment() {
 
         pieChart = root.findViewById(R.id.pieChart)
         lineChart = root.findViewById(R.id.lineChart)
+        val date = System.currentTimeMillis()
+        dayInterval = Globals().getDateInterval(date)
+        monthInterval = Globals().getMonthInterval(date)
 
-
+        consumptionViewModel.allConsumptionLiveData.observe(viewLifecycleOwner){ it ->
+            caloriesForDay = consumptionViewModel.getDailyCalories(dayInterval.first, dayInterval.second).value!!
+            proteinForDay = consumptionViewModel.getDailyProtein(dayInterval.first, dayInterval.second).value!!
+            fatsForDay = consumptionViewModel.getDailyFats(dayInterval.first, dayInterval.second).value!!
+            sugarsForDay = consumptionViewModel.getDailySugars(dayInterval.first, dayInterval.second).value!!
+            spendingForMonth = consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second).value!!
+            println("debug: cals $caloriesForDay, protein $proteinForDay, fats $fatsForDay, sugars $sugarsForDay, spending (month) $spendingForMonth")
+        }
+        initConsumptionDB()
         // Set up empty charts initially
         ChartHelper.setupEmptyPieChart(pieChart)
         ChartHelper.setupEmptyLineChart(lineChart)
@@ -73,5 +105,11 @@ class HomeFragment : Fragment() {
         })
 
         return root
+    }
+    private fun initConsumptionDB(){
+        consumptionDB = ConsumptionDatabase.getInstance(requireActivity())
+        consumptionDao = consumptionDB.consumptionDao
+        consumptionRepository = ConsumptionRepository(consumptionDao)
+        consumptionViewModelFactory = ConsumptionViewModelFactory(consumptionRepository)
     }
 }

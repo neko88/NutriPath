@@ -21,22 +21,70 @@ interface ConsumptionDao {
         FROM (
             SELECT food_id, COUNT(*) AS count
             FROM consumption_table
-            WHERE strftime('%Y-%m', date) = :month
+            WHERE date >= :start AND date < :end
             GROUP BY food_id
         ) AS consumptionCount
         INNER JOIN food_table AS f ON consumptionCount.food_id = f.id
     """)
-    suspend fun getTotalSpendingForMonth(month: String): Double // FORMAT: YYYY-MM
+    suspend fun getTotalSpendingForMonth(start: Long, end: Long): Double // FORMAT: YYYY-MM
 
     @Query("""
         SELECT SUM(f.calories * count) AS totalCalories
         FROM (
             SELECT food_id, COUNT(*) AS count
             FROM consumption_table
-            WHERE date = :date
+           
+            WHERE date >= :start AND date < :end
+
             GROUP BY food_id
         ) AS consumptionCount
         INNER JOIN food_table AS f ON consumptionCount.food_id = f.id
     """)
-    suspend fun getTotalCaloriesForDay(date: String): Double // SQLITE DATE FORMAT
+    suspend fun getTotalCaloriesForDay(start: Long, end: Long): Double // SQLITE DATE FORMAT
+    @Query("""
+        SELECT SUM(f.fats * count) AS totalFats
+        FROM (
+            SELECT food_id, COUNT(*) AS count 
+            FROM consumption_table
+            WHERE date >= :start AND date < :end
+            GROUP BY food_id
+            ) AS consumptionCount
+            INNER JOIN food_table AS f ON consumptionCount.food_id = f.id
+    """)
+    suspend fun getTotalFatsForDay(start: Long, end: Long): Double // SQLITE DATE FORMAT
+
+    @Query("""
+        SELECT SUM(f.carbs * count) AS totalCarbs
+        FROM (
+            SELECT food_id, COUNT(*) AS count 
+            FROM consumption_table
+            WHERE date >= :start AND date < :end
+            GROUP BY food_id
+            ) AS consumptionCount
+            INNER JOIN food_table AS f ON consumptionCount.food_id = f.id
+    """)
+    suspend fun getTotalCarbsForDay(start: Long, end: Long): Double // SQLITE DATE FORMAT
+    @Query("""
+        SELECT SUM(f.protein * count) AS totalProtein
+        FROM (
+            SELECT food_id, COUNT(*) AS count 
+            FROM consumption_table
+            WHERE date >= :start AND date < :end
+            GROUP BY food_id
+            ) AS consumptionCount
+            INNER JOIN food_table AS f ON consumptionCount.food_id = f.id
+    """)
+    suspend fun getTotalProteinForDay(start: Long, end: Long): Double // SQLITE DATE FORMAT
+
+    @Query("""
+        SELECT SUM(f.sugars * count) AS totalSugars
+        FROM (
+            SELECT food_id, COUNT(*) AS count 
+            FROM consumption_table
+            WHERE date >= :start AND date < :end
+            GROUP BY food_id
+            ) AS consumptionCount
+            INNER JOIN food_table AS f ON consumptionCount.food_id = f.id
+    """)
+    suspend fun getTotalSugarsForDay(start: Long, end: Long): Double // SQLITE DATE FORMAT
 }

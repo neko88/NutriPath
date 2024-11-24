@@ -38,6 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.dashboard.FoodEntryActivity"/>
         <activity android:name=".util.BarcodeScannerActivity" />
         <activity android:name=".api.openfoodfacts.FoodProductActivity" />
         <activity android:name=".api.themealdb.MealActivity" />

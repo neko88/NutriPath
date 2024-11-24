@@ -83,12 +83,16 @@ class DashboardFragment : Fragment() {
             foodListAdapter.notifyDataSetChanged()
         }
         foodListView.setOnItemClickListener{ _, _, pos, _ ->
+            // add a dialog perhaps
             val selected = foodListAdapter.getItem(pos) as FoodItem
 
             // create consumption instance with given food item
             val cons = Consumption()
             cons.foodId = selected.id
             cons.date = System.currentTimeMillis()
+            lifecycleScope.launch {
+                consumptionViewModel.insert(cons)
+            }
 
         }
         addFoodButton.setOnClickListener {
@@ -99,10 +103,13 @@ class DashboardFragment : Fragment() {
             food.fats = 1.0
             food.price = 14.99
             food.sugars = 1.0
+            val cons = Consumption()
+            cons.foodId = food.id
+            cons.date = System.currentTimeMillis()
             lifecycleScope.launch {
                 foodViewModel.insert(food)
+                consumptionViewModel.insert(cons)
             }
-            //foodViewModel.deleteAll()
         }
 
 

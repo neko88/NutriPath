@@ -27,23 +27,57 @@ class ConsumptionViewModel(private val repository: ConsumptionRepository) : View
 
     }
 
-    fun getTotalSpendingForMonth(yearMonth: String): LiveData<Double> {
+    fun getTotalSpendingForMonth(start: Long, end: Long): LiveData<Double> {
         val spendingLiveData = MutableLiveData<Double>()
         viewModelScope.launch {
-            val totalSpending = repository.getMonthlySpending(yearMonth)
+            val totalSpending = repository.getMonthlySpending(start, end)
             spendingLiveData.postValue(totalSpending)
         }
         return spendingLiveData
     }
 
 
-    fun getDailyCalories(date: String): LiveData<Double> {
+    fun getDailyCalories(start: Long, end: Long): LiveData<Double> {
         val calories = MutableLiveData<Double>()
         viewModelScope.launch {
-            val totalCals = repository.getTotalCaloriesForDay(date)
+            val totalCals = repository.getTotalCaloriesForDay(start, end)
             calories.postValue(totalCals)
         }
         return calories
+    }
+
+    fun getDailyFats(start: Long, end: Long): LiveData<Double> {
+        val fats = MutableLiveData<Double>()
+        viewModelScope.launch {
+            val totalFats = repository.getTotalFatsForDay(start, end)
+            fats.postValue(totalFats)
+        }
+        return fats
+    }
+    fun getDailyCarbs(start: Long, end: Long): LiveData<Double> {
+        val carbs = MutableLiveData<Double>()
+        viewModelScope.launch{
+            val totalCarbs = repository.getTotalCarbsForDay(start, end)
+            carbs.postValue(totalCarbs)
+        }
+        return carbs
+    }
+    fun getDailyProtein(start: Long, end: Long): LiveData<Double> {
+        val protein = MutableLiveData<Double>()
+        viewModelScope.launch{
+            val totalProtein = repository.getTotalProteinForDay(start, end)
+            protein.postValue(totalProtein)
+        }
+        return protein
+    }
+
+    fun getDailySugars(start: Long, end: Long): LiveData<Double> {
+        val sugars = MutableLiveData<Double>()
+        viewModelScope.launch{
+            val totalSugars = repository.getTotalSugarsForDay(start, end)
+            sugars.postValue(totalSugars)
+        }
+        return sugars
     }
 }
 
