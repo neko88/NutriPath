@@ -24,7 +24,7 @@ class FoodItemViewModel(private val repository: FoodItemRepository) : ViewModel(
         }
     }
 
-    fun deleteAll(id: Long){
+    fun deleteAll(){
         viewModelScope.launch {
             repository.deleteAll()
         }

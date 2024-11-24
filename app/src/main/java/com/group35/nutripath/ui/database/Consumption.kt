@@ -11,17 +11,10 @@ import androidx.room.PrimaryKey
 )
 data class Consumption(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-
+    var id: Long = 0,
     @ColumnInfo(name = "food_id")
-    val foodId: Long,
+    var foodId: Long = 0,
 
     @ColumnInfo(name = "date")
-    val date: Long // type may change
-
-
-
-
-
-
+    var date: Long = 0 // type may change
 )

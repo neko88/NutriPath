@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="app_color">#fbf3f3</color>
+    <color name="button_grey">#b5b5b5</color>
 
     <!-- Nutropath App Theme -->
     <color name="brown_dark">#46221A</color>

@@ -11,26 +11,26 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "food_table")
 data class FoodItem(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    var id: Long = 0,
 
     @ColumnInfo(name = "name")
-    val name: String = "",
+    var name: String = "",
 
     @ColumnInfo(name = "calories")
-    val cals: Double = 0.0,
+    var cals: Double = 0.0,
 
     @ColumnInfo(name = "protein")
-    val protein: Double = 0.0,
+    var protein: Double = 0.0,
 
     @ColumnInfo(name = "carbs")
-    val carbs: Double = 0.0,
+    var carbs: Double = 0.0,
 
     @ColumnInfo(name = "fats")
-    val fats: Double = 0.0,
+    var fats: Double = 0.0,
 
     @ColumnInfo(name = "sugars")
-    val sugars: Double = 0.0,
+    var sugars: Double = 0.0,
 
     @ColumnInfo(name = "price")
-    val price: Double = 0.0
+    var price: Double = 0.0
 )
