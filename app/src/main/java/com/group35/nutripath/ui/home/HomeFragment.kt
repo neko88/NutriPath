@@ -22,6 +22,7 @@ import com.group35.nutripath.ui.database.ConsumptionViewModelFactory
 import com.group35.nutripath.util.Globals
 import com.group35.nutripath.utils.ChartHelper
 import com.group35.nutripath.utils.DialogHelper
+import java.util.Calendar
 
 class HomeFragment : Fragment() {
 
@@ -34,11 +35,11 @@ class HomeFragment : Fragment() {
     private val consumptionViewModel: ConsumptionViewModel by activityViewModels { consumptionViewModelFactory }
     private lateinit var consumptionDao: ConsumptionDao
     private lateinit var consumptionRepository: ConsumptionRepository
-    private var caloriesForDay: Double = 0.0
-    private var proteinForDay: Double = 0.0
-    private var fatsForDay: Double = 0.0
-    private var sugarsForDay: Double = 0.0
-    private var spendingForMonth: Double = 0.0
+    private var caloriesForDay: Double? = 0.0
+    private var proteinForDay: Double? = 0.0
+    private var fatsForDay: Double? = 0.0
+    private var sugarsForDay: Double? = 0.0
+    private var spendingForMonth: Double? = 0.0
     private lateinit var dayInterval: Pair<Long, Long>
     private lateinit var monthInterval: Pair<Long, Long>
 
@@ -55,16 +56,18 @@ class HomeFragment : Fragment() {
         val date = System.currentTimeMillis()
         dayInterval = Globals().getDateInterval(date)
         monthInterval = Globals().getMonthInterval(date)
+        println("debug: date = $date, dayInterval ${dayInterval.first} to ${dayInterval.second}")
 
-        consumptionViewModel.allConsumptionLiveData.observe(viewLifecycleOwner){ it ->
-            caloriesForDay = consumptionViewModel.getDailyCalories(dayInterval.first, dayInterval.second).value!!
-            proteinForDay = consumptionViewModel.getDailyProtein(dayInterval.first, dayInterval.second).value!!
-            fatsForDay = consumptionViewModel.getDailyFats(dayInterval.first, dayInterval.second).value!!
-            sugarsForDay = consumptionViewModel.getDailySugars(dayInterval.first, dayInterval.second).value!!
-            spendingForMonth = consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second).value!!
-            println("debug: cals $caloriesForDay, protein $proteinForDay, fats $fatsForDay, sugars $sugarsForDay, spending (month) $spendingForMonth")
-        }
+
         initConsumptionDB()
+        consumptionViewModel.allConsumptionLiveData.observe(viewLifecycleOwner){ it ->
+            caloriesForDay = consumptionViewModel.getDailyCalories(dayInterval.first, dayInterval.second).value
+            proteinForDay = consumptionViewModel.getDailyProtein(dayInterval.first, dayInterval.second).value
+            fatsForDay = consumptionViewModel.getDailyFats(dayInterval.first, dayInterval.second).value
+            sugarsForDay = consumptionViewModel.getDailySugars(dayInterval.first, dayInterval.second).value
+            spendingForMonth = consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second).value
+            println("debug: HomeFragment: cals $caloriesForDay, protein $proteinForDay, fats $fatsForDay, sugars $sugarsForDay, spending (month) $spendingForMonth")
+        }
         // Set up empty charts initially
         ChartHelper.setupEmptyPieChart(pieChart)
         ChartHelper.setupEmptyLineChart(lineChart)

@@ -1,5 +1,6 @@
 package com.group35.nutripath.ui.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -77,6 +78,7 @@ class DashboardFragment : Fragment() {
         val root: View = binding.root
 
         initialize()
+        //foodViewModel.deleteAll()
 
         foodViewModel.allFoodItemLiveData.observe(viewLifecycleOwner){ it ->
             foodListAdapter.replace(it)
@@ -89,27 +91,18 @@ class DashboardFragment : Fragment() {
             // create consumption instance with given food item
             val cons = Consumption()
             cons.foodId = selected.id
+
             cons.date = System.currentTimeMillis()
+            println("debug: Dashboard fragment: selected = $selected")
+            println("debug: Dashboard fragment: cons = $cons")
             lifecycleScope.launch {
                 consumptionViewModel.insert(cons)
             }
 
         }
         addFoodButton.setOnClickListener {
-            // TODO: replace with actual add item code
-            val food = FoodItem()
-            food.name = "Chicken"
-            food.cals = 15.0
-            food.fats = 1.0
-            food.price = 14.99
-            food.sugars = 1.0
-            val cons = Consumption()
-            cons.foodId = food.id
-            cons.date = System.currentTimeMillis()
-            lifecycleScope.launch {
-                foodViewModel.insert(food)
-                consumptionViewModel.insert(cons)
-            }
+            val intent = Intent(requireContext(), FoodEntryActivity::class.java)
+            startActivity(intent)
         }
 
 

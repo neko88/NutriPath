@@ -12,6 +12,24 @@ import java.lang.IllegalArgumentException
 // Adapted from CommentViewModel
 class ConsumptionViewModel(private val repository: ConsumptionRepository) : ViewModel() {
     val allConsumptionLiveData: LiveData<List<Consumption>> = repository.allConsumption.asLiveData()
+    private val _dailyProtein = MutableLiveData<Double>()
+    val dailyProtein: LiveData<Double> get() = _dailyProtein
+
+    private val _dailyFats = MutableLiveData<Double>()
+    val dailyFats: LiveData<Double> get() = _dailyFats
+
+    private val _dailyCalories = MutableLiveData<Double>()
+    val dailyCalories: LiveData<Double> get() = _dailyCalories
+
+    private val _dailyCarbs = MutableLiveData<Double>()
+    val dailyCarbs: LiveData<Double> get() = _dailyCarbs
+
+    private val _dailySugars = MutableLiveData<Double>()
+    val dailySugars: LiveData<Double> get() = _dailySugars
+
+    private val _monthlySpending = MutableLiveData<Double>()
+    val monthlySpending: LiveData<Double> get() = _monthlySpending
+
 
 
     fun insert(consumption: Consumption) {
@@ -30,7 +48,7 @@ class ConsumptionViewModel(private val repository: ConsumptionRepository) : View
     fun getTotalSpendingForMonth(start: Long, end: Long): LiveData<Double> {
         val spendingLiveData = MutableLiveData<Double>()
         viewModelScope.launch {
-            val totalSpending = repository.getMonthlySpending(start, end)
+            val totalSpending = repository.getMonthlySpending(start, end)?: 0.0
             spendingLiveData.postValue(totalSpending)
         }
         return spendingLiveData
@@ -38,46 +56,41 @@ class ConsumptionViewModel(private val repository: ConsumptionRepository) : View
 
 
     fun getDailyCalories(start: Long, end: Long): LiveData<Double> {
-        val calories = MutableLiveData<Double>()
         viewModelScope.launch {
-            val totalCals = repository.getTotalCaloriesForDay(start, end)
-            calories.postValue(totalCals)
+            val totalCals = repository.getTotalCaloriesForDay(start, end)?: 0.0
+            _dailyCalories.postValue(totalCals)
         }
-        return calories
+        return dailyCalories
     }
 
     fun getDailyFats(start: Long, end: Long): LiveData<Double> {
-        val fats = MutableLiveData<Double>()
         viewModelScope.launch {
-            val totalFats = repository.getTotalFatsForDay(start, end)
-            fats.postValue(totalFats)
+            val totalFats = repository.getTotalFatsForDay(start, end)?: 0.0
+            _dailyFats.postValue(totalFats)
         }
-        return fats
+        return dailyFats
     }
     fun getDailyCarbs(start: Long, end: Long): LiveData<Double> {
-        val carbs = MutableLiveData<Double>()
         viewModelScope.launch{
-            val totalCarbs = repository.getTotalCarbsForDay(start, end)
-            carbs.postValue(totalCarbs)
+            val totalCarbs = repository.getTotalCarbsForDay(start, end)?: 0.0
+            _dailyCarbs.postValue(totalCarbs)
         }
-        return carbs
+        return dailyCarbs
     }
     fun getDailyProtein(start: Long, end: Long): LiveData<Double> {
-        val protein = MutableLiveData<Double>()
         viewModelScope.launch{
-            val totalProtein = repository.getTotalProteinForDay(start, end)
-            protein.postValue(totalProtein)
+            val totalProtein = repository.getTotalProteinForDay(start, end) ?: 0.0
+            _dailyProtein.postValue(totalProtein)
         }
-        return protein
+        return dailyProtein
     }
 
     fun getDailySugars(start: Long, end: Long): LiveData<Double> {
-        val sugars = MutableLiveData<Double>()
         viewModelScope.launch{
-            val totalSugars = repository.getTotalSugarsForDay(start, end)
-            sugars.postValue(totalSugars)
+            val totalSugars = repository.getTotalSugarsForDay(start, end)?: 0.0
+            _dailySugars.postValue(totalSugars)
         }
-        return sugars
+        return dailySugars
     }
 }
 

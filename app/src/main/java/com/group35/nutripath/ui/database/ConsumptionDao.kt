@@ -63,7 +63,7 @@ interface ConsumptionDao {
             ) AS consumptionCount
             INNER JOIN food_table AS f ON consumptionCount.food_id = f.id
     """)
-    suspend fun getTotalCarbsForDay(start: Long, end: Long): Double // SQLITE DATE FORMAT
+    suspend fun getTotalCarbsForDay(start: Long, end: Long): Double? // SQLITE DATE FORMAT
     @Query("""
         SELECT SUM(f.protein * count) AS totalProtein
         FROM (
@@ -74,7 +74,7 @@ interface ConsumptionDao {
             ) AS consumptionCount
             INNER JOIN food_table AS f ON consumptionCount.food_id = f.id
     """)
-    suspend fun getTotalProteinForDay(start: Long, end: Long): Double // SQLITE DATE FORMAT
+    suspend fun getTotalProteinForDay(start: Long, end: Long): Double? // SQLITE DATE FORMAT
 
     @Query("""
         SELECT SUM(f.sugars * count) AS totalSugars
@@ -86,5 +86,5 @@ interface ConsumptionDao {
             ) AS consumptionCount
             INNER JOIN food_table AS f ON consumptionCount.food_id = f.id
     """)
-    suspend fun getTotalSugarsForDay(start: Long, end: Long): Double // SQLITE DATE FORMAT
+    suspend fun getTotalSugarsForDay(start: Long, end: Long): Double? // SQLITE DATE FORMAT
 }

@@ -23,6 +23,8 @@ import com.group35.nutripath.ui.database.FoodItemListAdapter
 import com.group35.nutripath.ui.database.FoodItemRepository
 import com.group35.nutripath.ui.database.FoodItemViewModel
 import com.group35.nutripath.ui.database.FoodItemViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 
@@ -42,8 +44,13 @@ class FoodEntryActivity: AppCompatActivity() {
     private lateinit var foodViewModelFactory: FoodItemViewModelFactory
     private lateinit var foodViewModel: FoodItemViewModel
 
-    private var editTextList = Array(7) {EditText(this)}
-
+    private lateinit var foodNameText: EditText
+    private lateinit var caloriesText: EditText
+    private lateinit var carbsText: EditText
+    private lateinit var fatsText: EditText
+    private lateinit var proteinText: EditText
+    private lateinit var sugarsText: EditText
+    private lateinit var priceText: EditText
     private lateinit var saveButton: Button
     private lateinit var cancelButton: Button
 
@@ -51,13 +58,13 @@ class FoodEntryActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_entry)
 
-        editTextList[0] = findViewById(R.id.food_name_text)
-        editTextList[1] = findViewById(R.id.calories_text)
-        editTextList[2] = findViewById(R.id.carbs_text)
-        editTextList[3] = findViewById(R.id.fats_text)
-        editTextList[4] = findViewById(R.id.protein_text)
-        editTextList[5] = findViewById(R.id.sugars_text)
-        editTextList[6] = findViewById(R.id.price_text)
+        foodNameText = findViewById(R.id.food_name_text)
+        caloriesText = findViewById(R.id.calories_text)
+        carbsText = findViewById(R.id.carbs_text)
+        fatsText = findViewById(R.id.fats_text)
+        proteinText = findViewById(R.id.protein_text)
+        sugarsText = findViewById(R.id.sugars_text)
+        priceText = findViewById(R.id.price_text)
 
         saveButton = findViewById(R.id.save_food_entry)
         cancelButton = findViewById(R.id.cancel_food_entry)
@@ -67,18 +74,18 @@ class FoodEntryActivity: AppCompatActivity() {
 
         saveButton.setOnClickListener {
             val food = FoodItem()
-            food.name = editTextList[0].toString()
-            food.cals = editTextList[1].toString().toDouble()
-            food.carbs = editTextList[2].toString().toDouble()
-            food.fats = editTextList[3].toString().toDouble()
-            food.protein = editTextList[4].toString().toDouble()
-            food.sugars = editTextList[5].toString().toDouble()
-            food.price = editTextList[6].toString().toDouble()
+            food.name = foodNameText.text.toString()
+            food.cals = caloriesText.text.toString().toDoubleOrNull() ?: 0.0
+            food.carbs = carbsText.text.toString().toDoubleOrNull() ?: 0.0
+            food.fats = fatsText.text.toString().toDoubleOrNull() ?: 0.0
+            food.protein = proteinText.text.toString().toDoubleOrNull() ?: 0.0
+            food.sugars = sugarsText.text.toString().toDoubleOrNull() ?: 0.0
+            food.price = priceText.text.toString().toDoubleOrNull() ?: 0.0
 
             val consumption = Consumption()
             consumption.foodId = food.id
             consumption.date = System.currentTimeMillis()
-            lifecycleScope.launch {
+            CoroutineScope(IO).launch {
                 foodViewModel.insert(food)
                 consumptionViewModel.insert(consumption)
             }

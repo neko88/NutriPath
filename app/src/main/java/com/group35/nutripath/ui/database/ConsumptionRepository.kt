@@ -21,22 +21,22 @@ class ConsumptionRepository(private val consumptionDao: ConsumptionDao) {
         }
     }
 
-    suspend fun getMonthlySpending(start: Long, end: Long): Double {
+    suspend fun getMonthlySpending(start: Long, end: Long): Double? {
         return consumptionDao.getTotalSpendingForMonth(start, end)
     }
-    suspend fun getTotalCaloriesForDay(start: Long, end: Long): Double {
+    suspend fun getTotalCaloriesForDay(start: Long, end: Long): Double? {
         return consumptionDao.getTotalCaloriesForDay(start, end)
     }
-    suspend fun getTotalFatsForDay(start: Long, end: Long): Double {
+    suspend fun getTotalFatsForDay(start: Long, end: Long): Double? {
         return consumptionDao.getTotalFatsForDay(start, end)
     }
-    suspend fun getTotalCarbsForDay(start: Long, end: Long): Double {
+    suspend fun getTotalCarbsForDay(start: Long, end: Long): Double? {
         return consumptionDao.getTotalCarbsForDay(start, end)
     }
-    suspend fun getTotalProteinForDay(start: Long, end: Long): Double {
+    suspend fun getTotalProteinForDay(start: Long, end: Long): Double? {
         return consumptionDao.getTotalProteinForDay(start, end)
     }
-    suspend fun getTotalSugarsForDay(start: Long, end: Long): Double {
+    suspend fun getTotalSugarsForDay(start: Long, end: Long): Double? {
         return consumptionDao.getTotalSugarsForDay(start, end)
     }
 }
