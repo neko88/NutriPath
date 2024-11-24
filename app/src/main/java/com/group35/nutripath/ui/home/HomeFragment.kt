@@ -1,5 +1,6 @@
 package com.group35.nutripath.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.group35.nutripath.R
+import com.group35.nutripath.api.themealdb.MealActivity
 import com.group35.nutripath.utils.ChartHelper
 import com.group35.nutripath.utils.DialogHelper
 
@@ -30,6 +32,7 @@ class HomeFragment : Fragment() {
         pieChart = root.findViewById(R.id.pieChart)
         lineChart = root.findViewById(R.id.lineChart)
 
+
         // Set up empty charts initially
         ChartHelper.setupEmptyPieChart(pieChart)
         ChartHelper.setupEmptyLineChart(lineChart)
@@ -44,6 +47,12 @@ class HomeFragment : Fragment() {
             DialogHelper.showAddExpenseDialog(requireContext()) { expense ->
                 homeViewModel.addExpense(expense)
             }
+        }
+        // only for testing - can remove later - nat
+        root.findViewById<Button>(R.id.recipesButton).setOnClickListener {
+            val intent = Intent(requireContext(), MealActivity::class.java)
+            Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
 
         // Observe the LiveData to populate charts, including initial empty data

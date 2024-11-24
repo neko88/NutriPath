@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.group35.nutripath.R
@@ -26,7 +27,7 @@ class MealActivity: AppCompatActivity() {
         setContentView(R.layout.activity_meal)
 
         binding = ActivityMealBinding.inflate(layoutInflater)
-        searchFood = binding.mapSearch
+        searchFood = binding.mealSearchBar
 
         viewModel = ViewModelProvider(this)[MealViewModel::class.java]
 
@@ -37,7 +38,7 @@ class MealActivity: AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.mealRecycleView)
         mealAdapter = MealAdapter()
         recyclerView.adapter = mealAdapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 columns
 
         viewModel.mealRecommendationList.observe(this) { updatedMeals ->
             mealAdapter.submitList(updatedMeals)
