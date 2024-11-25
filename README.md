@@ -14,7 +14,7 @@ This is the application that will solve those problem!
 This application project uses the Google API for search feature,
 To use it on Desktop, you need to obtain an API key :
 
-1. Vistion [Google Cloud Console](https://console.cloud.google.com/).
+1. Vistion [Google Cloud Console](https://console.cloud.google.com/)
 2. Enable the necessary API
 3. Create an API key and set it in your environment variables (app/src/main/res/values/strings.xml).
 

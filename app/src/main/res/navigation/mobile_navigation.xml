@@ -19,9 +19,20 @@
 
     <fragment
         android:id="@+id/navigation_map"
-        android:name="com.group35.nutripath.MapSearchFragment"
+        android:name="com.group35.nutripath.TrackingFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_search"/>
+        tools:layout="@layout/fragment_search">
+        <!-- Add action to CalendarFragment -->
+        <action
+            android:id="@+id/action_tracking_to_calendar"
+            app:destination="@id/navigation_calendar" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_calendar"
+        android:name="com.group35.nutripath.CalendarFragment"
+        android:label="Calendar"
+        tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/navigation_notifications"
