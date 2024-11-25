@@ -39,7 +39,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".util.BarcodeScannerActivity" />
-        <activity android:name=".api.openfoodfacts.FoodProductActivity" />
+        <activity android:name=".api.openfoodfacts.OpenFoodFactActivity" />
+        <activity android:name=".api.openfoodfacts.ProductInfoActivity" />
         <activity android:name=".api.themealdb.MealActivity" />
 
         <meta-data

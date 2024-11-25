@@ -36,10 +36,7 @@ class MealAdapter(private val onClick: (Meal) -> Unit) :
         private val ingredientImages: List<ImageView> = listOf(
             itemView.findViewById(R.id.ingredientImage1),
             itemView.findViewById(R.id.ingredientImage2),
-            itemView.findViewById(R.id.ingredientImage3),
-            itemView.findViewById(R.id.ingredientImage4),
-            itemView.findViewById(R.id.ingredientImage5),
-            itemView.findViewById(R.id.ingredientImage6)
+            itemView.findViewById(R.id.ingredientImage3)
         )
 
         fun bind(meal: Meal) {

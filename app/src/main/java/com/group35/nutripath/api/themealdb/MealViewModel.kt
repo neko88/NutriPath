@@ -13,12 +13,12 @@ class MealViewModel : ViewModel() {
     val mealArea = MutableLiveData<String>()
     val mealCategory = MutableLiveData<String>()
     val mealMainIngredient = MutableLiveData<String>()
-
+    val mealImageUrl = MutableLiveData<String>()
 
     private fun parseMeal(mealJson: JsonObject): Meal {
         val ingredients = mutableMapOf<String, String>()
 
-        // Extract ingredients and measurements
+        // extract ingredients and measurements
         for (i in 1..20) {
             val ingredient = mealJson.get("strIngredient$i")?.takeIf { it.isJsonPrimitive }?.asString
             val measure = mealJson.get("strMeasure$i")?.takeIf { it.isJsonPrimitive }?.asString
@@ -28,7 +28,7 @@ class MealViewModel : ViewModel() {
             }
         }
 
-        // Parse other meal details
+        // parse other meal details
         return Meal(
             idMeal = mealJson.get("idMeal")?.asString ?: "",
             strMeal = mealJson.get("strMeal")?.asString ?: "",
@@ -38,15 +38,18 @@ class MealViewModel : ViewModel() {
         )
     }
 
+    // call meal details for the instructions in the recipe
     fun getMealDetails(mealId: String) {
         viewModelScope.launch {
             val result = repository.getMealInformation(mealId)
             result.body()?.getAsJsonArray("meals")?.firstOrNull()?.asJsonObject?.let { mealJson ->
+                val imageUrl = mealJson.get("strMealThumb")?.asString ?: ""
                 val area = mealJson.get("strArea")?.asString ?: "Unknown"
                 val category = mealJson.get("strCategory")?.asString ?: "Unknown"
                 val mainIngredient = mealJson.get("strIngredient1")?.asString ?: "Unknown"
 
-                // Post the values to LiveData or directly use them in the fragment
+                // post the data for using them for the UI
+                mealImageUrl.postValue(imageUrl) // Update with the image URL
                 mealArea.value = area
                 mealCategory.value = category
                 mealMainIngredient.value = mainIngredient

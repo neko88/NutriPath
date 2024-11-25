@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.group35.nutripath.R
+import com.group35.nutripath.api.openfoodfacts.ProductInfoActivity
 import com.group35.nutripath.api.themealdb.MealActivity
 import com.group35.nutripath.utils.ChartHelper
 import com.group35.nutripath.utils.DialogHelper
@@ -51,6 +52,12 @@ class HomeFragment : Fragment() {
         // only for testing - can remove later - nat
         root.findViewById<Button>(R.id.recipesButton).setOnClickListener {
             val intent = Intent(requireContext(), MealActivity::class.java)
+            Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
+        // only for testing - can remove later - nat
+        root.findViewById<Button>(R.id.barcodeButton).setOnClickListener {
+            val intent = Intent(requireContext(), ProductInfoActivity::class.java)
             Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }

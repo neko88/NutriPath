@@ -34,6 +34,7 @@ class MealDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val meal = MealDetailFragmentArgs.fromBundle(requireArguments()).meal
+        viewModel = ViewModelProvider(this)[MealViewModel::class.java]
 
         // Prepare ingredients data as a list of Triple<Name, Image URL, Measurement>
         val ingredients = meal.ingredients.map { (name, measure) ->
@@ -49,21 +50,27 @@ class MealDetailFragment : Fragment() {
 
         // assign the meal API's data to the UI elements
         binding.mealName.text = meal.strMeal
-    //    binding.mealDescription.text = meal.strInstructions
+        binding.mealDescription.text = meal.strInstructions
         // Call the ViewModel's function to fetch meal details
 
         viewModel.getMealDetails(meal.idMeal)
 
+
+        // Observe meal image LiveData and update the ImageView
+        viewModel.mealImageUrl.observe(viewLifecycleOwner) { imageUrl ->
+            Glide.with(requireContext())
+                .load(imageUrl)
+                .placeholder(R.drawable.np_nutrileaf) // Optional placeholder
+                .error(R.drawable.np_nutrileaf) // Optional error image
+                .into(binding.mealImageView) // Update the ImageView
+        }
+
+
         // Observe area (cuisine)
         viewModel.mealArea.observe(viewLifecycleOwner) { area ->
             binding.cuisineTextView.text = area
-            val areaImageUrl = "https://www.themealdb.com/images/area/$area.png"
-            Glide.with(requireContext())
-                .load(areaImageUrl)
-                .circleCrop()
-                .placeholder(R.drawable.np_radish_donut)
-                .error(R.drawable.np_radish_donut)
-                .into(binding.cuisineImageView)
+            binding.cuisineTextView.text = area
+            binding.cuisineImageView.setImageResource(getFlagForArea(area))
         }
 
         // Observe category
@@ -72,7 +79,7 @@ class MealDetailFragment : Fragment() {
             val categoryImageUrl = "https://www.themealdb.com/images/category/$category.png"
             Glide.with(requireContext())
                 .load(categoryImageUrl)
-                .circleCrop()
+             //   .circleCrop()
                 .placeholder(R.drawable.np_radish_balloon)
                 .error(R.drawable.np_radish_balloon)
                 .into(binding.categoryImageView)
@@ -84,12 +91,35 @@ class MealDetailFragment : Fragment() {
             val ingredientImageUrl = "https://www.themealdb.com/images/ingredients/$mainIngredient.png"
             Glide.with(requireContext())
                 .load(ingredientImageUrl)
-                .circleCrop()
+          //      .circleCrop()
                 .placeholder(R.drawable.np_radish_icecream)
                 .error(R.drawable.np_radish_icecream)
                 .into(binding.ingredientMainImageView)
         }
 
+    }
+
+    // Map area names to emoji flags
+    private fun getFlagForArea(area: String): Int {
+        return when (area) {
+            "American" -> R.drawable.np_flag_canada
+            "British" -> R.drawable.np_nutrileaf
+            "Canadian" -> R.drawable.np_flag_canada
+            "Chinese" -> R.drawable.np_flag_china
+            "French" -> R.drawable.np_flag_france
+            //filipino
+            "Greek" -> R.drawable.np_nutrileaf
+            "Indian" -> R.drawable.np_flag_india
+            "Italian" -> R.drawable.np_nutrileaf
+            "Japanese" -> R.drawable.np_nutrileaf
+            "Mexican" -> R.drawable.np_nutrileaf
+            "Spanish" -> R.drawable.np_nutrileaf
+            "Thai" -> R.drawable.np_nutrileaf
+            //turkish
+            //tunisian
+            "Vietnamese" -> R.drawable.np_flag_viet
+            else -> R.drawable.np_nutrileaf // Default placeholder image
+        }
     }
 
     override fun onDestroyView() {

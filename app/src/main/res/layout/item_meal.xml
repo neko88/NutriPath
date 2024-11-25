@@ -1,6 +1,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     style="@style/TextBoxStyle"
     android:backgroundTint="#f1f2f0"
@@ -33,9 +33,9 @@
         android:textAlignment="center"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="70dp"
-        android:backgroundTint="@color/beige_radish"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/quantum_white_100"
         android:background="@drawable/round_titles"/>
 
     <TextView
@@ -45,7 +45,7 @@
         android:textColor="#979797"
         android:textSize="14dp"
         android:text="meal description"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/mealTitle"
         android:maxLines="2"
         android:ellipsize="end"
@@ -58,7 +58,7 @@
         android:layout_below="@id/mealDescription"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="10dp">
 
         <FrameLayout
@@ -92,38 +92,7 @@
                 style="@style/MealIngredientTinyImage"  />
             </FrameLayout>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#cfe6ff"
-            android:background="@drawable/circle_background_image">
-            <ImageView
-                android:id="@+id/ingredientImage4"
-                style="@style/MealIngredientTinyImage"  />
-        </FrameLayout>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#ffffd9"
-            android:background="@drawable/circle_background_image">
-            <ImageView
-                android:id="@+id/ingredientImage5"
-                style="@style/MealIngredientTinyImage"  />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="#def9b0"
-            android:background="@drawable/circle_background_image">
-            <ImageView
-                android:id="@+id/ingredientImage6"
-                style="@style/MealIngredientTinyImage"  />
-        </FrameLayout>
 
     </LinearLayout>
 </RelativeLayout>
