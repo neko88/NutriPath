@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
@@ -38,7 +39,7 @@ class ConsumptionViewModel(private val repository: ConsumptionRepository) : View
         }
     }
 
-    fun deleteAll(id: Long){
+    fun deleteAll(){
         viewModelScope.launch {
             repository.deleteAll()
         }
@@ -56,10 +57,8 @@ class ConsumptionViewModel(private val repository: ConsumptionRepository) : View
 
 
     fun getDailyCalories(start: Long, end: Long): LiveData<Double> {
-        viewModelScope.launch {
-            val totalCals = repository.getTotalCaloriesForDay(start, end)?: 0.0
-            _dailyCalories.postValue(totalCals)
-        }
+        val totalCals: Flow<Double> = repository.getTotalCaloriesForDay(start, end)
+        _dailyCalories.postValue(totalCals.asLiveData().value)
         return dailyCalories
     }
 

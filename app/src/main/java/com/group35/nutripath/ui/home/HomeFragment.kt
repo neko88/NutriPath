@@ -14,6 +14,7 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.group35.nutripath.R
 import com.group35.nutripath.api.themealdb.MealActivity
+import com.group35.nutripath.ui.database.Consumption
 import com.group35.nutripath.ui.database.ConsumptionDao
 import com.group35.nutripath.ui.database.ConsumptionDatabase
 import com.group35.nutripath.ui.database.ConsumptionRepository
@@ -43,7 +44,7 @@ class HomeFragment : Fragment() {
     private lateinit var dayInterval: Pair<Long, Long>
     private lateinit var monthInterval: Pair<Long, Long>
 
-
+    private var consumptionList: List<Consumption> = listOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,17 +58,27 @@ class HomeFragment : Fragment() {
         dayInterval = Globals().getDateInterval(date)
         monthInterval = Globals().getMonthInterval(date)
         println("debug: date = $date, dayInterval ${dayInterval.first} to ${dayInterval.second}")
+        val c0 = Calendar.getInstance()
+        val c1 = Calendar.getInstance()
+        val c2 = Calendar.getInstance()
+        c0.timeInMillis = date
+        c1.timeInMillis = dayInterval.first
+        c2.timeInMillis = dayInterval.second
 
+        println("debug: Home fragment: date = ${c0.time} interval = ${c1.time} to ${c2.time}")
 
         initConsumptionDB()
+        //consumptionViewModel.deleteAll()
         consumptionViewModel.allConsumptionLiveData.observe(viewLifecycleOwner){ it ->
-            caloriesForDay = consumptionViewModel.getDailyCalories(dayInterval.first, dayInterval.second).value
-            proteinForDay = consumptionViewModel.getDailyProtein(dayInterval.first, dayInterval.second).value
-            fatsForDay = consumptionViewModel.getDailyFats(dayInterval.first, dayInterval.second).value
-            sugarsForDay = consumptionViewModel.getDailySugars(dayInterval.first, dayInterval.second).value
-            spendingForMonth = consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second).value
-            println("debug: HomeFragment: cals $caloriesForDay, protein $proteinForDay, fats $fatsForDay, sugars $sugarsForDay, spending (month) $spendingForMonth")
+            println("debug: Home fragment: all consumption: $it")
+            consumptionList = it
         }
+        caloriesForDay = consumptionViewModel.getDailyCalories(dayInterval.first, dayInterval.second).value
+//        proteinForDay = consumptionViewModel.getDailyProtein(dayInterval.first, dayInterval.second).value
+//        fatsForDay = consumptionViewModel.getDailyFats(dayInterval.first, dayInterval.second).value
+//        sugarsForDay = consumptionViewModel.getDailySugars(dayInterval.first, dayInterval.second).value
+//        spendingForMonth = consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second).value
+        println("debug: Home fragment: cals $caloriesForDay, protein $proteinForDay, fats $fatsForDay, sugars $sugarsForDay, spending (month) $spendingForMonth")
         // Set up empty charts initially
         ChartHelper.setupEmptyPieChart(pieChart)
         ChartHelper.setupEmptyLineChart(lineChart)
@@ -109,10 +120,19 @@ class HomeFragment : Fragment() {
 
         return root
     }
+
     private fun initConsumptionDB(){
         consumptionDB = ConsumptionDatabase.getInstance(requireActivity())
         consumptionDao = consumptionDB.consumptionDao
         consumptionRepository = ConsumptionRepository(consumptionDao)
         consumptionViewModelFactory = ConsumptionViewModelFactory(consumptionRepository)
+    }
+    // temporary functions to get aggregates
+    private fun tempAggregates(){
+        caloriesForDay = 0.0
+        proteinForDay = 0.0
+        fatsForDay= 0.0
+        sugarsForDay = 0.0
+
     }
 }

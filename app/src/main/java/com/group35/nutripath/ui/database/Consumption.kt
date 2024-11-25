@@ -5,16 +5,20 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
+/*
+ * TODO: Fix foreign key constraints; currently removed because they broke the whole thing
+ */
+
 @Entity(
-    tableName = "consumption_table",
-    foreignKeys = [ForeignKey(entity = FoodItem::class, parentColumns = ["id"], childColumns = ["food_id"], onDelete = ForeignKey.CASCADE)]
+    tableName = "consumption_table"
+
 )
 data class Consumption(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
     @ColumnInfo(name = "food_id")
-    var foodId: Long = 0,
+    val foodId: Long,
 
     @ColumnInfo(name = "date")
-    var date: Long = 0 // type may change
+    val date: Long // type may change
 )

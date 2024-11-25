@@ -11,7 +11,14 @@ class ConsumptionRepository(private val consumptionDao: ConsumptionDao) {
 
     fun insert(consumption: Consumption){
         CoroutineScope(IO).launch{
-            consumptionDao.insertConsumption(consumption)
+            try{
+
+                consumptionDao.insertConsumption(consumption)
+            }
+            catch (e: Exception){
+
+                println("debug: insert error: $e")
+            }
         }
     }
 
@@ -24,7 +31,7 @@ class ConsumptionRepository(private val consumptionDao: ConsumptionDao) {
     suspend fun getMonthlySpending(start: Long, end: Long): Double? {
         return consumptionDao.getTotalSpendingForMonth(start, end)
     }
-    suspend fun getTotalCaloriesForDay(start: Long, end: Long): Double? {
+    fun getTotalCaloriesForDay(start: Long, end: Long): Flow<Double> {
         return consumptionDao.getTotalCaloriesForDay(start, end)
     }
     suspend fun getTotalFatsForDay(start: Long, end: Long): Double? {

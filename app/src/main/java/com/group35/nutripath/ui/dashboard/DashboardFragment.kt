@@ -79,8 +79,11 @@ class DashboardFragment : Fragment() {
 
         initialize()
         //foodViewModel.deleteAll()
-
+        consumptionViewModel.allConsumptionLiveData.observe(viewLifecycleOwner){ it ->
+            println("debug: Dashboard fragment: all consumption $it")
+        }
         foodViewModel.allFoodItemLiveData.observe(viewLifecycleOwner){ it ->
+            println("debug: Dashboard fragment: all food $it")
             foodListAdapter.replace(it)
             foodListAdapter.notifyDataSetChanged()
         }
@@ -89,14 +92,15 @@ class DashboardFragment : Fragment() {
             val selected = foodListAdapter.getItem(pos) as FoodItem
 
             // create consumption instance with given food item
-            val cons = Consumption()
-            cons.foodId = selected.id
-
-            cons.date = System.currentTimeMillis()
+            val cons = Consumption(foodId = selected.id, date = System.currentTimeMillis())
+//            cons.foodId = selected.id
+//
+//            cons.date = System.currentTimeMillis()
             println("debug: Dashboard fragment: selected = $selected")
             println("debug: Dashboard fragment: cons = $cons")
             lifecycleScope.launch {
                 consumptionViewModel.insert(cons)
+
             }
 
         }
