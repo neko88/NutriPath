@@ -17,25 +17,32 @@ class BudgetRepository {
     }
     val expenseEntries: LiveData<List<Entry>> get() = _expenseEntries
 
+    private var totalExpenses: Float = 0f // Track cumulative expenses
+
     fun updateBudgetAllocations(monthlyBudget: Float) {
+        totalExpenses = 0f // Reset expenses when budget is updated
         val allocations = listOf(
-            PieEntry(0.35f * monthlyBudget, "Housing"),
-            PieEntry(0.15f * monthlyBudget, "Transportation"),
-            PieEntry(0.15f * monthlyBudget, "Food"),
-            PieEntry(0.15f * monthlyBudget, "Savings"),
-            PieEntry(0.10f * monthlyBudget, "Health"),
-            PieEntry(0.10f * monthlyBudget, "Entertainment")
+            PieEntry(monthlyBudget, "Remaining") // Start with the entire budget as remaining
         )
         _budgetAllocations.value = allocations
     }
 
     fun addExpense(expenseAmount: Float) {
-        val currentEntries = _expenseEntries.value?.toMutableList() ?: mutableListOf()
-        if (currentEntries.size >= 7) {
-            currentEntries.removeAt(0)
+        totalExpenses += expenseAmount // Add to cumulative expenses
+        val currentBudget = _budgetAllocations.value?.sumOf { it.value.toDouble() }?.toFloat() ?: 0f
+
+        // Calculate spent, remaining, and exceeding portions
+        val spentWithinBudget = totalExpenses.coerceAtMost(currentBudget)
+        val exceedingAmount = (totalExpenses - currentBudget).coerceAtLeast(0f)
+        val remaining = (currentBudget - spentWithinBudget).coerceAtLeast(0f)
+
+        val allocations = mutableListOf<PieEntry>().apply {
+            if (spentWithinBudget > 0) add(PieEntry(spentWithinBudget, "Spent"))
+            if (remaining > 0) add(PieEntry(remaining, "Remaining"))
+            if (exceedingAmount > 0) add(PieEntry(exceedingAmount, "Exceeding"))
         }
-        val day = (currentEntries.size + 1).toFloat()
-        currentEntries.add(Entry(day, expenseAmount))
-        _expenseEntries.value = currentEntries
+
+        // Update LiveData with new allocations
+        _budgetAllocations.value = allocations
     }
 }

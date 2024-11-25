@@ -102,13 +102,16 @@ class HomeFragment : Fragment() {
         }
 
         // Observe the LiveData to populate charts, including initial empty data
-        homeViewModel.budgetAllocations.observe(viewLifecycleOwner, Observer { allocations ->
+        homeViewModel.budgetAllocations.observe(viewLifecycleOwner) { allocations ->
             if (allocations.isEmpty()) {
                 ChartHelper.setupEmptyPieChart(pieChart)
             } else {
-                ChartHelper.updatePieChart(pieChart, allocations)
+                val spent = allocations.firstOrNull { it.label == "Spent" }?.value ?: 0f
+                val remaining = allocations.firstOrNull { it.label == "Remaining" }?.value ?: 0f
+                val exceeding = allocations.firstOrNull { it.label == "Exceeding" }?.value ?: 0f
+                ChartHelper.updateFoodBudgetPieChart(pieChart, spent + remaining, spent + exceeding)
             }
-        })
+        }
 
         homeViewModel.expenseEntries.observe(viewLifecycleOwner, Observer { entries ->
             if (entries.isEmpty()) {
