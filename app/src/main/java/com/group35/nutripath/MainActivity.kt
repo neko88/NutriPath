@@ -56,12 +56,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         createNotification()
-
-        // Set up the button to open MapSearch activity
-//        binding.openMapButton.setOnClickListener {
-//            val intent = Intent(this, MapSearch::class.java)
-//            startActivity(intent)
-//        }
     }
 
     private fun createNotification() {
@@ -79,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel("reminder_channel", "Reminder Channel", importance)
 
-            val description = "Channel for daily reminders"
+            val description = "Channel for reminders"
             channel.description = description
 
             val notificationManager: NotificationManager =

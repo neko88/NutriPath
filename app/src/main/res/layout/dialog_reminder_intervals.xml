@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Reminder Interval"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp" />
+
+    <RadioGroup
+        android:id="@+id/radio_group_intervals"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radio_never"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Never" />
+
+        <RadioButton
+            android:id="@+id/radio_4h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Every 4 hours" />
+
+        <RadioButton
+            android:id="@+id/radio_8h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Every 8 hours" />
+
+        <RadioButton
+            android:id="@+id/radio_12h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Every 12 hours" />
+
+        <RadioButton
+            android:id="@+id/radio_1d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Every 1 day" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_set_interval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set" />
+</LinearLayout>
