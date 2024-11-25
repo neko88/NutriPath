@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-//    id("kotlin-kapt") // Use KSP for Room
-  //  id("com.google.devtools.ksp")
+    id("kotlin-kapt") // Use KSP for Room
+    //id("com.google.devtools.ksp")
     id ("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
 }
@@ -70,7 +70,7 @@ dependencies {
     
     // database
     implementation(libs.androidx.room.ktx)
-  //  kapt(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
     implementation (libs.androidx.lifecycle.livedata.ktx)
 
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
@@ -96,7 +96,7 @@ dependencies {
     implementation (libs.moshi)
     implementation (libs.moshi.kotlin)
 
-   // ksp (libs.moshi.kotlin.codegen)
+    //ksp (libs.moshi.kotlin.codegen)
 
     // Glide Image Loader
     implementation (libs.glide.v4160)
