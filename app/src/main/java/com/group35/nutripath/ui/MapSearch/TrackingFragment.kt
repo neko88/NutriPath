@@ -208,16 +208,33 @@ class TrackingFragment : Fragment(), OnMapReadyCallback {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 
-    // save tracking data to database
     private fun saveTrackingData(time: Long, distance: Double, calories: Int) {
         val date = getCurrentDate()
-        val stats = TrackingStats(date, formatTime(time), distance, calories)
+        val newTime = formatTime(time)
 
         lifecycleScope.launch(Dispatchers.IO) {
-            database.trackingStatsDao().insertTrackingStats(stats)
-        }
+            val existingStats = database.trackingStatsDao().getStatsForDate(date)
+            if (existingStats != null) {
+                // Parse the existing time and add new time
+                val updatedTime = addTimes(existingStats.time, newTime)
+                val updatedDistance = existingStats.distance + distance
+                val updatedCalories = existingStats.calories + calories
 
-        Log.d("TrackingFragment", "Saved data for $date - Time: ${stats.time}, Distance: ${stats.distance}, Calories: ${stats.calories}")
+                // Update the record in the database
+                database.trackingStatsDao().updateTrackingStats(
+                    date = date,
+                    time = updatedTime,
+                    distance = updatedDistance,
+                    calories = updatedCalories
+                )
+            } else {
+                // Insert a new record if none exists for the date
+                val stats = TrackingStats(date, newTime, distance, calories)
+                database.trackingStatsDao().insertTrackingStats(stats)
+            }
+
+            Log.d("TrackingFragment", "Saved data for $date - Time: $newTime, Distance: $distance, Calories: $calories")
+        }
     }
 
     // get current date
@@ -255,5 +272,17 @@ class TrackingFragment : Fragment(), OnMapReadyCallback {
     // stop the timer
     private fun stopTimer() {
         timerHandler.removeCallbacksAndMessages(null)
+    }
+
+    //helper function for time addition
+    private fun addTimes(time1: String, time2: String): String {
+        val parts1 = time1.split(":").map { it.toInt() }
+        val parts2 = time2.split(":").map { it.toInt() }
+
+        val totalSeconds = parts1[2] + parts2[2]
+        val totalMinutes = parts1[1] + parts2[1] + totalSeconds / 60
+        val totalHours = parts1[0] + parts2[0] + totalMinutes / 60
+
+        return String.format("%02d:%02d:%02d", totalHours, totalMinutes % 60, totalSeconds % 60)
     }
 }
