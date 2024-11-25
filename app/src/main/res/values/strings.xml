@@ -11,25 +11,33 @@
     <string name="button_edit_profile">Edit Profile</string>
 
     <string-array name="gender_options">
-        <item>(Select your gender here)</item>
+        <item>(Select your gender)</item>
         <item>Male</item>
         <item>Female</item>
         <item>Other</item>
     </string-array>
-    <string-array name="diettype_options">
-        <item>(Select your diet type here)</item>
-        <item>Omnivore</item>
-        <item>Vegan</item>
-        <item>Vegetarian</item>
-        <item>Flexitarian</item>
-        <item>Carnivore</item>
-        <item>Keto (Ketogenic)</item>
+    <string-array name="budget_options">
+        <item>(Select your budget)</item>
+        <item>$ 200</item>
+        <item>$ 400</item>
+        <item>$ 600</item>
+        <item>$ 800</item>
+        <item>$ 1,000</item>
     </string-array>
-    <string-array name="healthgoal_options">
-        <item>(Select your health goal here)</item>
+    <string-array name="activityLevel_options">
+        <item>(Select your activity level)</item>
+        <item>Sedentary</item>
+        <item>Low active</item>
+        <item>Active</item>
+        <item>Very active</item>
+        <item>Highly active</item>
+    </string-array>
+    <string-array name="healthGoal_options">
+        <item>(Select your health goal)</item>
         <item>weight loss</item>
         <item>muscle gain</item>
         <item>maintenance</item>
+        <item>improve macronutrient balance</item>
     </string-array>
 
     <string name="mapAPI">AIzaSyDZTCg3nVNwgOw_V_avWz0dNuHrDqg6wUY</string>

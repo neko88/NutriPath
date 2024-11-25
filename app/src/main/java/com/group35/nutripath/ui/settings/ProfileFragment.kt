@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -36,7 +37,22 @@ class ProfileFragment: Fragment() {
 
         loadData()
 
+        println("Porchee debug: budget = \$ ${getMonthlyBudget()}")
+
         return view
+    }
+
+    // get the monthly budget from user
+
+    // if it's 0, alert the user and add a notification?
+    fun getMonthlyBudget(): Int {
+        val budget = sharedPreferences.getString("budget", "")
+
+        return if (budget == "") {
+            0
+        } else {
+            budget!!.replace("[^\\d]".toRegex(), "").toInt()
+        }
     }
 
     private fun loadData() {
@@ -46,6 +62,9 @@ class ProfileFragment: Fragment() {
         val height = sharedPreferences.getString("height", "")
         val weight = sharedPreferences.getString("weight", "")
         val occupation = sharedPreferences.getString("occupation", "")
+        val budget = sharedPreferences.getString("budget", "")
+        val activityLevel = sharedPreferences.getString("activityLevel", "")
+        val healthGoal = sharedPreferences.getString("healthGoal", "")
 
         view.findViewById<EditText>(R.id.name_edit)?.setText(name)
         view.findViewById<EditText>(R.id.age_edit)?.setText(age)
@@ -60,6 +79,30 @@ class ProfileFragment: Fragment() {
             val genderIndex = genderOptions.indexOf(gender)
             view.findViewById<Spinner>(R.id.gender_edit)?.setSelection(genderIndex)
         }
+
+        if (budget == "") {
+            view.findViewById<Spinner>(R.id.budget_edit)?.setSelection(0)
+        } else {
+            val budgetOptions = resources.getStringArray(R.array.budget_options)
+            val budgetIndex = budgetOptions.indexOf(budget)
+            view.findViewById<Spinner>(R.id.budget_edit)?.setSelection(budgetIndex)
+        }
+
+        if (activityLevel == "") {
+            view.findViewById<Spinner>(R.id.activityLevel_edit)?.setSelection(0)
+        } else {
+            val activityLevelOptions = resources.getStringArray(R.array.activityLevel_options)
+            val activityLevelIndex = activityLevelOptions.indexOf(activityLevel)
+            view.findViewById<Spinner>(R.id.activityLevel_edit)?.setSelection(activityLevelIndex)
+        }
+
+        if (healthGoal == "") {
+            view.findViewById<Spinner>(R.id.healthgoal_edit)?.setSelection(0)
+        } else {
+            val healthGoalOptions = resources.getStringArray(R.array.healthGoal_options)
+            val healthGoalIndex = healthGoalOptions.indexOf(healthGoal)
+            view.findViewById<Spinner>(R.id.healthgoal_edit)?.setSelection(healthGoalIndex)
+        }
     }
 
     private fun saveData() {
@@ -69,6 +112,9 @@ class ProfileFragment: Fragment() {
         val height = view.findViewById<EditText>(R.id.height_edit)?.text.toString()
         val weight = view.findViewById<EditText>(R.id.weight_edit)?.text.toString()
         val occupation = view.findViewById<EditText>(R.id.occupation_edit)?.text.toString()
+        val budget = view.findViewById<Spinner>(R.id.budget_edit)?.selectedItem.toString()
+        val activityLevel = view.findViewById<Spinner>(R.id.activityLevel_edit)?.selectedItem.toString()
+        val healthGoal = view.findViewById<Spinner>(R.id.healthgoal_edit)?.selectedItem.toString()
 
         val editor = sharedPreferences.edit()
 
@@ -78,13 +124,33 @@ class ProfileFragment: Fragment() {
         editor.putString("weight", weight)
         editor.putString("occupation", occupation)
 
-        if (gender == "(Select your gender here)") {
+        if (gender == "(Select your gender)") {
             editor.putString("gender", "")
         } else {
             editor.putString("gender", gender)
         }
 
+        if (budget == "(Select your budget)") {
+            editor.putString("budget", "")
+        } else {
+            editor.putString("budget", budget)
+        }
+
+        if (activityLevel == "(Select your activity level)") {
+            editor.putString("activityLevel", "")
+        } else {
+            editor.putString("activityLevel", activityLevel)
+        }
+
+        if (healthGoal == "(Select your health goal)") {
+            editor.putString("healthGoal", "")
+        } else {
+            editor.putString("healthGoal", healthGoal)
+        }
+
         editor.apply()
+
+        Toast.makeText(requireActivity(), "You have saved your profile.", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
