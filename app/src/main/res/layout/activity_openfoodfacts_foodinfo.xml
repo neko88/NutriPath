@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/foodImageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+
+                <!-- PROODUCT IMAGE -->
+                <ImageView
+                    android:id="@+id/productImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintVertical_bias="0.5"
+                    app:layout_constraintHorizontal_bias="0.5"/>
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="48dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/np_radish_donut" />
+
+                <ImageView
+                    android:id="@+id/favouriteButton"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginEnd="6dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/backBtn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/backBtn"
+                    app:srcCompat="@drawable/np_like" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/foodInfoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-200dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/nutriPathImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:scaleType="centerCrop"
+                    android:paddingTop="100dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:adjustViewBounds="true"
+                    app:srcCompat="@drawable/np_meal_img_placeholder" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- LAYOUT 2 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/foodInfoConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-50dp"
+                android:paddingBottom="30dp"
+                android:background="@drawable/np_meal_white_block_round">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <EditText
+                        android:id="@+id/barcodeInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter Barcode"
+                        android:inputType="number"
+                        android:background="@drawable/bubble_text"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_centerHorizontal="true"
+                        android:padding="16dp"
+                        android:textColor="#000000" />
+
+                    <Button
+                        android:id="@+id/fetchProductButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Search Barcode"
+                        android:layout_gravity="center"
+                        android:layout_below="@id/barcodeInputEditText"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="@color/quantum_orange"
+                        android:layout_centerHorizontal="true" />
+
+
+                    <TextView
+                        android:id="@+id/productNameTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginEnd="60dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:gravity="center"
+                        android:text="PRODUCT NAME"
+                        android:textColor="@color/white"
+                        android:background="@drawable/round_button"
+                        android:backgroundTint="@color/green_med"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        tools:ignore="MissingConstraints" />
+
+
+                    <!--  MID BAR DETAIL   -->
+                    <!-- NUTRITION GRADES -->
+                    <LinearLayout
+                        android:id="@+id/midNavLinear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="horizontal"
+                        tools:ignore="MissingConstraints">
+
+                        <!-- NUTRISCORE Section -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.333"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/nutriscore_title_textview"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="nutriscore"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginLeft="5dp"
+                                android:textAllCaps="true"
+                                android:textStyle="bold"
+                                android:background="@drawable/round_button"
+                                android:backgroundTint="@color/green_sat_dark"
+                                android:textAlignment="center"
+                                android:textColor="@color/white" />
+                            <TextView
+                                android:id="@+id/nutriscore_score_textview"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:text="score"
+                                android:textAllCaps="true"
+                                android:textAlignment="center"
+                                android:textSize="25dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/green_sat_dark" />
+                            <ImageView
+                                android:id="@+id/nutriscore_imageview"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:scaleType="centerCrop"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:src="@drawable/np_radish_icecream" />
+                            </LinearLayout>
+
+                        <!-- NOVASCORE Section -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.333"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/novascore_title_textview"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="NOVASCORE"
+                                android:textAllCaps="true"
+                                android:textStyle="bold"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginLeft="5dp"
+                                android:background="@drawable/round_button"
+                                android:backgroundTint="@color/quantum_orange"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"  />
+                            <TextView
+                                android:id="@+id/novascore_score_textview"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:text="score"
+                                android:textAllCaps="true"
+                                android:textAlignment="center"
+                                android:textStyle="bold"
+                                android:textSize="25dp"
+                                android:textColor="@color/quantum_orange"/>
+                            <ImageView
+                                android:id="@+id/novascore_imageview"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:scaleType="centerCrop"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:src="@drawable/np_radish_icecream" />
+                        </LinearLayout>
+
+
+                        <!-- ECO-SCORE Section -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.333"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/ecoscore_title_textview"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="ECO-SCORE"
+                                android:textAllCaps="true"
+                                android:background="@drawable/round_button"
+                                android:backgroundTint="@color/blue_mute"
+                                android:textAlignment="center"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginLeft="5dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/white" />
+                            <TextView
+                                android:id="@+id/ecoscore_score_textview"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:text="score"
+                                android:textAllCaps="true"
+                                android:textAlignment="center"
+                                android:textSize="25dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/blue_mute"  />
+                            <ImageView
+                                android:id="@+id/ecoscore_imageview"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:scaleType="centerCrop"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:src="@drawable/np_radish_icecream" />
+                        </LinearLayout>
+
+                        <!-- END NUTRITION SCORES -->
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <!-- NUTRITION FACTS LAYOUT -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/nutritionfactsConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingTop="30dp"
+                android:background="@drawable/np_meal_white_block_round">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="60dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/nutrition_facts_title_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="70dp"
+                        android:layout_marginEnd="70dp"
+                        android:gravity="center"
+                        android:text="nutrition facts "
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:background="@drawable/round_button"
+                        android:backgroundTint="@color/blue_mute"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+
+                    <!-- NUTRITION FACTS -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="40dp"
+                        android:paddingRight="40dp"
+                        android:orientation="vertical">
+                        <!-- Nutrition Facts Table -->
+                        <TableLayout
+                            android:id="@+id/nutritionfacts_table"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:background="#FFFFFF"
+                            android:padding="8dp"
+                            android:divider="?android:attr/dividerHorizontal"
+                            android:showDividers="middle">
+                            <TableRow>
+                            </TableRow>
+                            <!-- a. SERVING SIZE -->
+                            <TableRow>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Serving Size"
+                                    android:textStyle="bold" />
+                                <TextView
+                                    android:id="@+id/servingSizeTextView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingRight="20dp"
+                                    android:gravity="end"
+                                    android:text="serving"
+                                    android:paddingStart="16dp" />
+                            </TableRow>
+                            <!-- B. CALORIES -->
+                            <TableRow>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Calories"
+                                    android:textStyle="bold" />
+                                <TextView
+                                    android:id="@+id/caloriesTextView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingRight="20dp"
+                                    android:gravity="end"
+                                    android:text="calories"
+                                    android:paddingStart="16dp"/>
+                            </TableRow>
+
+                            <!-- C. FAT -->
+                            <TableRow>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Total Fat"
+                                    android:textStyle="bold" />
+                                <TextView
+                                    android:id="@+id/totalFatTextView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingRight="20dp"
+                                    android:gravity="end"
+                                    android:text="total fat"
+                                    android:paddingStart="16dp" />
+                            </TableRow>
+
+                            <!-- D. SATURATED FAT -->
+                            <TableRow>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Saturated Fat" />
+                                <TextView
+                                    android:id="@+id/saturatedFatTextView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingRight="20dp"
+                                    android:gravity="end"
+                                    android:text="saturated fat"
+                                    android:paddingStart="16dp"/>
+                            </TableRow>
+
+                            <!-- E. CARBOHYDRATES -->
+                            <TableRow>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Carbohydrates"
+                                    android:textStyle="bold" />
+                                <TextView
+                                    android:id="@+id/carbohydratesTextView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingRight="20dp"
+                                    android:gravity="end"
+                                    android:text="carbohydrates"
+                                    android:paddingStart="16dp"/>
+                            </TableRow>
+
+                            <!-- F. SUGARS -->
+                            <TableRow>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Sugars" />
+                                <TextView
+                                    android:id="@+id/sugarsTextView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingRight="20dp"
+                                    android:gravity="end"
+                                    android:text="sugars"
+                                    android:paddingStart="16dp"/>
+                            </TableRow>
+
+                            <!-- G. PROTEIN -->
+                            <TableRow>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Protein"
+                                    android:textStyle="bold" />
+                                <TextView
+                                    android:id="@+id/proteinTextView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingRight="20dp"
+                                    android:gravity="end"
+                                    android:text="protein"
+                                    android:paddingStart="16dp" />
+                            </TableRow>
+
+                            <!-- H. SALT -->
+                            <TableRow>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Salt" />
+                                <TextView
+                                    android:id="@+id/saltTextView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingRight="20dp"
+                                    android:gravity="end"
+                                    android:text="salt"
+                                    android:paddingStart="16dp"/>
+                            </TableRow>
+
+                        </TableLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- INGREDIENTS LAYOUT -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ingredientsConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"
+                android:background="@drawable/np_meal_white_block_round">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:ignore="MissingConstraints">
+
+                    <TextView
+                        android:id="@+id/ingredients_title_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="100dp"
+                        android:layout_marginEnd="100dp"
+                        android:gravity="center"
+                        android:text="ingredients"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:background="@drawable/round_button"
+                        android:backgroundTint="@color/blue_mute"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:ignore="MissingConstraints" />
+
+                    <TextView
+                        android:id="@+id/ingredients_desc_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="30dp"
+                        android:text="ingredients"
+                        tools:ignore="MissingConstraints" />
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+            <!-- DETAILS LAYOUT -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/detailsConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"
+                android:background="@drawable/np_meal_white_block_round">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:ignore="MissingConstraints">
+
+                    <TextView
+                        android:id="@+id/details_title_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="100dp"
+                        android:layout_marginEnd="100dp"
+                        android:gravity="center"
+                        android:text="DETAILS"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:background="@drawable/round_button"
+                        android:backgroundTint="@color/blue_mute"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:ignore="MissingConstraints" />
+
+
+                    <!-- Product Information Grid Layout -->
+
+                    <!-- Product Information Cube Grid Layout -->
+                    <GridLayout
+                        android:id="@+id/productInfoGridLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:columnCount="3"
+                        android:rowCount="1"
+                        android:padding="16dp"
+                        android:alignmentMode="alignMargins"
+                        android:useDefaultMargins="true">
+
+                        <!-- Generic Name Cube -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_columnWeight="1"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:id="@+id/genericNameLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Generic Name"
+                                android:textStyle="bold"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:id="@+id/genericNameValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="N/A" />
+                        </LinearLayout>
+
+                        <!-- Brand Cube -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_columnWeight="1"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:id="@+id/brandLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Brand"
+                                android:textStyle="bold"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:id="@+id/brandValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="N/A" />
+                        </LinearLayout>
+
+
+                        <!-- Quantity Cube -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_columnWeight="1"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:id="@+id/quantityLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Quantity"
+                                android:textStyle="bold"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:id="@+id/quantityValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="N/A" />
+                        </LinearLayout>
+
+                        <!-- Label Cube -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_columnWeight="1"
+                            android:padding="8dp">
+
+
+                        </LinearLayout>
+                    </GridLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginLeft="30dp"
+                            android:layout_columnWeight="1"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:id="@+id/labelLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Label"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/labelValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="20dp"
+                                android:text="N/A" />
+
+                            <TextView
+                                android:id="@+id/categoryLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Category"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/categoryValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="20dp"
+                                android:text="N/A" />
+
+                            <TextView
+                                android:id="@+id/packagingLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Packaging"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/packagingValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="20dp"
+                                android:text="N/A" />
+
+                            <TextView
+                                android:id="@+id/storesLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Stores"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/storesValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="20dp"
+                                android:text="N/A" />
+
+                            <TextView
+                                android:id="@+id/countriesLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Countries"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/countriesValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="N/A" />
+                        </LinearLayout>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

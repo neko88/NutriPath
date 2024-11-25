@@ -1,6 +1,8 @@
+import com.google.gson.JsonObject
 import com.group35.nutripath.api.themealdb.ResponseMeal
 import com.group35.nutripath.api.themealdb.ResponseMealInformation
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.Retrofit
@@ -15,14 +17,14 @@ Reference: https://www.themealdb.com/api.php
 interface TheMealDBApi {
     // search meal by ingredient
     @GET("search.php?s=")
-    suspend fun getMealsByIngredient(@Query("i") ingredient: String): ResponseMeal
-
+    suspend fun getMealsByIngredient(@Query("i") ingredient: String): Response<JsonObject>
 
     @GET("lookup.php?s=")
-    suspend fun getMealInformation(@Query("i") mealId: String): ResponseMealInformation
+    suspend fun getMealInformation(@Query("i") mealId: String): Response<JsonObject>
 
     @GET("filter.php?s=")
     suspend fun getMealsByCategory(@Query("c") category: String): ResponseMeal
+
 }
 
 // API Caller
@@ -35,6 +37,7 @@ object RetroFitCallerTheMealDB{
             .build()
             .create(TheMealDBApi::class.java)
     }
+
 }
 
 /*
