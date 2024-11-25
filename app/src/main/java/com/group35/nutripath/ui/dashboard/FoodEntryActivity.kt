@@ -82,9 +82,9 @@ class FoodEntryActivity: AppCompatActivity() {
             food.sugars = sugarsText.text.toString().toDoubleOrNull() ?: 0.0
             food.price = priceText.text.toString().toDoubleOrNull() ?: 0.0
 
-            val consumption = Consumption()
-            consumption.foodId = food.id
-            consumption.date = System.currentTimeMillis()
+            val consumption = Consumption(foodId = food.id, date = System.currentTimeMillis())
+//            consumption.foodId = food.id
+//            consumption.date = System.currentTimeMillis()
             CoroutineScope(IO).launch {
                 foodViewModel.insert(food)
                 consumptionViewModel.insert(consumption)
