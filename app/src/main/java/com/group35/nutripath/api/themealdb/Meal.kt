@@ -1,35 +1,31 @@
 package com.group35.nutripath.api.themealdb
-
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 // DATA CLASSES: Storing / organizing meal information and data received.
 
+@Parcelize
 data class Meal(
     val idMeal: String,
     val strMeal: String,
     val strMealThumb: String,
     val strInstructions: String,
-    val strIngredient1: String?,
-    val strIngredient2: String?,
-    val strIngredient3: String?,
-    val strIngredient4: String?,
-    val strIngredient5: String?,
-    val strIngredient6: String?,
-)
+    val ingredients: Map<String, String> //
+) : Parcelable
+
 data class ResponseMeal(
     val meals: List<Meal>
 )
 
+@Parcelize
 data class MealInformation(
     val idMeal: String,
     val strMeal: String,
-    val strInstructions: String,
     val strMealThumb: String,
-    val strIngredient1: String?,
-    val strIngredient2: String?,
-    val strIngredient3: String?,
-    val strIngredient4: String?,
-    val strMeasure1: String?,
-    val strMeasure2: String?
-)
+    val strInstructions: String,
+    val ingredients: Map<String, String>,
+    val measurements: Map<String, String>
+) : Parcelable
+
 
 data class ResponseMealInformation(
     val mealInformation: List<MealInformation>
