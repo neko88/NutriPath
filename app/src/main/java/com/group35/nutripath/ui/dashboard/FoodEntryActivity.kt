@@ -17,12 +17,7 @@ import com.group35.nutripath.ui.database.ConsumptionRepository
 import com.group35.nutripath.ui.database.ConsumptionViewModel
 import com.group35.nutripath.ui.database.ConsumptionViewModelFactory
 import com.group35.nutripath.ui.database.FoodItem
-import com.group35.nutripath.ui.database.FoodItemDao
-import com.group35.nutripath.ui.database.FoodItemDatabase
 import com.group35.nutripath.ui.database.FoodItemListAdapter
-import com.group35.nutripath.ui.database.FoodItemRepository
-import com.group35.nutripath.ui.database.FoodItemViewModel
-import com.group35.nutripath.ui.database.FoodItemViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -35,14 +30,6 @@ class FoodEntryActivity: AppCompatActivity() {
 
     private lateinit var consumptionViewModelFactory: ConsumptionViewModelFactory
     private lateinit var consumptionViewModel: ConsumptionViewModel
-
-    private lateinit var foodDB: FoodItemDatabase
-    private lateinit var foodDao: FoodItemDao
-    private lateinit var foodRepository: FoodItemRepository
-
-
-    private lateinit var foodViewModelFactory: FoodItemViewModelFactory
-    private lateinit var foodViewModel: FoodItemViewModel
 
     private lateinit var foodNameText: EditText
     private lateinit var caloriesText: EditText
@@ -69,7 +56,6 @@ class FoodEntryActivity: AppCompatActivity() {
         saveButton = findViewById(R.id.save_food_entry)
         cancelButton = findViewById(R.id.cancel_food_entry)
 
-        initFoodDB()
         initConsumptionDB()
 
         saveButton.setOnClickListener {
@@ -83,11 +69,10 @@ class FoodEntryActivity: AppCompatActivity() {
             food.price = priceText.text.toString().toDoubleOrNull() ?: 0.0
 
             val consumption = Consumption(foodId = food.id, date = System.currentTimeMillis())
-//            consumption.foodId = food.id
-//            consumption.date = System.currentTimeMillis()
+
             CoroutineScope(IO).launch {
-                foodViewModel.insert(food)
-                consumptionViewModel.insert(consumption)
+                //consumptionViewModel.insertFoodWithConsumption(food, consumption)
+                consumptionViewModel.insertFood(food)
             }
             finish()
         }
@@ -98,13 +83,7 @@ class FoodEntryActivity: AppCompatActivity() {
 
     }
 
-    private fun initFoodDB(){
-        foodDB = FoodItemDatabase.getInstance(this)
-        foodDao = foodDB.foodItemDao
-        foodRepository = FoodItemRepository(foodDao)
-        foodViewModelFactory = FoodItemViewModelFactory(foodRepository)
-        foodViewModel = ViewModelProvider(this, foodViewModelFactory).get(FoodItemViewModel::class.java)
-    }
+
     private fun initConsumptionDB(){
         consumptionDB = ConsumptionDatabase.getInstance(this)
         consumptionDao = consumptionDB.consumptionDao

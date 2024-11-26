@@ -3,6 +3,7 @@ package com.group35.nutripath.ui.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /*
@@ -10,15 +11,15 @@ import androidx.room.PrimaryKey
  */
 
 @Entity(
-    tableName = "consumption_table"
-
+    tableName = "consumption_table",
+    indices = [Index(value=["foodId"])],
+    foreignKeys = [ForeignKey(entity = FoodItem::class, parentColumns = ["id"], childColumns = ["foodId"])]
 )
 data class Consumption(
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
-    @ColumnInfo(name = "food_id")
+    var consumptionId: Long = 0,
+
     val foodId: Long,
 
-    @ColumnInfo(name = "date")
     val date: Long // type may change
 )

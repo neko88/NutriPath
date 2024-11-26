@@ -21,12 +21,7 @@ import com.group35.nutripath.ui.database.ConsumptionRepository
 import com.group35.nutripath.ui.database.ConsumptionViewModel
 import com.group35.nutripath.ui.database.ConsumptionViewModelFactory
 import com.group35.nutripath.ui.database.FoodItem
-import com.group35.nutripath.ui.database.FoodItemDao
-import com.group35.nutripath.ui.database.FoodItemDatabase
 import com.group35.nutripath.ui.database.FoodItemListAdapter
-import com.group35.nutripath.ui.database.FoodItemRepository
-import com.group35.nutripath.ui.database.FoodItemViewModel
-import com.group35.nutripath.ui.database.FoodItemViewModelFactory
 import kotlinx.coroutines.launch
 
 /*
@@ -48,14 +43,9 @@ class DashboardFragment : Fragment() {
     private lateinit var addFoodButton: Button
     private lateinit var foodListView: ListView
 
-    private lateinit var foodDB: FoodItemDatabase
-    private lateinit var foodDao: FoodItemDao
-    private lateinit var foodRepository: FoodItemRepository
+
     private lateinit var foodListAdapter: FoodItemListAdapter
     private lateinit var foodArrayList: ArrayList<FoodItem>
-
-    private lateinit var foodViewModelFactory: FoodItemViewModelFactory
-    private val foodViewModel: FoodItemViewModel by activityViewModels() { foodViewModelFactory }
 
     private lateinit var consumptionDB: ConsumptionDatabase
     private lateinit var consumptionDao: ConsumptionDao
@@ -82,7 +72,7 @@ class DashboardFragment : Fragment() {
         consumptionViewModel.allConsumptionLiveData.observe(viewLifecycleOwner){ it ->
             println("debug: Dashboard fragment: all consumption $it")
         }
-        foodViewModel.allFoodItemLiveData.observe(viewLifecycleOwner){ it ->
+        consumptionViewModel.allFoodItemLiveData.observe(viewLifecycleOwner){ it ->
             println("debug: Dashboard fragment: all food $it")
             foodListAdapter.replace(it)
             foodListAdapter.notifyDataSetChanged()
@@ -99,7 +89,7 @@ class DashboardFragment : Fragment() {
             println("debug: Dashboard fragment: selected = $selected")
             println("debug: Dashboard fragment: cons = $cons")
             lifecycleScope.launch {
-                consumptionViewModel.insert(cons)
+                consumptionViewModel.insertConsumption(cons)
 
             }
 
@@ -117,12 +107,7 @@ class DashboardFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    private fun initFoodDB(){
-        foodDB = FoodItemDatabase.getInstance(requireActivity())
-        foodDao = foodDB.foodItemDao
-        foodRepository = FoodItemRepository(foodDao)
-        foodViewModelFactory = FoodItemViewModelFactory(foodRepository)
-    }
+
     private fun initConsumptionDB(){
         consumptionDB = ConsumptionDatabase.getInstance(requireActivity())
         consumptionDao = consumptionDB.consumptionDao
@@ -138,7 +123,6 @@ class DashboardFragment : Fragment() {
         foodListAdapter = FoodItemListAdapter(requireContext(), foodArrayList)
         foodListView.adapter = foodListAdapter
 
-        initFoodDB()
         initConsumptionDB()
 
     }
