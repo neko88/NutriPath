@@ -24,8 +24,16 @@ import com.group35.nutripath.ui.database.ConsumptionViewModelFactory
 import com.group35.nutripath.util.Globals
 import com.group35.nutripath.utils.ChartHelper
 import com.group35.nutripath.utils.DialogHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
-
+/*
+ * November 25 2024 - Modified by Cameron Yee-Ping
+ *                  - updated fragment to work with the new food database implementation
+ */
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
@@ -38,6 +46,7 @@ class HomeFragment : Fragment() {
     private lateinit var consumptionDao: ConsumptionDao
     private lateinit var consumptionRepository: ConsumptionRepository
     private var caloriesForDay: Double? = 0.0
+    private var carbsForDay: Double? = 0.0
     private var proteinForDay: Double? = 0.0
     private var fatsForDay: Double? = 0.0
     private var sugarsForDay: Double? = 0.0
@@ -59,6 +68,7 @@ class HomeFragment : Fragment() {
         dayInterval = Globals().getDateInterval(date)
         monthInterval = Globals().getMonthInterval(date)
         println("debug: date = $date, dayInterval ${dayInterval.first} to ${dayInterval.second}")
+        println("debug: month = ${monthInterval.first} ${monthInterval.second}")
         val c0 = Calendar.getInstance()
         val c1 = Calendar.getInstance()
         val c2 = Calendar.getInstance()
@@ -68,18 +78,31 @@ class HomeFragment : Fragment() {
 
         println("debug: Home fragment: date = ${c0.time} interval = ${c1.time} to ${c2.time}")
 
+        c1.timeInMillis = monthInterval.first
+        c2.timeInMillis = monthInterval.second
+
+        println("debug: Home fragment: month interval = ${c1.time} to ${c2.time}")
         initConsumptionDB()
         //consumptionViewModel.deleteAll()
-        consumptionViewModel.allConsumptionLiveData.observe(viewLifecycleOwner){ it ->
+        consumptionViewModel.allConsumptionLiveData.observe(requireActivity()){ it ->
             println("debug: Home fragment: all consumption: $it")
             consumptionList = it
+            CoroutineScope(IO).launch {
+                caloriesForDay = consumptionViewModel.getDailyCalories(dayInterval.first, dayInterval.second).value
+                proteinForDay = consumptionViewModel.getDailyProtein(dayInterval.first, dayInterval.second).value
+                fatsForDay = consumptionViewModel.getDailyFats(dayInterval.first, dayInterval.second).value
+                sugarsForDay = consumptionViewModel.getDailySugars(dayInterval.first, dayInterval.second).value
+                carbsForDay = consumptionViewModel.getDailyCarbs(dayInterval.first, dayInterval.second).value
+                spendingForMonth = consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second).value ?: 0.0
+                println("debug: home fragment $caloriesForDay $proteinForDay $fatsForDay $sugarsForDay $carbsForDay $spendingForMonth")
+                withContext(Main){
+                    homeViewModel.setExpense(spendingForMonth!!.toFloat())
+                }
+
+            }
         }
-        caloriesForDay = consumptionViewModel.getDailyCalories(dayInterval.first, dayInterval.second).value
-//        proteinForDay = consumptionViewModel.getDailyProtein(dayInterval.first, dayInterval.second).value
-//        fatsForDay = consumptionViewModel.getDailyFats(dayInterval.first, dayInterval.second).value
-//        sugarsForDay = consumptionViewModel.getDailySugars(dayInterval.first, dayInterval.second).value
-//        spendingForMonth = consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second).value
-        println("debug: Home fragment: cals $caloriesForDay, protein $proteinForDay, fats $fatsForDay, sugars $sugarsForDay, spending (month) $spendingForMonth")
+
+
         // Set up empty charts initially
         ChartHelper.setupEmptyPieChart(pieChart)
         ChartHelper.setupEmptyLineChart(lineChart)
@@ -138,11 +161,5 @@ class HomeFragment : Fragment() {
         consumptionViewModelFactory = ConsumptionViewModelFactory(consumptionRepository)
     }
     // temporary functions to get aggregates
-    private fun tempAggregates(){
-        caloriesForDay = 0.0
-        proteinForDay = 0.0
-        fatsForDay= 0.0
-        sugarsForDay = 0.0
 
-    }
 }

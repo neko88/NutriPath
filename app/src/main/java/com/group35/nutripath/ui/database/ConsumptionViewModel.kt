@@ -33,32 +33,54 @@ class ConsumptionViewModel(private val repository: ConsumptionRepository) : View
 
 
 
-    fun insert(consumption: Consumption) {
+    val allFoodItemLiveData: LiveData<List<FoodItem>> = repository.allFoodItems.asLiveData()
+
+    fun insertFood(foodItem: FoodItem) {
         viewModelScope.launch {
-            repository.insert(consumption)
+            repository.insertFood(foodItem)
         }
     }
 
-    fun deleteAll(){
+    fun deleteAllFood(){
         viewModelScope.launch {
-            repository.deleteAll()
+            repository.deleteAllFood()
+        }
+
+    }
+    fun insertConsumption(consumption: Consumption) {
+        viewModelScope.launch {
+            repository.insertConsumption(consumption)
+        }
+    }
+
+    fun insertFoodWithConsumption(food: FoodItem, consumption: Consumption){
+        viewModelScope.launch {
+            repository.insertFoodWithConsumption(food, consumption)
+        }
+    }
+
+    fun deleteAllConsumption(){
+        viewModelScope.launch {
+            repository.deleteAllConsumption()
         }
 
     }
 
     fun getTotalSpendingForMonth(start: Long, end: Long): LiveData<Double> {
-        val spendingLiveData = MutableLiveData<Double>()
         viewModelScope.launch {
-            val totalSpending = repository.getMonthlySpending(start, end)?: 0.0
-            spendingLiveData.postValue(totalSpending)
+            val totalSpent: Double = repository.getMonthlySpending(start, end) ?: 0.0
+            _monthlySpending.postValue(totalSpent)
         }
-        return spendingLiveData
+        return monthlySpending
     }
 
 
     fun getDailyCalories(start: Long, end: Long): LiveData<Double> {
-        val totalCals: Flow<Double> = repository.getTotalCaloriesForDay(start, end)
-        _dailyCalories.postValue(totalCals.asLiveData().value)
+        viewModelScope.launch {
+            val totalCals: Double = repository.getTotalCaloriesForDay(start, end) ?: 0.0
+            _dailyCalories.postValue(totalCals)
+        }
+
         return dailyCalories
     }
 
@@ -91,6 +113,8 @@ class ConsumptionViewModel(private val repository: ConsumptionRepository) : View
         }
         return dailySugars
     }
+
+
 }
 
 class ConsumptionViewModelFactory (private val repository: ConsumptionRepository) : ViewModelProvider.Factory {
