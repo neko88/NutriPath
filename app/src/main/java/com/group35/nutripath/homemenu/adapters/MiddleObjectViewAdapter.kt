@@ -1,4 +1,4 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.group35.nutripath.databinding.ViewHolderMidViewBinding
+import com.group35.nutripath.homemenu.dataobject.MiddleDataObject
 
 
 // For the middle slider view
@@ -20,13 +21,13 @@ class MiddleObjectViewAdapter (val items: MutableList<MiddleDataObject>) :
 
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MiddleObjectViewAdapter.Viewholder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Viewholder {
             context = parent.context
             val binding = ViewHolderMidViewBinding.inflate(LayoutInflater.from(context), parent, false)
             return Viewholder(binding)
         }
 
-        override fun onBindViewHolder(holder: MiddleObjectViewAdapter.Viewholder, position: Int) {
+        override fun onBindViewHolder(holder: Viewholder, position: Int) {
             val item = items[position]
             holder.binding.titleTxt.text = item.title
 

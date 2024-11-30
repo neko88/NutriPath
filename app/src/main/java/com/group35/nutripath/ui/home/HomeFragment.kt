@@ -15,14 +15,13 @@ import com.github.mikephil.charting.charts.PieChart
 import com.group35.nutripath.R
 import com.group35.nutripath.api.openfoodfacts.OpenFoodFactsActivity
 import com.group35.nutripath.api.themealdb.MealActivity
-import com.group35.nutripath.homemenu.HomeMenuActivity
+import com.group35.nutripath.homemenu.activity.HomeMenuActivity
 import com.group35.nutripath.ui.database.Consumption
 import com.group35.nutripath.ui.database.ConsumptionDao
 import com.group35.nutripath.ui.database.ConsumptionDatabase
 import com.group35.nutripath.ui.database.ConsumptionRepository
 import com.group35.nutripath.ui.database.ConsumptionViewModel
 import com.group35.nutripath.ui.database.ConsumptionViewModelFactory
-import com.group35.nutripath.util.BarcodeScannerActivity
 import com.group35.nutripath.util.Globals
 import com.group35.nutripath.utils.ChartHelper
 import com.group35.nutripath.utils.DialogHelper

@@ -1,13 +1,19 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.helper
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.group35.nutripath.homemenu.dataobject.BottomDataObject
+import com.group35.nutripath.homemenu.dataobject.MiddleDataObject
+import com.group35.nutripath.homemenu.dataobject.TopDataObject
 
 class MainHomeViewModel : ViewModel(){
+ //   private val firebaseDatabase = FirebaseDatabase.getInstance()
+
     private val _viewObjectTop = MutableLiveData<List<TopDataObject>>()
     private val _viewObjectMiddle = MutableLiveData<MutableList<MiddleDataObject>>()
     private val _viewObjectBottom = MutableLiveData<MutableList<BottomDataObject>>()
@@ -16,6 +22,7 @@ class MainHomeViewModel : ViewModel(){
     val viewObjectMiddle: LiveData<MutableList<MiddleDataObject>> = _viewObjectMiddle
     val viewObjectBottom: LiveData<MutableList<BottomDataObject>> = _viewObjectBottom
 
+    /*
     fun loadTopObjectViewBanner() {
         val Ref = firebaseDatabase.getReference("Banner")
         Ref.addValueEventListener(object : ValueEventListener {
@@ -81,7 +88,7 @@ class MainHomeViewModel : ViewModel(){
         })
     }
 
-
+*/
 
 
 }

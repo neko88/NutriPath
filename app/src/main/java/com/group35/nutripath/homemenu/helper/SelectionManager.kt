@@ -1,14 +1,19 @@
-package com.group35.nutripath.homemenu.demo
+package com.group35.nutripath.homemenu.helper
+
+
 
 import android.content.Context
 import android.widget.Toast
 
+import com.group35.nutripath.homemenu.adapters.ChangeNumberItemsListener
+import com.group35.nutripath.homemenu.dataobject.ItemObject
 
-class ManagmentCart(val context: Context) {
+
+class SelectionManager(val context: Context) {
 
     private val tinyDB = TinyDB(context)
 
-    fun insertItem(item: ItemsModel) {
+    fun insertItem(item: ItemObject) {
         var listItem = getListCart()
         val existAlready = listItem.any { it.title == item.title }
         val index = listItem.indexOfFirst { it.title == item.title }
@@ -22,11 +27,11 @@ class ManagmentCart(val context: Context) {
         Toast.makeText(context, "Added to your Cart", Toast.LENGTH_SHORT).show()
     }
 
-    fun getListCart(): ArrayList<ItemsModel> {
+    fun getListCart(): ArrayList<ItemObject> {
         return tinyDB.getListObject("CartList") ?: arrayListOf()
     }
 
-    fun minusItem(listItem: ArrayList<ItemsModel>, position: Int, listener: ChangeNumberItemsListener) {
+    fun minusItem(listItem: ArrayList<ItemObject>, position: Int, listener: ChangeNumberItemsListener) {
         if (listItem[position].numberInCart == 1) {
             listItem.removeAt(position)
         } else {
@@ -36,7 +41,7 @@ class ManagmentCart(val context: Context) {
         listener.onChanged()
     }
 
-    fun plusItem(listItem: ArrayList<ItemsModel>, position: Int, listener: ChangeNumberItemsListener) {
+    fun plusItem(listItem: ArrayList<ItemObject>, position: Int, listener: ChangeNumberItemsListener) {
         listItem[position].numberInCart++
         tinyDB.putListObject("CartList", listItem)
         listener.onChanged()

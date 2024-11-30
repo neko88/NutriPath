@@ -1,4 +1,4 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.group35.nutripath.databinding.ViewholderBottomObjectViewBinding
+import com.group35.nutripath.homemenu.activity.DetailActivity
+import com.group35.nutripath.homemenu.dataobject.BottomDataObject
 
 class BottomObjectViewAdapter (val items: MutableList<BottomDataObject>) :
     RecyclerView.Adapter<BottomObjectViewAdapter.Viewholder>() {
@@ -21,14 +23,14 @@ class BottomObjectViewAdapter (val items: MutableList<BottomDataObject>) :
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-        ): BottomObjectViewAdapter.Viewholder {
+        ): Viewholder {
             context = parent.context
             val binding =
                 ViewholderBottomObjectViewBinding.inflate(LayoutInflater.from(context), parent, false)
             return Viewholder(binding)
         }
 
-        override fun onBindViewHolder(holder: BottomObjectViewAdapter.Viewholder, position: Int) {
+        override fun onBindViewHolder(holder: Viewholder, position: Int) {
             holder.binding.titleTxt.text = items[position].title
             holder.binding.priceTxt.text = "$" + items[position].price.toString()
             holder.binding.ratingTxt.text = items[position].rating.toString()
@@ -39,7 +41,7 @@ class BottomObjectViewAdapter (val items: MutableList<BottomDataObject>) :
                 .into(holder.binding.pic)
 
             holder.itemView.setOnClickListener {
-                val intent = Intent(holder.itemView.context, BottomObjectViewActivity::class.java)
+                val intent = Intent(holder.itemView.context, DetailActivity::class.java)
                 intent.putExtra("object", items[position])
                 holder.itemView.context.startActivity(intent)
             }

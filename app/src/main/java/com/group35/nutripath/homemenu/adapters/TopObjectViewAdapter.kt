@@ -1,4 +1,4 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.adapters
 
 
 import android.content.Context
@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.group35.nutripath.R
+import com.group35.nutripath.homemenu.dataobject.ItemObject
+import com.group35.nutripath.homemenu.dataobject.TopDataObject
 
 
 class TopObjectViewAdapter(
@@ -36,14 +38,14 @@ class TopObjectViewAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): TopObjectViewAdapter.SliderViewholder {
+    ): SliderViewholder {
         context = parent.context
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.slider_item_container, parent, false)
         return SliderViewholder(view)
     }
 
-    override fun onBindViewHolder(holder: TopObjectViewAdapter.SliderViewholder, position: Int) {
+    override fun onBindViewHolder(holder: SliderViewholder, position: Int) {
         holder.setImage(sliderItems[position], context)
         if (position == sliderItems.lastIndex - 1) {
             viewPager2.post(runnable)

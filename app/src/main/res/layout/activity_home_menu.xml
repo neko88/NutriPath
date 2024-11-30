@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".homemenu.HomeMenuActivity">
+    tools:context=".homemenu.activity.HomeMenuActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/viewPagerSliderTop" />
+                    app:layout_constraintTop_toTopOf="@+id/topObjectViewPager" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/topObjectViewPager"
@@ -108,7 +108,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viewPagerSliderTop"
+                    app:layout_constraintTop_toBottomOf="@+id/topObjectViewPager"
                     app:selectedDotColor="@color/green_med"
                     tools:visibility="visible" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -163,10 +163,10 @@
                     style="?android:attr/progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/viewCategory"
+                    app:layout_constraintBottom_toBottomOf="@+id/midRecyclerViewModel"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/viewCategory" />
+                    app:layout_constraintTop_toTopOf="@+id/midRecyclerViewModel" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout

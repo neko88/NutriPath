@@ -1,16 +1,21 @@
-package com.group35.nutripath.homemenu
-import androidx.appcompat.app.AppCompatActivity
+package com.group35.nutripath.homemenu.activity
 import com.group35.nutripath.databinding.ActivityHomeMenuBinding
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
-import com.group35.nutripath.homemenu.TopObjectViewAdapter
+import com.google.firebase.FirebaseApp
+import com.group35.nutripath.homemenu.adapters.BottomObjectViewAdapter
+import com.group35.nutripath.homemenu.helper.MainHomeViewModel
+import com.group35.nutripath.homemenu.adapters.MiddleObjectViewAdapter
+import com.group35.nutripath.homemenu.adapters.TopObjectViewAdapter
+import com.group35.nutripath.homemenu.dataobject.ItemObject
+import com.group35.nutripath.homemenu.dataobject.TopDataObject
 
 class HomeMenuActivity : AppCompatActivity() {
     private val homePageViewModel = MainHomeViewModel()
@@ -21,14 +26,11 @@ class HomeMenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
+        FirebaseApp.initializeApp(this)
         initBanners()
         middleBanner()
         bottomBanner()
     }
-
-
 
     // top banner
     private fun initBanners() {
@@ -37,7 +39,7 @@ class HomeMenuActivity : AppCompatActivity() {
             topBanner(it)
             binding.progressBarBanner.visibility = View.GONE
         })
-        homePageViewModel.loadTopObjectViewBanner()
+     //   homePageViewModel.loadTopObjectViewBanner()
     }
 
     private fun topBanner(it: List<TopDataObject>) {
@@ -77,6 +79,6 @@ class HomeMenuActivity : AppCompatActivity() {
             binding.viewRecommendation.adapter = BottomObjectViewAdapter(it)
             binding.progressBarRecommendation.visibility = View.GONE
         })
-        homePageViewModel.loadBottomObjectViewBanner()
+    //    homePageViewModel.loadBottomObjectViewBanner()
     }
 }

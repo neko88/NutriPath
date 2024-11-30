@@ -1,4 +1,4 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.dataobject
 
 import android.os.Parcel
 import android.os.Parcelable

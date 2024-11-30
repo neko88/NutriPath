@@ -1,4 +1,4 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.activity
 
 
 import android.content.Intent
@@ -10,20 +10,25 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.group35.nutripath.databinding.ActivityDetailHomeBinding
-import com.group35.nutripath.homemenu.TopObjectViewAdapter
+import com.group35.nutripath.homemenu.adapters.ColorAdapter
+import com.group35.nutripath.homemenu.dataobject.BottomDataObject
+import com.group35.nutripath.homemenu.adapters.TopObjectViewAdapter
+import com.group35.nutripath.homemenu.dataobject.ItemObject
+import com.group35.nutripath.homemenu.dataobject.TopDataObject
+import com.group35.nutripath.homemenu.helper.SelectionManager
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailHomeBinding
-    private lateinit var item: BottomDataObject
+    private lateinit var item: ItemObject
     private var numberOrder = 1
-    private lateinit var managmentCart: ManagmentCart
+    private lateinit var managmentCart: SelectionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        managmentCart = ManagmentCart(this)
+        managmentCart = SelectionManager(this)
 
         getBundle()
         Banners()
@@ -78,7 +83,7 @@ class DetailActivity : AppCompatActivity() {
 
         binding.backBtn.setOnClickListener { finish() }
         binding.cartBtn.setOnClickListener {
-            startActivity(Intent(this@DetailActivity, CartActivity::class.java))
+            startActivity(Intent(this@DetailActivity, SelectionActivity::class.java))
         }
     }
 }

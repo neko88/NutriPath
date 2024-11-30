@@ -1,4 +1,5 @@
-package com.group35.nutripath.homemenu.demo
+package com.group35.nutripath.homemenu.adapters
+
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,20 +8,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
-import com.group35.nutripath.databinding.ViewholderCartBinding
+import com.group35.nutripath.databinding.ViewholderSelectionBinding
+import com.group35.nutripath.homemenu.helper.SelectionManager
+import com.group35.nutripath.homemenu.dataobject.ItemObject
+import kotlin.collections.get
+
+
+interface ChangeNumberItemsListener {
+    fun onChanged() // Function name changed to follow Kotlin conventions
+}
 
 class CartAdapter(
-    private val listItemSelected: ArrayList<ItemsModel>,
+    private val listItemSelected: ArrayList<ItemObject>,
     context: Context,
     var changeNumberItemsListener: ChangeNumberItemsListener? = null
 
 ) : RecyclerView.Adapter<CartAdapter.Viewholder>() {
-    class Viewholder(val binding: ViewholderCartBinding) : RecyclerView.ViewHolder(binding.root)
+    class Viewholder(val binding: ViewholderSelectionBinding) : RecyclerView.ViewHolder(binding.root)
 
-    private val managmentCart = ManagmentCart(context)
+    private val managmentCart = SelectionManager(context)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Viewholder {
         val binding =
-            ViewholderCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ViewholderSelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Viewholder(binding)
     }
 

@@ -1,23 +1,24 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.activity
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.project1762.Helper.ChangeNumberItemsListener
-import com.example.project1762.Helper.ManagmentCart
-import com.example.project1874.Adapter.CartAdapter
-import com.example.project1874.databinding.ActivityCartBinding
+import com.group35.nutripath.databinding.ActivitySelectionBinding
+import com.group35.nutripath.homemenu.helper.SelectionManager
+import com.group35.nutripath.homemenu.adapters.CartAdapter
+import com.group35.nutripath.homemenu.adapters.ChangeNumberItemsListener
 
-class CartActivity : BaseActivity() {
-    private lateinit var binding: ActivityCartBinding
-    private lateinit var managmentCart: ManagmentCart
+class SelectionActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySelectionBinding
+    private lateinit var managmentCart: SelectionManager
     private var tax: Double = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCartBinding.inflate(layoutInflater)
+        binding = ActivitySelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        managmentCart = ManagmentCart(this)
+        managmentCart = SelectionManager(this)
 
         setVariable()
         calculateCart()
@@ -35,12 +36,13 @@ class CartActivity : BaseActivity() {
 
         binding.viewCart.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.viewCart.adapter=CartAdapter(managmentCart.getListCart(),this,object :ChangeNumberItemsListener{
-            override fun onChanged() {
-            calculateCart()
-            }
+        binding.viewCart.adapter=
+            CartAdapter(managmentCart.getListCart(), this, object : ChangeNumberItemsListener {
+                override fun onChanged() {
+                    calculateCart()
+                }
 
-        })
+            })
     }
 
     private fun calculateCart() {

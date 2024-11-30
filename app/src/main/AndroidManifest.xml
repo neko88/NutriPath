@@ -42,7 +42,11 @@
         <activity android:name=".util.BarcodeScannerActivity" />
         <activity android:name=".api.openfoodfacts.OpenFoodFactsActivity" />
         <activity android:name=".api.themealdb.MealActivity" />
-        <activity android:name=".homemenu.HomeMenuActivity" />
+
+        <activity android:name=".homemenu.activity.HomeMenuActivity" />
+        <activity android:name=".homemenu.activity.DetailActivity" />
+        <activity android:name=".homemenu.activity.SelectionActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/mapAPI" />

@@ -1,10 +1,9 @@
-package com.group35.nutripath.homemenu.demo
-
+package com.group35.nutripath.homemenu.dataobject
 
 import android.os.Parcel
 import android.os.Parcelable
 
-data class ItemsModel(
+data class ItemObject(
     var title: String = "",
     var description: String = "",
     var picUrl: ArrayList<String> = ArrayList(),
@@ -36,12 +35,12 @@ data class ItemsModel(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<ItemsModel> {
-        override fun createFromParcel(parcel: Parcel): ItemsModel {
-            return ItemsModel(parcel)
+    companion object CREATOR : Parcelable.Creator<ItemObject> {
+        override fun createFromParcel(parcel: Parcel): ItemObject {
+            return ItemObject(parcel)
         }
 
-        override fun newArray(size: Int): Array<ItemsModel?> {
+        override fun newArray(size: Int): Array<ItemObject?> {
             return arrayOfNulls(size)
         }
     }

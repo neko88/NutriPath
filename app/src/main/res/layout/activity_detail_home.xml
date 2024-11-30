@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".Activity.DetailActivity">
+    tools:context=".homemenu.activity.HomeMenuActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/back" />
+                    app:srcCompat="@drawable/ic_home_black_24dp" />
 
                 <ImageView
                     android:id="@+id/favBtn"
@@ -40,7 +40,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/favorite" />
+                    app:srcCompat="@drawable/ic_home_black_24dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.viewpager2.widget.ViewPager2
@@ -58,7 +58,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:visibility="gone"
-                app:dotsColor="@color/grey"
+                app:dotsColor="@color/green_med"
                 app:dotsCornerRadius="8dp"
                 app:dotsSize="6dp"
                 app:dotsSpacing="2dp"
@@ -67,7 +67,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewPagerSlider"
-                app:selectedDotColor="@color/green"
+                app:selectedDotColor="@color/green_med"
                 tools:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -127,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    app:srcCompat="@drawable/star" />
+                    app:srcCompat="@drawable/ic_home_black_24dp" />
 
                 <TextView
                     android:id="@+id/ratingTxt"
@@ -150,7 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    app:srcCompat="@drawable/profile" />
+                    app:srcCompat="@drawable/ic_home_black_24dp" />
 
                 <TextView
                     android:id="@+id/textView12"
@@ -169,14 +169,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="8dp"
-                    app:srcCompat="@drawable/message" />
+                    app:srcCompat="@drawable/ic_home_black_24dp" />
 
                 <ImageView
                     android:id="@+id/imageView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/call" />
+                    app:srcCompat="@drawable/ic_home_black_24dp" />
             </LinearLayout>
 
             <TextView
@@ -199,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_bg"
+                    android:background="@drawable/ic_home_black_24dp"
                     android:text="Buy Now"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
@@ -209,8 +209,8 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="8dp"
-                    android:background="@drawable/grey_bg"
-                    app:srcCompat="@drawable/btn_2"
+                    android:background="@drawable/ic_home_black_24dp"
+                    app:srcCompat="@drawable/ic_home_black_24dp"
                     app:tint="@color/black" />
             </LinearLayout>
         </LinearLayout>

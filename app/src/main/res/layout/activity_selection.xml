@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:background="@color/white"
     android:layout_height="match_parent"
-    tools:context=".homemenu.activity.HomeMenuActivity">
+    tools:context=".homemenu.activity.SelectionActivity">
 
     <TextView
         android:id="@+id/emptyTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your Journal is Empty"
+        android:text="Your Cart is Empty"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,7 @@
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="My Journal"
+                    android:text="My Cart"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold"
@@ -64,7 +64,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/viewJournal"
+                android:id="@+id/viewCart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="16dp" />
@@ -95,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="text1"
+            android:text="Free Delivery"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/textView11"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -105,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Text2"
+            android:text="Total Tax"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/textView13"
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
@@ -137,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="text3"
+            android:text="$-"
             android:textStyle="bold"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/deliveryTxt"
@@ -160,7 +160,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="text4"
+            android:text="Total"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/textView14"
             app:layout_constraintTop_toBottomOf="@+id/view" />
@@ -170,7 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="tex5"
+            android:text="$-"
             android:textStyle="bold"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/textView18"
@@ -179,13 +179,13 @@
 
         <androidx.appcompat.widget.AppCompatButton
             style="@android:style/Widget.Button"
-            android:background="@color/white"
+            android:background="@drawable/worm_dot_background"
             android:id="@+id/button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Save"
+            android:text="Check Out"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
