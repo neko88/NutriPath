@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
+    implementation(libs.firebase.database.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -106,7 +107,7 @@ dependencies {
     implementation (libs.gson)
 
     // Home menu
-    implementation ("com.tbuonomo:dotsindicator:4.2")
+    implementation ("com.tbuonomo:dotsindicator:5.0")
     implementation ("com.google.android.material:material:1.12.0")
 
 }

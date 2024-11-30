@@ -1,4 +1,6 @@
 package com.group35.nutripath.homemenu
+
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +9,14 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.example.project1874.Model.SliderModel
-import com.example.project1874.R
+import com.group35.nutripath.R
 
-class SliderAdapter(
-    private var sliderItems: List<SliderModel>,
+
+class TopObjectViewAdapter(
+    private var sliderItems: List<TopDataObject>,
     private val viewPager2: ViewPager2
 
-) : RecyclerView.Adapter<SliderAdapter.SliderViewholder>() {
+) : RecyclerView.Adapter<TopObjectViewAdapter.SliderViewholder>() {
     private lateinit var context: Context
     private val runnable = Runnable {
         sliderItems = sliderItems
@@ -24,7 +26,7 @@ class SliderAdapter(
     class SliderViewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.imageSlide)
 
-        fun setImage(sliderModel: SliderModel, context: Context) {
+        fun setImage(sliderModel: TopDataObject, context: Context) {
             Glide.with(context)
                 .load(sliderModel.url)
                 .into(imageView)
@@ -34,14 +36,14 @@ class SliderAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): SliderAdapter.SliderViewholder {
+    ): TopObjectViewAdapter.SliderViewholder {
         context = parent.context
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.slider_item_container, parent, false)
         return SliderViewholder(view)
     }
 
-    override fun onBindViewHolder(holder: SliderAdapter.SliderViewholder, position: Int) {
+    override fun onBindViewHolder(holder: TopObjectViewAdapter.SliderViewholder, position: Int) {
         holder.setImage(sliderItems[position], context)
         if (position == sliderItems.lastIndex - 1) {
             viewPager2.post(runnable)

@@ -1,4 +1,4 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.demo
 
 import android.os.Bundle
 import android.view.LayoutInflater

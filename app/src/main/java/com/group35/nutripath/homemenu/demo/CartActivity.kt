@@ -1,15 +1,11 @@
-package com.group35.nutripath.homemenu
-
+package com.group35.nutripath.homemenu.demo
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.project1762.Helper.ChangeNumberItemsListener
-import com.example.project1762.Helper.ManagmentCart
-import com.example.project1874.Adapter.CartAdapter
-import com.example.project1874.databinding.ActivityCartBinding
 
-class CartActivity : BaseActivity() {
-    private lateinit var binding: ActivityCartBinding
+class CartActivity : AppCompatActivity() {
+    private lateinit var binding: CartActivityBinding
     private lateinit var managmentCart: ManagmentCart
     private var tax: Double = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +31,8 @@ class CartActivity : BaseActivity() {
 
         binding.viewCart.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.viewCart.adapter=CartAdapter(managmentCart.getListCart(),this,object :ChangeNumberItemsListener{
+        binding.viewCart.adapter=
+            CartAdapter(managmentCart.getListCart(),this,object : ChangeNumberItemsListener {
             override fun onChanged() {
             calculateCart()
             }

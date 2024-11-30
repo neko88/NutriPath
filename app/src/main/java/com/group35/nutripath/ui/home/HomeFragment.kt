@@ -15,6 +15,7 @@ import com.github.mikephil.charting.charts.PieChart
 import com.group35.nutripath.R
 import com.group35.nutripath.api.openfoodfacts.OpenFoodFactsActivity
 import com.group35.nutripath.api.themealdb.MealActivity
+import com.group35.nutripath.homemenu.HomeMenuActivity
 import com.group35.nutripath.ui.database.Consumption
 import com.group35.nutripath.ui.database.ConsumptionDao
 import com.group35.nutripath.ui.database.ConsumptionDatabase
@@ -110,7 +111,7 @@ class HomeFragment : Fragment() {
         }
         // only for testing - can remove later - nat
         root.findViewById<Button>(R.id.barcodeButton).setOnClickListener {
-            val intent = Intent(requireContext(), BarcodeScannerActivity::class.java)
+            val intent = Intent(requireContext(), HomeMenuActivity::class.java)
             Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }

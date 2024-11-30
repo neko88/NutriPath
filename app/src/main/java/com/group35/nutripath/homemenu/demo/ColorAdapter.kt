@@ -1,4 +1,4 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.demo
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,13 +18,13 @@ class ColorAdapter(val items: MutableList<String>) :
     inner class Viewholder(val binding: ViewholderColorBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorAdapter.Viewholder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Viewholder {
         context = parent.context
         val binding = ViewholderColorBinding.inflate(LayoutInflater.from(context), parent, false)
         return Viewholder(binding)
     }
 
-    override fun onBindViewHolder(holder: ColorAdapter.Viewholder, position: Int) {
+    override fun onBindViewHolder(holder: Viewholder, position: Int) {
         Glide.with(holder.itemView.context)
             .load(items[position])
             .into(holder.binding.pic)

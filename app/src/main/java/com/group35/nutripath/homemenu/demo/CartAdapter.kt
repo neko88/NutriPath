@@ -1,4 +1,4 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.demo
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
-import com.example.project1874.Model.ItemsModel
 import com.group35.nutripath.databinding.ViewholderCartBinding
 
 class CartAdapter(
@@ -19,13 +18,13 @@ class CartAdapter(
     class Viewholder(val binding: ViewholderCartBinding) : RecyclerView.ViewHolder(binding.root)
 
     private val managmentCart = ManagmentCart(context)
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartAdapter.Viewholder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Viewholder {
         val binding =
             ViewholderCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Viewholder(binding)
     }
 
-    override fun onBindViewHolder(holder: CartAdapter.Viewholder, position: Int) {
+    override fun onBindViewHolder(holder: Viewholder, position: Int) {
         val item = listItemSelected[position]
 
         holder.binding.titleTxt.text = item.title

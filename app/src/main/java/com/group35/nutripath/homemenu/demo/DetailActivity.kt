@@ -1,26 +1,22 @@
-package com.group35.nutripath.homemenu
-
-
+package com.group35.nutripath.homemenu.demo
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
-import com.group35.nutripath.databinding.ActivityDetailHomeBinding
-import com.group35.nutripath.homemenu.TopObjectViewAdapter
+import com.example.project1874.databinding.ActivityDetailBinding
 
-class DetailActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityDetailHomeBinding
-    private lateinit var item: BottomDataObject
+class DetailActivity : BaseActivity() {
+    private lateinit var binding: ActivityDetailBinding
+    private lateinit var item: ItemsModel
     private var numberOrder = 1
     private lateinit var managmentCart: ManagmentCart
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDetailHomeBinding.inflate(layoutInflater)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         managmentCart = ManagmentCart(this)
@@ -42,12 +38,12 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun Banners() {
-        val sliderItems = ArrayList<TopDataObject>()
+        val sliderItems = ArrayList<SliderModel>()
         for (imageUrl in item.picUrl) {
-            sliderItems.add(TopDataObject(imageUrl))
+            sliderItems.add(SliderModel(imageUrl))
         }
 
-        binding.slider.adapter = TopObjectViewAdapter(sliderItems, binding.slider)
+        binding.slider.adapter = SliderAdapter(sliderItems, binding.slider)
         binding.slider.clipToPadding = false
         binding.slider.clipChildren = false
         binding.slider.offscreenPageLimit = 1

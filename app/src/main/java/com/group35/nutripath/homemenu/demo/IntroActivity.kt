@@ -1,4 +1,4 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.demo
 
 import android.content.Intent
 import android.os.Bundle

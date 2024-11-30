@@ -1,10 +1,7 @@
-package com.group35.nutripath.homemenu
+package com.group35.nutripath.homemenu.demo
 
 import android.content.Context
 import android.widget.Toast
-
-import com.example.project1874.Helper.TinyDB
-import com.example.project1874.Model.ItemsModel
 
 
 class ManagmentCart(val context: Context) {
