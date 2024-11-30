@@ -40,8 +40,7 @@
         </activity>
         <activity android:name=".ui.dashboard.FoodEntryActivity"/>
         <activity android:name=".util.BarcodeScannerActivity" />
-        <activity android:name=".api.openfoodfacts.OpenFoodFactActivity" />
-        <activity android:name=".api.openfoodfacts.ProductInfoActivity" />
+        <activity android:name=".api.openfoodfacts.OpenFoodFactsActivity" />
         <activity android:name=".api.themealdb.MealActivity" />
 
         <meta-data

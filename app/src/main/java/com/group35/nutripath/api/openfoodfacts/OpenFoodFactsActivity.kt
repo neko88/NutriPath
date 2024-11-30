@@ -1,10 +1,8 @@
 package com.group35.nutripath.api.openfoodfacts
 
-import ProductRepository
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,10 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.group35.nutripath.R
-import com.group35.nutripath.api.openfoodfacts.OpenFoodFactsViewModel
 import java.util.Locale
 
-class ProductInfoActivity : AppCompatActivity() {
+class OpenFoodFactsActivity : AppCompatActivity() {
 
 
     private lateinit var barcodeInputEditText: EditText

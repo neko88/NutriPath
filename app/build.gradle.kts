@@ -45,7 +45,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -106,5 +105,8 @@ dependencies {
     implementation (libs.opencsv)
     implementation (libs.gson)
 
+    // Home menu
+    implementation ("com.tbuonomo:dotsindicator:4.2")
+    implementation ("com.google.android.material:material:1.12.0")
 
 }

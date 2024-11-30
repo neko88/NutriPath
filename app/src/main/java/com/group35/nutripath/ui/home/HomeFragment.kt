@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.group35.nutripath.R
-import com.group35.nutripath.api.openfoodfacts.ProductInfoActivity
+import com.group35.nutripath.api.openfoodfacts.OpenFoodFactsActivity
 import com.group35.nutripath.api.themealdb.MealActivity
 import com.group35.nutripath.ui.database.Consumption
 import com.group35.nutripath.ui.database.ConsumptionDao
@@ -21,6 +21,7 @@ import com.group35.nutripath.ui.database.ConsumptionDatabase
 import com.group35.nutripath.ui.database.ConsumptionRepository
 import com.group35.nutripath.ui.database.ConsumptionViewModel
 import com.group35.nutripath.ui.database.ConsumptionViewModelFactory
+import com.group35.nutripath.util.BarcodeScannerActivity
 import com.group35.nutripath.util.Globals
 import com.group35.nutripath.utils.ChartHelper
 import com.group35.nutripath.utils.DialogHelper
@@ -102,8 +103,14 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
         // only for testing - can remove later - nat
+        root.findViewById<Button>(R.id.foodButton).setOnClickListener {
+            val intent = Intent(requireContext(), OpenFoodFactsActivity::class.java)
+            Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
+        // only for testing - can remove later - nat
         root.findViewById<Button>(R.id.barcodeButton).setOnClickListener {
-            val intent = Intent(requireContext(), ProductInfoActivity::class.java)
+            val intent = Intent(requireContext(), BarcodeScannerActivity::class.java)
             Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }

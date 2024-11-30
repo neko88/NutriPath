@@ -10,7 +10,10 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
     </style>
-
+    <style name="CircleImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10%</item>
+    </style>
     <style name="MealListTextStyle">
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">sans-serif-smallcaps</item>

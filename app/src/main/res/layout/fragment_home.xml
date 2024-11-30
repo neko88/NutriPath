@@ -7,18 +7,19 @@
     tools:context=".ui.home.HomeFragment">
 
     <!-- Pie Chart for Budget Allocation -->
+
+    <!-- Button to Set Monthly Budget -->
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/setBudgetButton"
         app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent="0.8" />
 
-    <!-- Button to Set Monthly Budget -->
     <Button
         android:id="@+id/setBudgetButton"
         android:layout_width="wrap_content"
@@ -36,7 +37,7 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/setBudgetButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/pieChart"
         app:layout_constraintBottom_toTopOf="@id/addExpenseButton"
         app:layout_constraintHeight_percent="0.3"
         app:layout_constraintWidth_percent="0.9" />
@@ -51,22 +52,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/recipesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recipes"
-        app:layout_constraintTop_toBottomOf="@id/addExpenseButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/barcodeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recipes"
-        app:layout_constraintTop_toBottomOf="@id/recipesButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/addExpenseButton"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent" >
+        <Button
+            android:id="@+id/recipesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recipes" />
+        <Button
+            android:id="@+id/foodButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Food" />
+        <Button
+            android:id="@+id/barcodeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Barcode" />
+        </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
