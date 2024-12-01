@@ -27,12 +27,10 @@ class ColorAdapter(val items: MutableList<String>) :
     }
 
     override fun onBindViewHolder(holder: ColorAdapter.Viewholder, position: Int) {
-        // Load the image using Glide
         Glide.with(holder.itemView.context)
             .load(items[holder.adapterPosition]) // Use bindingAdapterPosition instead of position
             .into(holder.binding.pic)
 
-        // Handle item click
         holder.binding.root.setOnClickListener {
             lastSelectionPosition = selectedPosition
             selectedPosition = holder.adapterPosition // Use bindingAdapterPosition here
@@ -40,7 +38,6 @@ class ColorAdapter(val items: MutableList<String>) :
             notifyItemChanged(selectedPosition)
         }
 
-        // Update the background based on selection
         if (selectedPosition == holder.adapterPosition) {
             holder.binding.colorLayout.setBackgroundResource(R.drawable.icon_nutripath)
         } else {

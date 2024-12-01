@@ -1,7 +1,6 @@
 package com.group35.nutripath.homemenu.adapters
 
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.group35.nutripath.R
-import com.group35.nutripath.homemenu.dataobject.ItemObject
 import com.group35.nutripath.homemenu.dataobject.TopDataObject
 
 
@@ -26,19 +24,20 @@ class TopObjectViewAdapter(
 ) : RecyclerView.Adapter<TopObjectViewAdapter.SliderViewHolder>() {
 
     class SliderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val imageView: ImageView = itemView.findViewById(R.id.imageSlide)
+        private val featureFoodImageView: ImageView = itemView.findViewById(R.id.imageSlide)
+        private val featureFoodName: TextView = itemView.findViewById(R.id.featuredFoodTitleText)
 
         fun bind(data: TopDataObject) {
-            val radius = 16 // Corner radius in pixels
+            val radius = 50
             Glide.with(itemView.context)
                 .load(data.resource)
                 .transform(CenterCrop(), RoundedCorners(radius)) // Apply rounded corners
-                .into(imageView)
+                .into(featureFoodImageView)
 
-          //  textView.text = data.label
+            featureFoodName.text = data.label
 
-            // Set click listener to open the URL in a browser
-            imageView.setOnClickListener {
+            // click listener to open the URL in a browser
+            featureFoodImageView.setOnClickListener {
                 val context = itemView.context
                 try {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(data.url))
@@ -52,7 +51,7 @@ class TopObjectViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.slider_item_container, parent, false)
+            .inflate(R.layout.slider_home_top_item_container, parent, false)
         return SliderViewHolder(view)
     }
 
@@ -62,11 +61,10 @@ class TopObjectViewAdapter(
 
     override fun getItemCount(): Int = sliderItems.size
 
-    // Update a single item
     fun updateSingleItem(position: Int, newItem: TopDataObject) {
         if (position in sliderItems.indices) {
             sliderItems[position] = newItem
-            notifyItemChanged(position) // Notify only the changed item
+            notifyItemChanged(position)
         }
     }
 }

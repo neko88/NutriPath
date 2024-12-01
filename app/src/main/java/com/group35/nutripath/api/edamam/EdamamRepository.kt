@@ -8,32 +8,29 @@ import retrofit2.Response
 
 
 class EdamamRepository {
+
     private val api = EdamamApi.RetrofitClient.instance.create(EdamamDAO::class.java)
 
-    fun searchRecipes(
+    suspend fun searchRecipes(
         query: String,
         appId: String,
         appKey: String,
-        from: Int,
-        to: Int,
-        onSuccess: (List<Recipe>) -> Unit,
-        onFailure: (Throwable) -> Unit
-    ) {
-        api.searchRecipes(query, appId, appKey).enqueue(object : retrofit2.Callback<RecipeResponse> {
-            override fun onResponse(call: Call<RecipeResponse>, response: Response<RecipeResponse>) {
-                if (response.isSuccessful) {
-                    val recipes = response.body()?.hits?.mapNotNull { it.recipe } ?: emptyList()
-                    onSuccess(recipes)
-                } else {
-                    onFailure(Exception("Error: ${response.code()}"))
-                }
-            }
-
-            override fun onFailure(call: Call<RecipeResponse>, t: Throwable) {
-                onFailure(t)
-            }
-        })
+     //   cuisineType: String? = null,
+      //  mealType: String? = null,
+     //   dishType: String? = null,
+        from: Int = 0,
+        to: Int = 10
+    ): Result<List<Recipe>> {
+        return try {
+          //  val recipeResponse = api.searchRecipes(query, appId, appKey, cuisineType, mealType, dishType, from, to)
+            val recipeResponse = api.searchRecipes(query, appId, appKey, from, to)
+            val recipes = recipeResponse.hits?.mapNotNull { it.recipe } ?: emptyList()
+            Result.success(recipes)
+        } catch (e: Exception) {
+            Result.failure(e) // Handle errors like network issues
+        }
     }
+
 
 }
 

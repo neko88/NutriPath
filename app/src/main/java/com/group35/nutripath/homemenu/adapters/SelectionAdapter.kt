@@ -15,7 +15,7 @@ import kotlin.collections.get
 
 
 interface ChangeNumberItemsListener {
-    fun onChanged() // Function name changed to follow Kotlin conventions
+    fun onChanged()
 }
 
 class CartAdapter(

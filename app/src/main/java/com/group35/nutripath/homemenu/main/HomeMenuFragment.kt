@@ -8,18 +8,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.group35.nutripath.R
-import com.group35.nutripath.api.edamam.EdamamActivity
-import com.group35.nutripath.api.edamam.EdamamApi
-import com.group35.nutripath.api.edamam.EdamamDAO
+import com.group35.nutripath.NutriPathApplication
+import com.group35.nutripath.NutriPathApplicationViewModel
 import com.group35.nutripath.api.edamam.EdamamRepository
+import com.group35.nutripath.api.edamam.EdamamViewModel
 import com.group35.nutripath.api.openfoodfacts.OpenFoodFactsActivity
 import com.group35.nutripath.api.themealdb.MealActivity
 import com.group35.nutripath.databinding.FragmentHomeMenuBinding
@@ -30,26 +29,30 @@ import com.group35.nutripath.homemenu.dataobject.TopDataObject
 import com.group35.nutripath.homemenu.main.MainHomeViewModel
 import com.group35.nutripath.ui.home.AnalyticsActivity
 import com.group35.nutripath.util.BarcodeScannerActivity
+import kotlinx.coroutines.launch
 
 class HomeMenuFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeMenuBinding
     private val homePageViewModel = MainHomeViewModel()
+    private val edamamViewModel = EdamamViewModel()
     private val sliderHandler = Handler(Looper.getMainLooper())
     private lateinit var sliderAdapter: TopObjectViewAdapter
     private val repository = EdamamRepository()
-    private val appId = "d45fcd57" // Replace with your actual App ID
-    private val appKey = "2f4ad82db15fbca9481a538196db68dd" // Replace with your actual App Key
+    private lateinit var appViewModel: NutriPathApplicationViewModel
+    private var bannerRotationCount = 0
+
+    private lateinit var bannerSlideCollection: MutableList<TopDataObject>
+
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeMenuBinding.inflate(inflater, container, false)
-
-        setupSlider()
-        setupAutoSlide() // Auto-slide functionality
-        scheduleRandomRecipeUpdate() // Update the first slide with a random recipe every minute
+        appViewModel =
+            (requireActivity().application as NutriPathApplication).nutriPathApplicationViewModel
 
         homePageViewModel.loadTopBannerItems()
         homePageViewModel.loadMiddleBannerItems()
@@ -57,6 +60,11 @@ class HomeMenuFragment : Fragment() {
 
         middleBanner()
         bottomBanner()
+
+        setupBannerCollection()
+        setupSlider()
+        setupAutoSlide()
+        scheduleApiUpdates()
 
         binding.analyticsButton.setOnClickListener {
             val intent = Intent(requireContext(), AnalyticsActivity::class.java)
@@ -74,100 +82,146 @@ class HomeMenuFragment : Fragment() {
             startActivity(intent)
         }
         binding.barcodeButton.setOnClickListener {
-            val intent = Intent(requireContext(),
-                BarcodeScannerActivity::class.java)
+            val intent = Intent(
+                requireContext(),
+                BarcodeScannerActivity::class.java
+            )
             Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
 
-
+        /*
+        // observe recipes and update the slider
+        edamamViewModel.recipesLiveData.observe(viewLifecycleOwner) { recipes ->
+            if (recipes.isNotEmpty()) {
+                val recipe = recipes.first()
+                val recipeSlide = TopDataObject(
+                    resource = recipe.image,
+                    label = recipe.label,
+                    url = recipe.url
+                )
+                sliderAdapter.updateSingleItem(0, recipeSlide)
+            }
+        }*/
         return binding.root
     }
 
 
-    private val staticSlides = mutableListOf(
-        TopDataObject(R.drawable.np_banner1, "Static Slide 1"),
-        TopDataObject(R.drawable.np_banner2, "Static Slide 2"),
-        TopDataObject(R.drawable.np_banner3, "Static Slide 3")
-    )
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        sliderHandler.removeCallbacksAndMessages(null) // Stop updates when fragment is destroyed
+    private fun setupBannerCollection() {
+        bannerSlideCollection =
+            homePageViewModel.topObjectInitialSlides as MutableList<TopDataObject>
+        homePageViewModel.topObjectSliderItems.observe(viewLifecycleOwner) { it ->
+            bannerSlideCollection = it as MutableList<TopDataObject>
+        }
     }
 
     private fun setupSlider() {
-        // Add a placeholder for the dynamic recipe slide
-        val initialSlides = mutableListOf(
-            TopDataObject(R.drawable.np_banner2, "Random Recipe")
-        )
-        initialSlides.addAll(staticSlides) // Add static slides after the dynamic recipe slide
-
-        sliderAdapter = TopObjectViewAdapter(initialSlides, binding.topObjectViewPagerSlider)
+        sliderAdapter =
+            TopObjectViewAdapter(bannerSlideCollection, binding.topObjectViewPagerSlider)
         binding.topObjectViewPagerSlider.adapter = sliderAdapter
 
         // ViewPager2 settings
         binding.topObjectViewPagerSlider.apply {
-            offscreenPageLimit = 3
+            offscreenPageLimit = 3 // seconds to switch
             clipToPadding = false
             clipChildren = false
             getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         }
     }
 
+    private fun changeRecipeBanner() {
+        if (bannerRotationCount >= bannerSlideCollection.size) {
+            bannerRotationCount = 0
+        } else { bannerRotationCount += 1 }
+        fetchRandomRecipe { recipeSlide ->
+            sliderAdapter.updateSingleItem(bannerRotationCount, recipeSlide)
+        }
+    }
+
     private fun setupAutoSlide() {
         val autoSlideRunnable = object : Runnable {
             override fun run() {
-                val currentItem = binding.topObjectViewPagerSlider.currentItem
-                val totalItems = sliderAdapter.itemCount
-                binding.topObjectViewPagerSlider.currentItem = (currentItem + 1) % totalItems
-                sliderHandler.postDelayed(this, 3000) // Slide every 3 seconds
+                if (isAdded && view != null) {
+                    binding.topObjectViewPagerSlider.apply {
+                        currentItem = if (adapter != null) {
+                            (currentItem + 1) % adapter!!.itemCount
+                        } else { 0 }
+                    }
+                }
             }
         }
         sliderHandler.post(autoSlideRunnable)
-
-        // Pause auto-slide when the user interacts with the slider
+        // Pause auto-slide when user interacts
         binding.topObjectViewPagerSlider.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 sliderHandler.removeCallbacks(autoSlideRunnable)
-                sliderHandler.postDelayed(autoSlideRunnable, 3000)
+                sliderHandler.postDelayed(autoSlideRunnable, 3000) // Resume after 3 seconds
             }
         })
     }
 
-    private fun scheduleRandomRecipeUpdate() {
-        val recipeUpdateHandler = Handler(Looper.getMainLooper())
-        val updateRunnable = object : Runnable {
+    // api calls every 1 minute due to restrictions.
+    private fun scheduleApiUpdates() {
+        val apiUpdateHandler = Handler(Looper.getMainLooper())
+        val apiUpdateRunnable = object : Runnable {
             override fun run() {
-                fetchRandomRecipe { recipeSlide ->
-                    sliderAdapter.updateSingleItem(0, recipeSlide) // Update only the first slide
+                if (isAdded && view != null) {
+                    if (appViewModel.edamamApiCallOK()) {
+                        changeRecipeBanner()
+                    } else {
+                        Log.d("HomeMenuFragment", "API call skipped since it's been less than a minute.")
+                    }
+                    apiUpdateHandler.postDelayed(this, 60000)
                 }
-                recipeUpdateHandler.postDelayed(this, 60000) // Schedule next update after 1 minute
             }
         }
-        recipeUpdateHandler.post(updateRunnable)
+        apiUpdateHandler.post(apiUpdateRunnable)
     }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sliderHandler.removeCallbacksAndMessages(null) // Stop all updates
+    }
+
+    private val appId = "d45fcd57"
+    private val appKey = "2f4ad82db15fbca9481a538196db68dd"
 
     private fun fetchRandomRecipe(onSuccess: (TopDataObject) -> Unit) {
-        val randomQuery =  homePageViewModel.getRandomFoodTagList()?.random()
-
+        val randomQuery = edamamViewModel.getRandomFoodTagList()
         if (randomQuery != null) {
-            repository.searchRecipes(randomQuery, appId, appKey, from = 0, to = 1, { recipes ->
-                if (recipes.isNotEmpty()) {
-                    val recipe = recipes.first()
-                    val recipeSlide = TopDataObject(
-                        resource = recipe.image,
-                        label = recipe.label
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    val result = repository.searchRecipes(
+                        query = randomQuery,
+                        appId = appId,
+                        appKey = appKey,
+                        //       cuisineType= "Asian",
+                        //       mealType = "",
+                        //       dishType = "",
+                        from = 0,
+                        to = 1
                     )
-                    onSuccess(recipeSlide)
+                    result.fold(onSuccess = { recipes ->
+                        if (recipes.isNotEmpty()) {
+                            val recipe = recipes.first()
+                            val recipeSlide = TopDataObject(
+                                resource = recipe.image,
+                                label = recipe.label,
+                                url = recipe.url
+                            )
+                            onSuccess(recipeSlide)
+                            edamamViewModel.saveRecipeToJson(requireContext(), recipe)
+                        }
+                    }, onFailure = { error ->
+                        Log.e("HomeMenuFragment", "Error fetching recipe: ${error.message}")
+                    })
+                } catch (e: Exception) {
+                    Log.e("HomeMenuFragment", "Unexpected error: ${e.message}")
                 }
-            }, { error ->
-                Log.e("HomeMenuFragment", "Error fetching recipe: ${error.message}")
-            })
+            }
         }
     }
-
-
 
     private fun middleBanner() {
         homePageViewModel.viewObjectMiddle.observe(viewLifecycleOwner, Observer {
@@ -183,7 +237,4 @@ class HomeMenuFragment : Fragment() {
             binding.bottomObjectViewRecycler.adapter = BottomObjectViewAdapter(it)
         })
     }
-
-
-
 }

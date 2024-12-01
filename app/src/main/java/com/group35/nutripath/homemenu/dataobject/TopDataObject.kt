@@ -4,6 +4,6 @@ import com.group35.nutripath.R
 
 data class TopDataObject(
     val resource: Any,
-    val label: String="",
-    val url: String=""
+    var label: String="",
+    var url: String=""
 )

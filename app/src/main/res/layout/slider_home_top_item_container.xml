@@ -1,0 +1,34 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/imageSlide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/round_button"
+        android:scaleType="centerCrop"
+        android:contentDescription="slider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/featuredFoodTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="featured food"
+        android:textSize="45sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginRight="10dp"
+        android:fontFamily="@font/bubble_garden"
+        android:gravity="right"
+        app:layout_constraintBottom_toBottomOf="@id/imageSlide"
+        app:layout_constraintStart_toStartOf="@id/imageSlide"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

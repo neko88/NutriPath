@@ -9,32 +9,30 @@ import com.group35.nutripath.homemenu.dataobject.MiddleDataObject
 import com.group35.nutripath.homemenu.dataobject.TopDataObject
 
 class MainHomeViewModel : ViewModel() {
-    private val _viewObjectTop = MutableLiveData<List<TopDataObject>>()
+    private val _topObjectSliderItems = MutableLiveData<List<TopDataObject>>()
     private val _viewObjectMiddle = MutableLiveData<List<MiddleDataObject>>()
     private val _viewObjectBottom = MutableLiveData<List<BottomDataObject>>()
-    val _randomFoodTagList = MutableLiveData<List<String>>()
 
-    val viewObjectTop: LiveData<List<TopDataObject>> = _viewObjectTop
+    val topObjectSliderItems: LiveData<List<TopDataObject>> = _topObjectSliderItems
     val viewObjectMiddle: LiveData<List<MiddleDataObject>> = _viewObjectMiddle
     val viewObjectBottom: LiveData<List<BottomDataObject>> = _viewObjectBottom
 
-    val randomFoodTagList: MutableLiveData<List<String>> = _randomFoodTagList
+    val topObjectInitialSlides =  listOf(
+        TopDataObject(R.drawable.np_banner1,"",""),
+        TopDataObject(R.drawable.np_banner1,"",""),
+        TopDataObject(R.drawable.np_banner3,"","")
+    )
 
     init {
         loadTopBannerItems()
-        randomFoodTagList.value = listOf("chicken", "pasta", "salad", "soup", "pizza", "apple", "cake")
     }
 
     fun loadTopBannerItems() {
-        _viewObjectTop.value = listOf(
-            TopDataObject(R.drawable.np_banner1,"",""),
-            TopDataObject(R.drawable.np_banner2,"",""),
-            TopDataObject(R.drawable.np_banner3,"","")
-        )
+        _topObjectSliderItems.value = topObjectInitialSlides
     }
     fun addTopBannerItem(newItem: TopDataObject) {
-        val currentItems = _viewObjectTop.value ?: listOf()
-        _viewObjectTop.value = currentItems + newItem
+        val currentItems = _topObjectSliderItems.value ?: listOf()
+        _topObjectSliderItems.value = currentItems + newItem
     }
 
     fun loadMiddleBannerItems(){
@@ -61,10 +59,6 @@ class MainHomeViewModel : ViewModel() {
     fun addBottomBannerItem(newItem: BottomDataObject) {
         val currentItems = _viewObjectBottom.value ?: listOf()
         _viewObjectBottom.value = currentItems + newItem
-    }
-
-    fun getRandomFoodTagList(): List<String>? {
-        return _randomFoodTagList.value
     }
 
 

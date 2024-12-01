@@ -4,13 +4,18 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+
 interface EdamamDAO {
     @GET("search")
-    fun searchRecipes(
+    suspend fun searchRecipes(
         @Query("q") query: String,
         @Query("app_id") appId: String,
         @Query("app_key") appKey: String,
-        @Query("from") from: Int = 0,
-        @Query("to") to: Int = 1
-    ): Call<RecipeResponse>
+     //   @Query("cuisineType") cuisineType: String? = null,
+    //    @Query("mealType") mealType: String? = null,
+     //   @Query("dishType") dishType: String? = null,
+        @Query("from") from: Int,
+        @Query("to") to: Int
+
+        ): RecipeResponse
 }
