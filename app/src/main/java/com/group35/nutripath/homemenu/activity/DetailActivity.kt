@@ -47,6 +47,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun Banners() {
+        /*
         val sliderItems = ArrayList<TopDataObject>()
         for (imageUrl in item.picUrl) {
             sliderItems.add(TopDataObject(imageUrl))
@@ -61,12 +62,7 @@ class DetailActivity : AppCompatActivity() {
         val compositePageTransformer = CompositePageTransformer().apply {
             addTransformer(MarginPageTransformer(40))
         }
-
-        binding.slider.setPageTransformer(compositePageTransformer)
-        if (sliderItems.size > 1) {
-            binding.dotIndicator.visibility = View.VISIBLE
-            binding.dotIndicator.attachTo(binding.slider)
-        }
+        */
     }
 
     private fun getBundle() {

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@drawable/np_bg_3"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -75,16 +76,15 @@
 
                 <ImageView
                     android:id="@+id/nutriPathImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_width="300dp"
+                    android:layout_height="340dp"
                     android:scaleType="centerCrop"
                     android:paddingTop="100dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:adjustViewBounds="true"
-                    app:srcCompat="@drawable/np_meal_img_placeholder" />
+                    app:srcCompat="@drawable/np_radish_donut" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -110,16 +110,17 @@
                     <EditText
                         android:id="@+id/barcodeInputEditText"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter Barcode"
+                        android:layout_height="45dp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:hint="enter barcode"
                         android:inputType="number"
+                        android:gravity="center"
                         android:background="@drawable/bubble_text"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="25dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_centerHorizontal="true"
-                        android:padding="16dp"
-                        android:textColor="#000000" />
+                        android:textColor="#4a4a4a" />
 
                     <Button
                         android:id="@+id/fetchProductButton"
@@ -144,10 +145,11 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:gravity="center"
-                        android:text="PRODUCT NAME"
+                        android:text="product name"
+                        android:fontFamily="sans-serif-smallcaps"
                         android:textColor="@color/white"
                         android:background="@drawable/round_button"
-                        android:backgroundTint="@color/green_med"
+                        android:backgroundTint="@color/green_sat_med"
                         android:textSize="32sp"
                         android:textStyle="bold"
                         tools:ignore="MissingConstraints" />
@@ -182,7 +184,7 @@
                                 android:textAllCaps="true"
                                 android:textStyle="bold"
                                 android:background="@drawable/round_button"
-                                android:backgroundTint="@color/green_sat_dark"
+                                android:backgroundTint="@color/green_sat_med"
                                 android:textAlignment="center"
                                 android:textColor="@color/white" />
                             <TextView
@@ -195,7 +197,7 @@
                                 android:textAlignment="center"
                                 android:textSize="25dp"
                                 android:textStyle="bold"
-                                android:textColor="@color/green_sat_dark" />
+                                android:textColor="@color/green_sat_med" />
                             <ImageView
                                 android:id="@+id/nutriscore_imageview"
                                 android:layout_width="90dp"
@@ -203,7 +205,7 @@
                                 android:scaleType="centerCrop"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="8dp"
-                                android:src="@drawable/np_radish_icecream" />
+                                android:src="@drawable/np_nutrileaf" />
                             </LinearLayout>
 
                         <!-- NOVASCORE Section -->
@@ -243,7 +245,7 @@
                                 android:scaleType="centerCrop"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="8dp"
-                                android:src="@drawable/np_radish_icecream" />
+                                android:src="@drawable/np_nutrileaf" />
                         </LinearLayout>
 
 
@@ -284,7 +286,7 @@
                                 android:scaleType="centerCrop"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="8dp"
-                                android:src="@drawable/np_radish_icecream" />
+                                android:src="@drawable/np_nutrileaf" />
                         </LinearLayout>
 
                         <!-- END NUTRITION SCORES -->
@@ -321,7 +323,7 @@
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:background="@drawable/round_button"
-                        android:backgroundTint="@color/blue_mute"
+                        android:backgroundTint="@color/green_dark"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -351,7 +353,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Serving Size"
+                                    android:text="serving Size"
+                                    android:fontFamily="sans-serif-smallcaps"
                                     android:textStyle="bold" />
                                 <TextView
                                     android:id="@+id/servingSizeTextView"
@@ -360,7 +363,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="20dp"
                                     android:gravity="end"
-                                    android:text="serving"
+                                    android:text="n/a"
                                     android:paddingStart="16dp" />
                             </TableRow>
                             <!-- B. CALORIES -->
@@ -368,7 +371,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Calories"
+                                    android:text="calories"
+                                    android:fontFamily="sans-serif-smallcaps"
                                     android:textStyle="bold" />
                                 <TextView
                                     android:id="@+id/caloriesTextView"
@@ -377,7 +381,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="20dp"
                                     android:gravity="end"
-                                    android:text="calories"
+                                    android:text="n/a"
                                     android:paddingStart="16dp"/>
                             </TableRow>
 
@@ -386,7 +390,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Total Fat"
+                                    android:text="total fat"
+                                    android:fontFamily="sans-serif-smallcaps"
                                     android:textStyle="bold" />
                                 <TextView
                                     android:id="@+id/totalFatTextView"
@@ -395,7 +400,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="20dp"
                                     android:gravity="end"
-                                    android:text="total fat"
+                                    android:text="n/a"
                                     android:paddingStart="16dp" />
                             </TableRow>
 
@@ -404,7 +409,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Saturated Fat" />
+                                    android:fontFamily="sans-serif-smallcaps"
+                                    android:text="saturated Fat" />
                                 <TextView
                                     android:id="@+id/saturatedFatTextView"
                                     android:layout_width="0dp"
@@ -412,7 +418,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="20dp"
                                     android:gravity="end"
-                                    android:text="saturated fat"
+                                    android:text="n/a"
                                     android:paddingStart="16dp"/>
                             </TableRow>
 
@@ -421,7 +427,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Carbohydrates"
+                                    android:fontFamily="sans-serif-smallcaps"
+                                    android:text="carbohydrates"
                                     android:textStyle="bold" />
                                 <TextView
                                     android:id="@+id/carbohydratesTextView"
@@ -430,7 +437,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="20dp"
                                     android:gravity="end"
-                                    android:text="carbohydrates"
+                                    android:text="n/a"
                                     android:paddingStart="16dp"/>
                             </TableRow>
 
@@ -439,7 +446,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Sugars" />
+                                    android:fontFamily="sans-serif-smallcaps"
+                                    android:text="sugar" />
                                 <TextView
                                     android:id="@+id/sugarsTextView"
                                     android:layout_width="0dp"
@@ -447,7 +455,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="20dp"
                                     android:gravity="end"
-                                    android:text="sugars"
+                                    android:text="n/a"
                                     android:paddingStart="16dp"/>
                             </TableRow>
 
@@ -456,7 +464,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Protein"
+                                    android:text="protein"
+                                    android:fontFamily="sans-serif-smallcaps"
                                     android:textStyle="bold" />
                                 <TextView
                                     android:id="@+id/proteinTextView"
@@ -465,7 +474,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="20dp"
                                     android:gravity="end"
-                                    android:text="protein"
+                                    android:text="n/a"
                                     android:paddingStart="16dp" />
                             </TableRow>
 
@@ -474,7 +483,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Salt" />
+                                    android:fontFamily="sans-serif-smallcaps"
+                                    android:text="sodium" />
                                 <TextView
                                     android:id="@+id/saltTextView"
                                     android:layout_width="0dp"
@@ -482,7 +492,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="20dp"
                                     android:gravity="end"
-                                    android:text="salt"
+                                    android:text="n/a"
                                     android:paddingStart="16dp"/>
                             </TableRow>
 
@@ -513,13 +523,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="100dp"
+
                         android:layout_marginEnd="100dp"
                         android:gravity="center"
                         android:text="ingredients"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:background="@drawable/round_button"
-                        android:backgroundTint="@color/blue_mute"
+                        android:backgroundTint="@color/green_dark"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         tools:ignore="MissingConstraints" />
@@ -530,6 +541,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:paddingLeft="30dp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textStyle="bold"
                         android:paddingRight="30dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginTop="20dp"
@@ -571,7 +584,7 @@
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:background="@drawable/round_button"
-                        android:backgroundTint="@color/blue_mute"
+                        android:backgroundTint="@color/green_dark"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         tools:ignore="MissingConstraints" />

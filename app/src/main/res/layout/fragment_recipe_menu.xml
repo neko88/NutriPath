@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/np_bg2"
+        android:background="@drawable/np_bg_3"
         android:orientation="vertical">
 
         <ImageView
@@ -16,7 +16,8 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:scaleType="centerInside"
-            android:src="@drawable/np_banner_recipe"
+            android:background="@drawable/round_image"
+            android:src="@drawable/np_recipe_banner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

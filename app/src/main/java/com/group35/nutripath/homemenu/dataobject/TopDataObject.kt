@@ -1,4 +1,9 @@
 package com.group35.nutripath.homemenu.dataobject
 
-data class TopDataObject(val url:String=""){
-}
+import com.group35.nutripath.R
+
+data class TopDataObject(
+    val resource: Any,
+    val label: String="",
+    val url: String=""
+)

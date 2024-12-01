@@ -11,7 +11,7 @@ import com.group35.nutripath.databinding.ViewholderBottomObjectViewBinding
 import com.group35.nutripath.homemenu.activity.DetailActivity
 import com.group35.nutripath.homemenu.dataobject.BottomDataObject
 
-class BottomObjectViewAdapter (val items: MutableList<BottomDataObject>) :
+class BottomObjectViewAdapter (val items: List<BottomDataObject>) :
     RecyclerView.Adapter<BottomObjectViewAdapter.Viewholder>() {
 
         private var context: Context? = null
@@ -32,9 +32,7 @@ class BottomObjectViewAdapter (val items: MutableList<BottomDataObject>) :
 
         override fun onBindViewHolder(holder: Viewholder, position: Int) {
             holder.binding.titleTxt.text = items[position].title
-            holder.binding.priceTxt.text = "$" + items[position].price.toString()
-            holder.binding.ratingTxt.text = items[position].rating.toString()
-
+/*
             Glide.with(holder.itemView.context)
                 .load(items[position].picUrl[0])
                 .apply(RequestOptions.centerCropTransform())
@@ -45,7 +43,7 @@ class BottomObjectViewAdapter (val items: MutableList<BottomDataObject>) :
                 intent.putExtra("object", items[position])
                 holder.itemView.context.startActivity(intent)
             }
-
+*/
         }
 
         override fun getItemCount(): Int = items.size

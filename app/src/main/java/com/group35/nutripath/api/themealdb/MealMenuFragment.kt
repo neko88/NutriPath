@@ -11,12 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.group35.nutripath.databinding.FragmentMealBinding
+import com.group35.nutripath.databinding.FragmentRecipeMenuBinding
 import kotlinx.coroutines.launch
 
 class MealFragment : Fragment() {
 
-    private var _binding: FragmentMealBinding? = null
+    private var _binding: FragmentRecipeMenuBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: MealViewModel
     private lateinit var mealAdapter: MealAdapter
@@ -26,7 +26,7 @@ class MealFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMealBinding.inflate(inflater, container, false)
+        _binding = FragmentRecipeMenuBinding.inflate(inflater, container, false)
         return binding.root
     }
 
