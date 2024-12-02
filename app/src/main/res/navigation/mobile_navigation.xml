@@ -9,7 +9,14 @@
         android:id="@+id/navigation_home_menu"
         android:name="com.group35.nutripath.homemenu.fragment.HomeMenuFragment"
         android:label="Home"
-        tools:layout="@layout/activity_home_menu" />
+        tools:layout="@layout/activity_home_menu">
+        <action
+            android:id="@+id/homeMenu_to_settings"
+            app:destination="@id/navigation_settings"/>
+        <action
+            android:id="@+id/homeMenu_to_profile"
+            app:destination="@id/navigation_profile"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_home"

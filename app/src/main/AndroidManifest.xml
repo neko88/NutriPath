@@ -48,6 +48,7 @@
         <activity android:name=".homemenu.activity.DetailActivity" />
         <activity android:name=".homemenu.activity.SelectionActivity" />
         <activity android:name=".api.edamam.EdamamActivity" />
+        <activity android:name=".homemenu.activity.ProfileSetupActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

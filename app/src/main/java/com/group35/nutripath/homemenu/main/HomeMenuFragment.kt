@@ -1,6 +1,8 @@
 package com.group35.nutripath.homemenu.fragment
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,15 +10,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.group35.nutripath.NutriPathApplication
 import com.group35.nutripath.NutriPathApplicationViewModel
+import com.group35.nutripath.R
 import com.group35.nutripath.api.edamam.EdamamRepository
 import com.group35.nutripath.api.edamam.EdamamViewModel
 import com.group35.nutripath.api.openfoodfacts.OpenFoodFactsActivity
@@ -43,6 +49,7 @@ class HomeMenuFragment : Fragment() {
     private var bannerRotationCount = 0
 
     private lateinit var bannerSlideCollection: MutableList<TopDataObject>
+    private lateinit var sharedPreferences: SharedPreferences
 
 
     override fun onCreateView(
@@ -61,6 +68,7 @@ class HomeMenuFragment : Fragment() {
         middleBanner()
         bottomBanner()
 
+        setupName()
         setupBannerCollection()
         setupSlider()
         setupAutoSlide()
@@ -88,6 +96,18 @@ class HomeMenuFragment : Fragment() {
             )
             Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
+        }
+        binding.imageView2.setOnClickListener {
+            findNavController().navigate(
+                R.id.navigation_settings,
+                null,
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.navigation_home_menu, true)
+                    .build()
+            )
+        }
+        binding.imageView3.setOnClickListener {
+            findNavController().navigate(R.id.homeMenu_to_profile)
         }
 
         /*
@@ -126,6 +146,15 @@ class HomeMenuFragment : Fragment() {
             clipToPadding = false
             clipChildren = false
             getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        }
+    }
+
+    private fun setupName() {
+        sharedPreferences = requireActivity().getSharedPreferences("profile", Context.MODE_PRIVATE)
+        val name = sharedPreferences.getString("name", "")
+
+        if (name != "") {
+            binding.textView4.text = name
         }
     }
 
