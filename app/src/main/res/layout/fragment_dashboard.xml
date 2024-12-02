@@ -1,28 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.dashboard.DashboardFragment">
-    <Button
-        android:id="@+id/dashboard_add_item_button"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="add new item"
-        android:textColor="@color/black"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-        android:backgroundTint="@color/button_grey"/>
-    <TextView
-        android:id="@+id/dashboard_add_existing_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add existing item"
-        android:layout_below="@id/dashboard_add_item_button"/>
+    android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/dashboard_food_item_list"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/dashboard_add_existing_text"/>
-</RelativeLayout>
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/custom_toolbar"
+            layout="@layout/toolbar_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/cal_chart"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calories"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/fats_chart"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fats"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/protein_chart"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Protein"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/carbs_chart"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Carbs"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.dashboard.DashboardFragment">
+            <Button
+                android:id="@+id/dashboard_add_item_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="add new item"
+                android:textColor="@color/black"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:backgroundTint="@color/button_grey"/>
+            <TextView
+                android:id="@+id/dashboard_add_existing_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add existing item"
+                android:layout_below="@id/dashboard_add_item_button"/>
+
+            <ListView
+                android:id="@+id/dashboard_food_item_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/dashboard_add_existing_text"/>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
+
