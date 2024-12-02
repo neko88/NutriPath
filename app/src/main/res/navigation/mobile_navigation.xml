@@ -3,12 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_home_menu">
+
+    <fragment
+        android:id="@+id/navigation_home_menu"
+        android:name="com.group35.nutripath.homemenu.fragment.HomeMenuFragment"
+        android:label="Home"
+        tools:layout="@layout/activity_home_menu" />
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.group35.nutripath.ui.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="Chart"
         tools:layout="@layout/fragment_home" />
 
     <fragment

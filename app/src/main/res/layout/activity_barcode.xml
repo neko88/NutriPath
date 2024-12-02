@@ -1,40 +1,42 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Camera Preview -->
     <androidx.camera.view.PreviewView
         android:id="@+id/previewView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="Camera preview" />
+        android:contentDescription="Camera preview"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- Bottom Text Message -->
     <TextView
         android:id="@+id/bottomTextMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Align the barcode into the camera view to scan it."
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:padding="16dp"
         android:textColor="#FFFFFF"
-        android:background="#80000000" />
+        android:background="#80000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="1.0"/>
 
-    <EditText
-        android:id="@+id/manualBarcodeInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/previewView"
-        android:layout_margin="16dp"
-        android:hint="Enter barcode manually"
-        android:layout_alignParentStart="true"
-        android:layout_centerHorizontal="true" />
-
+    <!-- Select Image Button Overlaying the Screen but Above the Text -->
     <Button
-        android:id="@+id/findFoodButton"
+        android:id="@+id/selectImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/manualBarcodeInput"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Find Food" />
-</RelativeLayout>
+        android:text="Select Image from Gallery"
+        app:layout_constraintBottom_toTopOf="@id/bottomTextMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

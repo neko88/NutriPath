@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
+    android:background="@drawable/np_bg_1"
     android:layout_height="match_parent">
 
     <ScrollView
@@ -69,16 +70,15 @@
 
                     <ImageView
                         android:id="@+id/nutriPathImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="400dp"
+                        android:layout_width="300dp"
+                        android:layout_height="340dp"
                         android:scaleType="centerCrop"
                         android:paddingTop="100dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:adjustViewBounds="true"
-                        app:srcCompat="@drawable/np_meal_img_placeholder" />
+                        app:srcCompat="@drawable/np_radish_icecream" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -105,15 +105,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="60dp"
+                            android:fontFamily="sans-serif-smallcaps"
                             android:layout_marginEnd="60dp"
                             android:layout_marginTop="20dp"
                             android:paddingTop="10dp"
                             android:paddingBottom="10dp"
                             android:gravity="center"
-                            android:text="MEAL NAME"
+                            android:text="meal name"
                             android:textColor="@color/white"
                             android:background="@drawable/round_button"
-                            android:backgroundTint="@color/green_med"
+                            android:backgroundTint="@color/green_sat_med"
                             android:textSize="32sp"
                             android:textStyle="bold"
                             tools:ignore="MissingConstraints" />
@@ -270,7 +271,7 @@
                             android:textAllCaps="true"
                             android:textColor="@color/white"
                             android:background="@drawable/round_button"
-                            android:backgroundTint="@color/blue_mute"
+                            android:backgroundTint="@color/green_dark"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent" />
@@ -327,7 +328,7 @@
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:background="@drawable/round_button"
-                        android:backgroundTint="@color/blue_mute"
+                        android:backgroundTint="@color/green_dark"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         tools:ignore="MissingConstraints" />

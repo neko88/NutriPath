@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.group35.nutripath.R
 import com.bumptech.glide.Glide
-import com.group35.nutripath.databinding.FragmentMealBinding
+import com.group35.nutripath.databinding.FragmentRecipeMenuBinding
 import com.group35.nutripath.databinding.FragmentMealDetailsBinding
 
 class MealDetailFragment : Fragment() {

@@ -37,8 +37,8 @@ class IngredientAdapter(private val ingredients: List<Triple<String, String, Str
             Glide.with(itemView.context)
                 .load(imageUrl)
                 .circleCrop() // Makes the image round
-                .placeholder(R.drawable.icon_nutripath) // Optional placeholder image
-                .error(R.drawable.icon_nutripath) // Optional error image
+                .placeholder(R.drawable.np_radish_bigheart) // Optional placeholder image
+                .error(R.drawable.np_radish_bigheart) // Optional error image
                 .into(ingredientImage)
         }
     }

@@ -13,8 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.group35.nutripath.R
-import com.group35.nutripath.api.openfoodfacts.ProductInfoActivity
+import com.group35.nutripath.api.openfoodfacts.OpenFoodFactsActivity
 import com.group35.nutripath.api.themealdb.MealActivity
+import com.group35.nutripath.databinding.FragmentHomeBinding
 import com.group35.nutripath.ui.database.Consumption
 import com.group35.nutripath.ui.database.ConsumptionDao
 import com.group35.nutripath.ui.database.ConsumptionDatabase
@@ -40,6 +41,9 @@ class HomeFragment : Fragment() {
     private lateinit var pieChart: PieChart
     private lateinit var lineChart: LineChart
 
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!! // Backing property to avoid nullability issues
+
     private lateinit var consumptionDB: ConsumptionDatabase
     private lateinit var consumptionViewModelFactory: ConsumptionViewModelFactory
     private val consumptionViewModel: ConsumptionViewModel by activityViewModels { consumptionViewModelFactory }
@@ -59,11 +63,12 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        pieChart = root.findViewById(R.id.pieChart)
-        lineChart = root.findViewById(R.id.lineChart)
+        pieChart = binding.pieChart
+        lineChart = binding.lineChart
+
         val date = System.currentTimeMillis()
         dayInterval = Globals().getDateInterval(date)
         monthInterval = Globals().getMonthInterval(date)
@@ -107,29 +112,18 @@ class HomeFragment : Fragment() {
         ChartHelper.setupEmptyPieChart(pieChart)
         ChartHelper.setupEmptyLineChart(lineChart)
 
-        root.findViewById<Button>(R.id.setBudgetButton).setOnClickListener {
+        binding.setBudgetButton.setOnClickListener {
             DialogHelper.showSetBudgetDialog(requireContext()) { budget ->
                 homeViewModel.updateBudgetAllocations(budget)
             }
         }
 
-        root.findViewById<Button>(R.id.addExpenseButton).setOnClickListener {
+        binding.addExpenseButton.setOnClickListener {
             DialogHelper.showAddExpenseDialog(requireContext()) { expense ->
                 homeViewModel.addExpense(expense)
             }
         }
-        // only for testing - can remove later - nat
-        root.findViewById<Button>(R.id.recipesButton).setOnClickListener {
-            val intent = Intent(requireContext(), MealActivity::class.java)
-            Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        }
-        // only for testing - can remove later - nat
-        root.findViewById<Button>(R.id.barcodeButton).setOnClickListener {
-            val intent = Intent(requireContext(), ProductInfoActivity::class.java)
-            Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        }
+
 
         // Observe the LiveData to populate charts, including initial empty data
         homeViewModel.budgetAllocations.observe(viewLifecycleOwner) { allocations ->
@@ -151,7 +145,7 @@ class HomeFragment : Fragment() {
             }
         })
 
-        return root
+        return binding.root
     }
 
     private fun initConsumptionDB(){
