@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieEntry
 import com.group35.nutripath.databinding.FragmentDashboardBinding
 import com.group35.nutripath.ui.database.Consumption
 import com.group35.nutripath.ui.database.ConsumptionDao
@@ -22,7 +25,16 @@ import com.group35.nutripath.ui.database.ConsumptionViewModel
 import com.group35.nutripath.ui.database.ConsumptionViewModelFactory
 import com.group35.nutripath.ui.database.FoodItem
 import com.group35.nutripath.ui.database.FoodItemListAdapter
+import com.group35.nutripath.util.Globals
+import com.group35.nutripath.utils.ChartHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 /*
  * Nov 23, 2024 - Modified by Cameron Yee-Ping
@@ -35,7 +47,6 @@ import kotlinx.coroutines.launch
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -51,8 +62,26 @@ class DashboardFragment : Fragment() {
     private lateinit var consumptionDao: ConsumptionDao
     private lateinit var consumptionRepository: ConsumptionRepository
 
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var consumptionViewModelFactory: ConsumptionViewModelFactory
     private val consumptionViewModel: ConsumptionViewModel by activityViewModels() { consumptionViewModelFactory }
+
+    private lateinit var calendar: Calendar
+
+    private var caloriesForDay: Double? = 0.0
+    private var carbsForDay: Double? = 0.0
+    private var proteinForDay: Double? = 0.0
+    private var fatsForDay: Double? = 0.0
+    private var sugarsForDay: Double? = 0.0
+    private var spendingForMonth: Double? = 0.0
+    private lateinit var dayInterval: Pair<Long, Long>
+    private lateinit var monthInterval: Pair<Long, Long>
+
+
+    private lateinit var caloriesPieChart: PieChart
+    private lateinit var carbsPieChart: PieChart
+    private lateinit var proteinPieChart: PieChart
+    private lateinit var fatsPieChart: PieChart
 
 
 
@@ -71,27 +100,30 @@ class DashboardFragment : Fragment() {
         //foodViewModel.deleteAll()
         consumptionViewModel.allConsumptionLiveData.observe(viewLifecycleOwner){ it ->
             println("debug: Dashboard fragment: all consumption $it")
+            println("debug: Home fragment: all consumption: $it")
+            CoroutineScope(IO).launch {
+                getConsumptionData()
+            }
         }
         consumptionViewModel.allFoodItemLiveData.observe(viewLifecycleOwner){ it ->
             println("debug: Dashboard fragment: all food $it")
             foodListAdapter.replace(it)
             foodListAdapter.notifyDataSetChanged()
         }
+
+
         foodListView.setOnItemClickListener{ _, _, pos, _ ->
             // add a dialog perhaps
             val selected = foodListAdapter.getItem(pos) as FoodItem
 
             // create consumption instance with given food item
-            val cons = Consumption(foodId = selected.id, date = System.currentTimeMillis())
+            val cons = Consumption(foodId = selected.id, date = calendar.timeInMillis)
 //            cons.foodId = selected.id
 //
 //            cons.date = System.currentTimeMillis()
             println("debug: Dashboard fragment: selected = $selected")
             println("debug: Dashboard fragment: cons = $cons")
-            lifecycleScope.launch {
-                consumptionViewModel.insertConsumption(cons)
-
-            }
+            consumptionViewModel.insertConsumption(cons)
 
         }
         addFoodButton.setOnClickListener {
@@ -99,9 +131,45 @@ class DashboardFragment : Fragment() {
             startActivity(intent)
         }
 
+        binding.customToolbar.toolbarTitle.text = SimpleDateFormat("EEE MMM d yyyy", Locale.getDefault()).format(calendar.time)
+
+        binding.customToolbar.btnNextDay.setOnClickListener(){
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
+            binding.customToolbar.toolbarTitle.text = SimpleDateFormat("EEE MMM d yyyy", Locale.getDefault()).format(calendar.time)
+            dayInterval = Globals().getDateInterval(calendar.timeInMillis)
+            monthInterval = Globals().getMonthInterval(calendar.timeInMillis)
+            getConsumptionData()
+        }
+        binding.customToolbar.btnPreviousDay.setOnClickListener(){
+            calendar.add(Calendar.DAY_OF_YEAR, -1)
+            binding.customToolbar.toolbarTitle.text = SimpleDateFormat("EEE MMM d yyyy", Locale.getDefault()).format(calendar.time)
+
+            dayInterval = Globals().getDateInterval(calendar.timeInMillis)
+            monthInterval = Globals().getMonthInterval(calendar.timeInMillis)
+            getConsumptionData()
+        }
 
         return root
     }
+    private fun getConsumptionData(){
+        lifecycleScope.launch {
+            caloriesForDay = consumptionViewModel.getDailyCalories(dayInterval.first, dayInterval.second).value ?: 0.0
+            proteinForDay = consumptionViewModel.getDailyProtein(dayInterval.first, dayInterval.second).value ?: 0.0
+            fatsForDay = consumptionViewModel.getDailyFats(dayInterval.first, dayInterval.second).value?: 0.0
+            sugarsForDay = consumptionViewModel.getDailySugars(dayInterval.first, dayInterval.second).value?: 0.0
+            carbsForDay = consumptionViewModel.getDailyCarbs(dayInterval.first, dayInterval.second).value?: 0.0
+            spendingForMonth = consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second).value ?: 0.0
+            println("debug: home fragment $caloriesForDay $proteinForDay $fatsForDay $sugarsForDay $carbsForDay $spendingForMonth")
+            withContext(Main){
+                ChartHelper.updateMacrosPieChart(caloriesPieChart, 2000f, caloriesForDay!!.toFloat())
+                ChartHelper.updateMacrosPieChart(fatsPieChart, 34f, fatsForDay!!.toFloat())
+                ChartHelper.updateMacrosPieChart(carbsPieChart, 225f, carbsForDay!!.toFloat())
+                ChartHelper.updateMacrosPieChart(proteinPieChart, 55f, proteinForDay!!.toFloat())
+            }
+        }
+
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -122,8 +190,23 @@ class DashboardFragment : Fragment() {
         foodArrayList = ArrayList()
         foodListAdapter = FoodItemListAdapter(requireContext(), foodArrayList)
         foodListView.adapter = foodListAdapter
-
         initConsumptionDB()
+        calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+
+        fatsPieChart = binding.fatsChart
+        carbsPieChart = binding.carbsChart
+        caloriesPieChart = binding.calChart
+        proteinPieChart = binding.proteinChart
+
+        ChartHelper.setupEmptyPieChart(fatsPieChart)
+        ChartHelper.setupEmptyPieChart(carbsPieChart)
+        ChartHelper.setupEmptyPieChart(caloriesPieChart)
+        ChartHelper.setupEmptyPieChart(proteinPieChart)
+
+
+        dayInterval = Globals().getDateInterval(calendar.timeInMillis)
+        monthInterval = Globals().getMonthInterval(calendar.timeInMillis)
 
     }
 
