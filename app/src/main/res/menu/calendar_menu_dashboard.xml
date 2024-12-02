@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_previous_day"
+        android:icon="@drawable/arrow_back"
+        android:title="Previous Day"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_next_day"
+        android:icon="@drawable/arrow_forward"
+        android:title="Next Day"
+        app:showAsAction="ifRoom" />
+</menu>

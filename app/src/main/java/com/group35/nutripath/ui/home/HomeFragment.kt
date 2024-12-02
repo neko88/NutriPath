@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieEntry
 import com.group35.nutripath.R
 import com.group35.nutripath.api.openfoodfacts.OpenFoodFactsActivity
 import com.group35.nutripath.api.themealdb.MealActivity
@@ -70,7 +71,7 @@ class HomeFragment : Fragment() {
         lineChart = binding.lineChart
 
         val date = System.currentTimeMillis()
-        dayInterval = Globals().getDateInterval(date)
+
         monthInterval = Globals().getMonthInterval(date)
         println("debug: date = $date, dayInterval ${dayInterval.first} to ${dayInterval.second}")
         println("debug: month = ${monthInterval.first} ${monthInterval.second}")
@@ -154,6 +155,8 @@ class HomeFragment : Fragment() {
         consumptionRepository = ConsumptionRepository(consumptionDao)
         consumptionViewModelFactory = ConsumptionViewModelFactory(consumptionRepository)
     }
+
+
     // temporary functions to get aggregates
 
 }
