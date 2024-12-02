@@ -1,7 +1,10 @@
 package com.group35.nutripath.ui.notifications
 
+import android.app.AlarmManager
 import android.app.AlertDialog
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +13,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.ListView
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,6 +25,7 @@ import com.group35.nutripath.R
 import com.group35.nutripath.databinding.FragmentNotificationsBinding
 import com.group35.nutripath.ui.database.*
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -41,14 +48,15 @@ class NotificationsFragment : Fragment() {
     private lateinit var notificationListView: ListView
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var pendingIntent: PendingIntent
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        setHasOptionsMenu(true) // This enables the options menu
-
+        alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         sharedPreferences = requireActivity().getSharedPreferences("first_launch", Context.MODE_PRIVATE)
 
         initializeDatabase()
@@ -69,22 +77,74 @@ class NotificationsFragment : Fragment() {
             showNotificationDialog(notification)
         }
 
+        root.findViewById<Button>(R.id.button_set).setOnClickListener {
+            showIntervalDialog()
+        }
+
+        root.findViewById<ImageView>(R.id.button_delete).setOnClickListener {
+            showDeleteConfirmationDialog()
+        }
+
         return root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_notification, menu)
+    private fun showIntervalDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_reminder_intervals, null)
+        val radioGroup = dialogView.findViewById<RadioGroup>(R.id.radio_group_intervals)
+        val buttonSet = dialogView.findViewById<Button>(R.id.btn_set_interval)
+
+        val dialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
+
+        val savedInterval = sharedPreferences.getLong("reminder_interval", -1L)
+        when (savedInterval) {
+            4 * AlarmManager.INTERVAL_HOUR -> radioGroup.check(R.id.radio_4h)
+            8 * AlarmManager.INTERVAL_HOUR -> radioGroup.check(R.id.radio_8h)
+            12 * AlarmManager.INTERVAL_HOUR -> radioGroup.check(R.id.radio_12h)
+            AlarmManager.INTERVAL_DAY -> radioGroup.check(R.id.radio_1d)
+            -1L -> radioGroup.check(R.id.radio_never)
+        }
+
+        buttonSet.setOnClickListener {
+            when (radioGroup.checkedRadioButtonId) {
+                R.id.radio_4h -> scheduleReminder(4 * AlarmManager.INTERVAL_HOUR)
+                R.id.radio_8h -> scheduleReminder(8 * AlarmManager.INTERVAL_HOUR)
+                R.id.radio_12h -> scheduleReminder(12 * AlarmManager.INTERVAL_HOUR)
+                R.id.radio_1d -> scheduleReminder(AlarmManager.INTERVAL_DAY)
+                else -> cancelReminder()
+            }
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.delete_all_notifications -> {
-                showDeleteConfirmationDialog()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+    // cancel the daily reminder
+    private fun cancelReminder() {
+        if (::pendingIntent.isInitialized) {
+            alarmManager.cancel(pendingIntent)
         }
+
+        val editor = sharedPreferences.edit()
+        editor.putLong("reminder_interval", -1L).apply() // Save "Never" state
+
+        Toast.makeText(activity, "You will no longer receive reminders now.", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun scheduleReminder(interval: Long) {
+        val editor = sharedPreferences.edit()
+        editor.putLong("reminder_interval", interval).apply()
+
+        val intent = Intent(requireContext(), NotificationsReceiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent,
+            PendingIntent.FLAG_IMMUTABLE)
+
+        val calendar = Calendar.getInstance()
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
+            interval, pendingIntent)
+
+        val nextReminderTime = getNextReminderTime(interval)
+        Toast.makeText(activity, "Your next reminder is at $nextReminderTime.", Toast.LENGTH_LONG).show()
     }
 
     private fun initializeDatabase() {
@@ -102,7 +162,7 @@ class NotificationsFragment : Fragment() {
         if (isFirstLaunch) {
             // If it's the first launch, create a welcome notification
             val welcomeNotification = Notification(
-                title = "Welcome to NutriPath!",
+                title = "Welcome",
                 content = "Hello, and welcome to NutriPath!\n\nDon't forget to log your food expenses and track your nutrition!",
                 timestamp = System.currentTimeMillis() // Store the current timestamp
             )
@@ -186,6 +246,13 @@ class NotificationsFragment : Fragment() {
         val date = Date(timestamp)
         val format = SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault())
         return format.format(date)
+    }
+
+    private fun getNextReminderTime(interval: Long): String {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MILLISECOND, interval.toInt())
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        return timeFormat.format(calendar.time)
     }
 
     override fun onDestroyView() {

@@ -11,9 +11,6 @@
         android:label="Home"
         tools:layout="@layout/activity_home_menu">
         <action
-            android:id="@+id/homeMenu_to_settings"
-            app:destination="@id/navigation_settings"/>
-        <action
             android:id="@+id/homeMenu_to_profile"
             app:destination="@id/navigation_profile"/>
     </fragment>
@@ -52,16 +49,6 @@
         android:name="com.group35.nutripath.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
-
-    <fragment
-        android:id="@+id/navigation_settings"
-        android:name="com.group35.nutripath.ui.settings.SettingsFragment"
-        android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings">
-        <action
-            android:id="@+id/settings_to_profile"
-            app:destination="@id/navigation_profile" />
-    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"

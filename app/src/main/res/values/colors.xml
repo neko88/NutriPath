@@ -30,5 +30,6 @@
     <color name="blue_mute">#8AB3BE</color>
     <color name="blue_sat">#6CAFC0</color>
     <color name="blue_sea">#6CC0BE</color>
+    <color name="blue_light">#cde9f4</color>
 
 </resources>

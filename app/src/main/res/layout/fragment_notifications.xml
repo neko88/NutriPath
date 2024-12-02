@@ -3,10 +3,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_set"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Set Reminder Interval"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/shifty"
+            android:textSize="25sp"
+            android:layout_marginStart="40dp"
+            android:backgroundTint="@color/blue_light"
+            android:textColor="@color/green_dark"
+            android:drawableLeft="@drawable/icon_bell"/>
+
+        <ImageView
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icon_bin"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"/>
+
+    </LinearLayout>
+
     <!-- list of exercise entry -->
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:id="@+id/notificationList"/>
 
 </LinearLayout>

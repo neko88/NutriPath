@@ -98,15 +98,6 @@ class HomeMenuFragment : Fragment() {
             startActivity(intent)
         }
         binding.imageView2.setOnClickListener {
-            findNavController().navigate(
-                R.id.navigation_settings,
-                null,
-                NavOptions.Builder()
-                    .setPopUpTo(R.id.navigation_home_menu, true)
-                    .build()
-            )
-        }
-        binding.imageView3.setOnClickListener {
             findNavController().navigate(R.id.homeMenu_to_profile)
         }
 

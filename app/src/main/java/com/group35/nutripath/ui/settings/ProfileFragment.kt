@@ -16,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.group35.nutripath.R
 import com.group35.nutripath.databinding.FragmentProfileBinding
-import com.group35.nutripath.util.Globals
 
 class ProfileFragment: Fragment() {
     private var _binding: FragmentProfileBinding? = null
