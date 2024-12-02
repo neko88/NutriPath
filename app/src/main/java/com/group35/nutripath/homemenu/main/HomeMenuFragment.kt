@@ -150,12 +150,9 @@ class HomeMenuFragment : Fragment() {
     }
 
     private fun setupName() {
-        sharedPreferences = requireActivity().getSharedPreferences("profile", Context.MODE_PRIVATE)
+        sharedPreferences = requireActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE)
         val name = sharedPreferences.getString("name", "")
-
-        if (name != "") {
-            binding.textView4.text = name
-        }
+        binding.textView4.text = name
     }
 
     private fun changeRecipeBanner() {

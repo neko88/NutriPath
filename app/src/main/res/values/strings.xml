@@ -11,10 +11,8 @@
     <string name="button_edit_profile">Edit Profile</string>
 
     <string-array name="gender_options">
-        <item>(Select your gender)</item>
         <item>Male</item>
         <item>Female</item>
-        <item>Other</item>
     </string-array>
     <string-array name="budget_options">
         <item>(Select your budget)</item>

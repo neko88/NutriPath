@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.group35.nutripath.MainActivity
 import com.group35.nutripath.databinding.ActivityProfileSetupBinding
+import com.group35.nutripath.util.Globals
 
 class ProfileSetupActivity: AppCompatActivity() {
     private lateinit var binding: ActivityProfileSetupBinding
