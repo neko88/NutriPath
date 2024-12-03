@@ -1,4 +1,4 @@
-# CMPT362-FinalProject
+# CMPT362-Final Project
 
 ## Overview
 NutriPath is an application that addresses a common challenge: Maintaining a healthy diet
@@ -12,14 +12,8 @@ This is the application that will solve those problem!
 ## API Key Setup : GOOGLE MAP
 
 This application project uses the Google API for search feature,
-To use it on Desktop, you need to obtain an API key :
+To use it on Desktop, you need to obtain an API key:
 
-1. Vistion [Google Cloud Console](https://console.cloud.google.com/)
+1. Visit on [Google Cloud Console](https://console.cloud.google.com/)
 2. Enable the necessary API
 3. Create an API key and set it in your environment variables (app/src/main/res/values/strings.xml).
-
-## Environment Variables
-- `mapAPI` : API for accessing Google Map
-
-## Acknowledgments
-- This project uses the [Google API](https://developers.google.com/) for Google Map features for search
