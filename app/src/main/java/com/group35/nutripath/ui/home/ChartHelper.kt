@@ -95,7 +95,7 @@ object ChartHelper {
                 }
             })
         }
-
+        pieChart.animateY(750)
         // Update the PieChart
         pieChart.apply {
             data = pieData
@@ -155,7 +155,7 @@ object ChartHelper {
                 }
             })
         }
-
+        pieChart.animateY(750)
         // Update the PieChart
         pieChart.apply {
             data = pieData

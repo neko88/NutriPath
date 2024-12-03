@@ -110,7 +110,7 @@
                     <EditText
                         android:id="@+id/barcodeInputEditText"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="48dp"
                         android:fontFamily="sans-serif-smallcaps"
                         android:hint="enter barcode"
                         android:inputType="number"
@@ -124,7 +124,7 @@
 
                     <Button
                         android:id="@+id/fetchProductButton"
-                        android:layout_width="wrap_content"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:text="Search Barcode"
                         android:layout_gravity="center"
@@ -132,6 +132,14 @@
                         android:layout_marginTop="16dp"
                         android:backgroundTint="@color/quantum_orange"
                         android:layout_centerHorizontal="true" />
+                    <Button
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/fetchProductButton"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/quantum_orange"
+                        android:text="Add and track item"
+                        android:id="@+id/track_item_button"/>
 
 
                     <TextView

@@ -34,7 +34,6 @@ class ConsumptionViewModel(private val repository: ConsumptionRepository) : View
 
 
     val allFoodItemLiveData: LiveData<List<FoodItem>> = repository.allFoodItems.asLiveData()
-
     fun insertFood(foodItem: FoodItem) {
         viewModelScope.launch {
             repository.insertFood(foodItem)
@@ -74,7 +73,13 @@ class ConsumptionViewModel(private val repository: ConsumptionRepository) : View
         return monthlySpending
     }
 
-
+    fun updateMacros(start: Long, end: Long){
+        getDailyCalories(start, end)
+        getDailyCarbs(start,end)
+        getDailyProtein(start, end)
+        getDailyFats(start, end)
+        getDailySugars(start, end)
+    }
     fun getDailyCalories(start: Long, end: Long): LiveData<Double> {
         viewModelScope.launch {
             val totalCals: Double = repository.getTotalCaloriesForDay(start, end) ?: 0.0

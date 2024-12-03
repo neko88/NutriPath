@@ -89,6 +89,15 @@
 
         </LinearLayout>
 
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/monthly_spend_chart"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monthly Spending"
+            android:layout_gravity="center"/>
         <RelativeLayout
 
             android:layout_width="match_parent"
@@ -112,7 +121,7 @@
             <ListView
                 android:id="@+id/dashboard_food_item_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="300dp"
                 android:layout_below="@+id/dashboard_add_existing_text"/>
         </RelativeLayout>
     </LinearLayout>
