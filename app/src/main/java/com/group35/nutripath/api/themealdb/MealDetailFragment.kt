@@ -19,6 +19,7 @@ class MealDetailFragment : Fragment() {
     private var _binding: FragmentMealDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: MealViewModel
+    private lateinit var meal: Meal
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,40 +33,33 @@ class MealDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val meal = MealDetailFragmentArgs.fromBundle(requireArguments()).meal
+        meal = arguments?.getParcelable("meal") ?: throw IllegalStateException("Meal is required")
+
         viewModel = ViewModelProvider(this)[MealViewModel::class.java]
 
-        // Prepare ingredients data as a list of Triple<Name, Image URL, Measurement>
         val ingredients = meal.ingredients.map { (name, measure) ->
             Triple(name, "https://www.themealdb.com/images/ingredients/$name.png", measure)
         }
 
-        // Set up RecyclerView
         val adapter = IngredientAdapter(ingredients)
         binding.ingredientsRecyclerView.apply {
             layoutManager = GridLayoutManager(requireContext(), 5) // 5 columns
             this.adapter = adapter
         }
 
-        // assign the meal API's data to the UI elements
         binding.mealName.text = meal.strMeal
-        binding.mealDescription.text = meal.strInstructions
-        // Call the ViewModel's function to fetch meal details
-
+        binding.mealDescription
         viewModel.getMealDetails(meal.idMeal)
-
 
         viewModel.mealImageUrl.observe(viewLifecycleOwner) { imageUrl ->
             Glide.with(requireContext())
                 .load(imageUrl)
-                .placeholder(R.drawable.np_nutrileaf) // Optional placeholder
-                .error(R.drawable.np_nutrileaf) // Optional error image
-                .into(binding.mealImageView) // Update the ImageView
+                .placeholder(R.drawable.np_nutrileaf) // Placeholder
+                .error(R.drawable.np_nutrileaf) // Error image
+                .into(binding.mealImageView)
         }
 
-
         viewModel.mealArea.observe(viewLifecycleOwner) { area ->
-            binding.cuisineTextView.text = area
             binding.cuisineTextView.text = area
             binding.cuisineImageView.setImageResource(getFlagForArea(area))
         }
@@ -75,7 +69,6 @@ class MealDetailFragment : Fragment() {
             val categoryImageUrl = "https://www.themealdb.com/images/category/$category.png"
             Glide.with(requireContext())
                 .load(categoryImageUrl)
-             //   .circleCrop()
                 .placeholder(R.drawable.np_radish_balloon)
                 .error(R.drawable.np_radish_balloon)
                 .into(binding.categoryImageView)
@@ -86,12 +79,10 @@ class MealDetailFragment : Fragment() {
             val ingredientImageUrl = "https://www.themealdb.com/images/ingredients/$mainIngredient.png"
             Glide.with(requireContext())
                 .load(ingredientImageUrl)
-          //      .circleCrop()
                 .placeholder(R.drawable.np_radish_icecream)
                 .error(R.drawable.np_radish_icecream)
                 .into(binding.ingredientMainImageView)
         }
-
     }
 
     // Map area names to emoji flags

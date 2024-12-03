@@ -21,7 +21,6 @@ import com.group35.nutripath.R
 import com.group35.nutripath.api.edamam.Recipe
 import com.group35.nutripath.api.openfoodfacts.OpenFoodFactsActivity
 import com.group35.nutripath.api.themealdb.MealActivity
-import com.group35.nutripath.api.themealdb.MealFragmentDirections
 import com.group35.nutripath.api.themealdb.emptyMeal
 import com.group35.nutripath.databinding.FragmentHomeMenuBinding
 import com.group35.nutripath.homemenu.adapters.BottomObjectViewAdapter
