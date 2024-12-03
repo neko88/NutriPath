@@ -32,29 +32,33 @@ class NutriPathFoodViewModel (val application: NutriPathApplication) : ViewModel
         val initialFoodList = mutableListOf<String>("Rice","Sushi","Ramen","Laksa","Curry","Onigiri","Chinese","Dumplings","Bao","Shrimp",
             "Pho","Spring Rolls","Buns","Pasta","Korean","Vietnamese","Banh Mi","Thai","Coconut","Bubble Tea","Mango")
         _userFoodTags.value = initialFoodList
-        startApiRunnable()
+    //    startApiRunnable()
     }
 
-    private fun startApiRunnable() {
-        handler = Handler(Looper.getMainLooper())
-        apiRunnable = object : Runnable {
-            override fun run() {
-                viewModelScope.launch {
-                    fetchRandomRecipe { recipe ->
-                        addRecipeToFetchedFoodsList(recipe)
-                    }
-                    handler.postDelayed(apiRunnable, callInterval) // schedule next Edamam call in 60 seconds
-                }
-            }
-        }
-        handler.post(apiRunnable)
-    }
+//    private fun startApiRunnable() {
+//        handler = Handler(Looper.getMainLooper())
+//        apiRunnable = object : Runnable {
+//            override fun run() {
+//                viewModelScope.launch {
+//                    fetchRandomRecipe { recipe ->
+//                        addRecipeToFetchedFoodsList(recipe)
+//                    }
+//                    handler.postDelayed(apiRunnable, callInterval) // schedule next Edamam call in 60 seconds
+//                }
+//            }
+//        }
+//        handler.post(apiRunnable)
+//    }
 
     fun addFavouriteMeal(meal: Meal){
-        val currentList = _favouriteMealList.value ?: mutableListOf()
-        currentList.add(meal)
-        _favouriteMealList.postValue(currentList)
-        println(_favouriteMealList)
+        try {
+            val currentList = _favouriteMealList.value ?: mutableListOf()
+            currentList.add(meal)
+            _favouriteMealList.postValue(currentList)
+            Log.d("NutriPathFoodModel", "Saved a favourite meal: ${meal.strMeal}")
+        }catch(e: Exception){
+            Log.d("NutriPathFoodModel", "Couldn't save a favourite meal.")
+        }
     }
     fun removeFavouriteMeal(meal: Meal){
         val currentList = _favouriteMealList.value ?: mutableListOf()
@@ -79,47 +83,45 @@ class NutriPathFoodViewModel (val application: NutriPathApplication) : ViewModel
         }
     }
 
-    fun addRecipeToFetchedFoodsList(recipe: Recipe) {
-        try {
-            val currentList = _fetchedFoodList.value ?: mutableListOf() // Get the current list or create a new one
-            currentList.add(recipe) // Add the new recipe
-            _fetchedFoodList.postValue(currentList) // Update the LiveData
-            val nameList = _fetchedFoodListNames.value ?: mutableListOf()
-            nameList.add(recipe.label) // Update the names list
-            _fetchedFoodListNames.postValue(nameList)
-            Log.e("HomeMenuFragment", "Successfully saved recipe to fetched food list: ${recipe.label}")
-        } catch (e: Exception) {
-            Log.e("HomeMenuFragment", "Didn't save fetched recipe: ${e}")
-        }
-    }
+//    fun addRecipeToFetchedFoodsList(recipe: Recipe) {
+//        try {
+//            val currentList = _fetchedFoodList.value ?: mutableListOf()
+//            _fetchedFoodList.postValue(currentList)
+//            val nameList = _fetchedFoodListNames.value ?: mutableListOf()
+//            nameList.add(recipe.label) // Update the names list
+//            _fetchedFoodListNames.postValue(nameList)
+//            Log.e("HomeMenuFragment", "Successfully saved recipe to fetched food list: ${recipe.label}")
+//        } catch (e: Exception) {
+//            Log.e("HomeMenuFragment", "Didn't save fetched recipe: ${e}")
+//        }
+//    }
 
 
-    private val appId = "d45fcd57"
-    private val appKey = "2f4ad82db15fbca9481a538196db68dd"
+  //  private val appId = "d45fcd57"
+  //  private val appKey = "2f4ad82db15fbca9481a538196db68dd"
     fun fetchRandomRecipe(onSuccess: (Recipe) -> Unit) {
-        val randomFoodQuery = userFoodTags.value?.random()
-        if (randomFoodQuery != null) {
-            viewModelScope.launch {
-                try {
-                    val result = repository.searchRecipes(
-                        query = randomFoodQuery,
-                        appId = appId,
-                        appKey = appKey,
-                        from = 0,
-                        to = 1
-                    )
-                    result.fold(onSuccess = { recipes ->
-                        if (recipes.isNotEmpty()) {
-                            val recipe = recipes.first()
-                            onSuccess(recipe)
-                            Log.e("HomeMenuFragment", "Successfully fetched recipe: ${recipe.label}") }
-                    }, onFailure = { error ->
-                        Log.e("HomeMenuFragment", "Error fetching recipe: ${error.message}")
-                    })
-                } catch (e: Exception) {
-                    Log.e("HomeMenuFragment", "Unexpected error: ${e.message}")
-                }
-            }
-        }
+//        if (randomFoodQuery != null) {
+//            viewModelScope.launch {
+//                try {
+//                    val result = repository.searchRecipes(
+//                        query = randomFoodQuery,
+//                        appId = appId,
+//                        appKey = appKey,
+//                        from = 0,
+//                        to = 1
+//                    )
+//                    result.fold(onSuccess = { recipes ->
+//                        if (recipes.isNotEmpty()) {
+//                            val recipe = recipes.first()
+//                            onSuccess(recipe)
+//                            Log.e("HomeMenuFragment", "Successfully fetched recipe: ${recipe.label}") }
+//                    }, onFailure = { error ->
+//                        Log.e("HomeMenuFragment", "Error fetching recipe: ${error.message}")
+//                    })
+//                } catch (e: Exception) {
+//                    Log.e("HomeMenuFragment", "Unexpected error: ${e.message}")
+//                }
+//            }
+//        }
     }
 }

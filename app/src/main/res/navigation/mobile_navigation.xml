@@ -9,7 +9,10 @@
         android:id="@+id/navigation_home_menu"
         android:name="com.group35.nutripath.homemenu.fragment.HomeMenuFragment"
         android:label="Home"
-        tools:layout="@layout/activity_home_menu" />
+        tools:layout="@layout/fragment_home_menu">
+    </fragment>
+
+
 
     <fragment
         android:id="@+id/navigation_home"
@@ -61,4 +64,24 @@
         android:name="com.group35.nutripath.ui.settings.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile"/>
+
+    <fragment
+        android:id="@+id/navigation_meal_menu"
+        android:name="com.group35.nutripath.api.themealdb.MealFragment"
+        android:label="Meal List"
+        tools:layout="@layout/fragment_recipe_menu">
+        <action
+            android:id="@+id/action_navigation_meal_menu_to_navigation_meal_detail_fragment"
+            app:destination="@id/navigation_meal_detail_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_meal_detail_fragment"
+        android:name="com.group35.nutripath.api.themealdb.MealDetailFragment"
+        android:label="Meal Details"
+        tools:layout="@layout/fragment_meal_details">
+        <argument
+            android:name="meal"
+            app:argType="com.group35.nutripath.api.themealdb.Meal" />
+    </fragment>
 </navigation>

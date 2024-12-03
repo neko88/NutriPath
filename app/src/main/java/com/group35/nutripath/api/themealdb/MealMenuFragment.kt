@@ -2,6 +2,7 @@
 package com.group35.nutripath.api.themealdb
 
 import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,8 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.group35.nutripath.NutriPathApplication
 import com.group35.nutripath.NutriPathFoodViewModel
 import com.group35.nutripath.databinding.FragmentRecipeMenuBinding
@@ -25,9 +28,21 @@ class MealFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: MealViewModel
     private lateinit var mealAdapter: MealAdapter
-
+    private lateinit var activityCallback: MealActivity
     private val appFoodViewModel: NutriPathFoodViewModel by lazy {
         (requireActivity().application as NutriPathApplication).nutripathFoodViewModel
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is MealActivity) {
+            activityCallback = context
+        } else {
+            throw IllegalStateException("Activity must be MealActivity")
+        }
+    }
+
+    private fun onMealSelected(meal: Meal) {
+        activityCallback.showMealDetailFragment(meal) // Call the function in MealActivity
     }
 
     override fun onCreateView(
@@ -36,17 +51,20 @@ class MealFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRecipeMenuBinding.inflate(inflater, container, false)
+        mealAdapter = MealAdapter(appFoodViewModel) { meal ->
+            activityCallback.showMealDetailFragment(meal)
+        }
+        binding.mealRecycleView.adapter = mealAdapter
+        binding.mealRecycleView.layoutManager = LinearLayoutManager(context)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Initialize ViewModel
         viewModel = ViewModelProvider(this)[MealViewModel::class.java]
-        mealAdapter = MealAdapter(appFoodViewModel){ meal ->
-            val action = MealFragmentDirections.actionMealFragmentToMealDetailFragment(meal)
-            findNavController().navigate(action)
+
+        mealAdapter = MealAdapter(appFoodViewModel) { meal ->
+            onMealSelected(meal)
         }
 
         binding.mealRecycleView.apply {

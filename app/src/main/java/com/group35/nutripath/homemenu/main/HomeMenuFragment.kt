@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.group35.nutripath.NutriPathApplication
 import com.group35.nutripath.NutriPathFoodViewModel
+import com.group35.nutripath.R
 import com.group35.nutripath.api.edamam.Recipe
 import com.group35.nutripath.api.openfoodfacts.OpenFoodFactsActivity
 import com.group35.nutripath.api.themealdb.MealActivity
@@ -68,17 +69,17 @@ class HomeMenuFragment : Fragment() {
 
         binding.analyticsButton.setOnClickListener {
             val intent = Intent(requireContext(), AnalyticsActivity::class.java)
-            Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
         binding.recipeButton.setOnClickListener {
             val intent = Intent(requireContext(), MealActivity::class.java)
-            Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
         binding.searchProductButton.setOnClickListener {
             val intent = Intent(requireContext(), OpenFoodFactsActivity::class.java)
-            Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
         binding.barcodeButton.setOnClickListener {
@@ -86,7 +87,7 @@ class HomeMenuFragment : Fragment() {
                 requireContext(),
                 BarcodeScannerActivity::class.java
             )
-            Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
         return binding.root
@@ -168,8 +169,9 @@ class HomeMenuFragment : Fragment() {
         val placementBanners = listOf(emptyMeal, emptyMeal, emptyMeal, emptyMeal)
 
         favouriteMealAdapter = BottomObjectViewAdapter { meal ->
-            val action = MealFragmentDirections.actionMealFragmentToMealDetailFragment(meal)
-            findNavController().navigate(action)
+    //        val action = NavigationMealMenuDirections.actionNavigationMealMenuToNavigationMealDetailFragment(meal)
+      //      findNavController().navigate(action)
+
         }
 
         binding.bottomObjectViewRecycler.layoutManager = GridLayoutManager(requireContext(), 2)

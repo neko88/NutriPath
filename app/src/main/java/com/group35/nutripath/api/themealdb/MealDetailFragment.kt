@@ -55,7 +55,6 @@ class MealDetailFragment : Fragment() {
         viewModel.getMealDetails(meal.idMeal)
 
 
-        // Observe meal image LiveData and update the ImageView
         viewModel.mealImageUrl.observe(viewLifecycleOwner) { imageUrl ->
             Glide.with(requireContext())
                 .load(imageUrl)
@@ -65,14 +64,12 @@ class MealDetailFragment : Fragment() {
         }
 
 
-        // Observe area (cuisine)
         viewModel.mealArea.observe(viewLifecycleOwner) { area ->
             binding.cuisineTextView.text = area
             binding.cuisineTextView.text = area
             binding.cuisineImageView.setImageResource(getFlagForArea(area))
         }
 
-        // Observe category
         viewModel.mealCategory.observe(viewLifecycleOwner) { category ->
             binding.categoryTextView.text = category
             val categoryImageUrl = "https://www.themealdb.com/images/category/$category.png"
@@ -84,7 +81,6 @@ class MealDetailFragment : Fragment() {
                 .into(binding.categoryImageView)
         }
 
-        // Observe main ingredient
         viewModel.mealMainIngredient.observe(viewLifecycleOwner) { mainIngredient ->
             binding.mainIngTextView.text = mainIngredient
             val ingredientImageUrl = "https://www.themealdb.com/images/ingredients/$mainIngredient.png"

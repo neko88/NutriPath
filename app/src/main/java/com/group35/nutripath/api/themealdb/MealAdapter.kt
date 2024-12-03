@@ -42,19 +42,15 @@ class MealAdapter(private val nutriPathFoodViewModel: NutriPathFoodViewModel, pr
         private val likedButton: ImageButton = itemView.findViewById(R.id.likedButton)
         private val notLikedButton: ImageButton = itemView.findViewById(R.id.NotLikedButton)
         fun bind(meal: Meal) {
-            // Bind meal name and description
             mealNameTextView.text = meal.strMeal
 
-            // Load meal image
             Glide.with(itemView.context)
                 .load(meal.strMealThumb)
                 .apply(RequestOptions().transform(RoundedCorners(50))) // 50dp corner radius
                 .into(mealImageView)
 
-            // Clear ingredient images to handle dynamic updates
             ingredientImages.forEach { it.setImageDrawable(null) }
 
-            // Load ingredient images dynamically from the map
             val ingredientUrls = meal.ingredients.keys.map { ingredient ->
                 "https://www.themealdb.com/images/ingredients/$ingredient.png"
             }
@@ -64,14 +60,15 @@ class MealAdapter(private val nutriPathFoodViewModel: NutriPathFoodViewModel, pr
                 notLikedButton.visibility = View.VISIBLE
                 notLikedButton.isClickable = true
                 nutriPathFoodViewModel.addUserFoodTag(meal.strMeal)
-                nutriPathFoodViewModel.addFavouriteMeal(meal)
+                nutriPathFoodViewModel.removeFavouriteMeal(meal)
             }
             notLikedButton.setOnClickListener{
                 notLikedButton.visibility = View.GONE
                 likedButton.visibility = View.VISIBLE
                 likedButton.isClickable = true
                 nutriPathFoodViewModel.addUserFoodTag(meal.strMeal)
-                nutriPathFoodViewModel.removeFavouriteMeal(meal)
+                nutriPathFoodViewModel.addFavouriteMeal(meal)
+
             }
 
             ingredientUrls.forEachIndexed { index, url ->
@@ -83,9 +80,8 @@ class MealAdapter(private val nutriPathFoodViewModel: NutriPathFoodViewModel, pr
                 }
             }
 
-            // Set click listener for item
             itemView.setOnClickListener {
-                onClick(meal) // Pass the meal to the onClick function
+                onClick(meal)
             }
         }
     }
