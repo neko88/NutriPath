@@ -35,7 +35,7 @@ class BarcodeScannerActivity : AppCompatActivity() {
     private lateinit var previewView: PreviewView
     private lateinit var foodViewModel: OpenFoodFactsViewModel
     private lateinit var selectImageButton: Button
-
+    private var flag = false
     private val REQUIRED_PERMISSIONS = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
         arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES)
     } else {
@@ -240,7 +240,11 @@ class BarcodeScannerActivity : AppCompatActivity() {
         val intent = Intent(this, OpenFoodFactsActivity::class.java).apply {
             putExtra("barcode", barcode)
         }
-        startActivity(intent)
+        if (flag == false){
+            flag = true
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
     }
 
 

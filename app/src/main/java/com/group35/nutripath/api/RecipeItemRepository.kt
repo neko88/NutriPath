@@ -2,7 +2,6 @@ package com.group35.nutripath.api
 
 import com.group35.nutripath.api.edamam.Recipe
 import com.group35.nutripath.ui.database.FoodItem
-import com.group35.nutripath.ui.database.FoodItemDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
