@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -73,12 +74,7 @@ class DashboardFragment : Fragment() {
 
     private lateinit var calendar: Calendar
 
-    private var caloriesForDay: Double? = 0.0
-    private var carbsForDay: Double? = 0.0
-    private var proteinForDay: Double? = 0.0
-    private var fatsForDay: Double? = 0.0
-    private var sugarsForDay: Double? = 0.0
-    private var spendingForMonth: Double? = 0.0
+
     private lateinit var dayInterval: Pair<Long, Long>
     private lateinit var monthInterval: Pair<Long, Long>
 
@@ -87,6 +83,7 @@ class DashboardFragment : Fragment() {
     private lateinit var carbsPieChart: PieChart
     private lateinit var proteinPieChart: PieChart
     private lateinit var fatsPieChart: PieChart
+    private lateinit var monthlySpendingChart: PieChart
 
 
 
@@ -105,6 +102,7 @@ class DashboardFragment : Fragment() {
         consumptionViewModel.allConsumptionLiveData.observe(viewLifecycleOwner){ it ->
             println("debug: Dashboard fragment: all consumption $it")
             consumptionViewModel.updateMacros(dayInterval.first, dayInterval.second)
+            consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second)
         }
         consumptionViewModel.dailyCalories.observe(viewLifecycleOwner) { calories ->
             // Assuming you also fetch protein, fats, etc., similarly
@@ -116,6 +114,11 @@ class DashboardFragment : Fragment() {
             // Assuming you also fetch protein, fats, etc., similarly
             lifecycleScope.launch {
                 ChartHelper.updateMacrosPieChart(fatsPieChart, Globals().getFats(requireContext()).toFloat(), calories.toFloat())
+            }
+        }
+        consumptionViewModel.monthlySpending.observe(viewLifecycleOwner) { it ->
+            lifecycleScope.launch {
+                ChartHelper.updateFoodBudgetPieChart(monthlySpendingChart, Globals().getBudget(requireContext()).toFloat(), it.toFloat())
             }
         }
         consumptionViewModel.dailyCarbs.observe(viewLifecycleOwner) { it ->
@@ -148,6 +151,8 @@ class DashboardFragment : Fragment() {
             println("debug: Dashboard fragment: cons = $cons")
             consumptionViewModel.insertConsumption(cons)
 
+            Toast.makeText(requireContext(), "Tracked consumption of ${selected.name}", Toast.LENGTH_SHORT).show()
+
         }
         addFoodButton.setOnClickListener {
             val intent = Intent(requireContext(), FoodEntryActivity::class.java)
@@ -171,7 +176,10 @@ class DashboardFragment : Fragment() {
             binding.customToolbar.toolbarTitle.text = SimpleDateFormat("EEE MMM d yyyy", Locale.getDefault()).format(calendar.time)
             println("debug: time = ${calendar.time}")
             dayInterval = Globals().getDateInterval(calendar.timeInMillis)
-            monthInterval = Globals().getMonthInterval(calendar.timeInMillis)
+            if (monthInterval != Globals().getMonthInterval(calendar.timeInMillis)){
+                monthInterval = Globals().getMonthInterval(calendar.timeInMillis)
+                consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second)
+            }
             consumptionViewModel.updateMacros(dayInterval.first, dayInterval.second)
         }
 
@@ -182,30 +190,7 @@ class DashboardFragment : Fragment() {
         fatsPieChart.apply { invalidate() }
         carbsPieChart.apply { invalidate()}
         proteinPieChart.apply { invalidate() }
-    }
-    private fun getConsumptionData(){
-        CoroutineScope(IO).launch {
-            caloriesForDay = consumptionViewModel.getDailyCalories(dayInterval.first, dayInterval.second).value ?: 0.0
-
-            proteinForDay = consumptionViewModel.getDailyProtein(dayInterval.first, dayInterval.second).value ?: 0.0
-            fatsForDay = consumptionViewModel.getDailyFats(dayInterval.first, dayInterval.second).value?: 0.0
-            sugarsForDay = consumptionViewModel.getDailySugars(dayInterval.first, dayInterval.second).value?: 0.0
-            carbsForDay = consumptionViewModel.getDailyCarbs(dayInterval.first, dayInterval.second).value?: 0.0
-            spendingForMonth = consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second).value ?: 0.0
-            println("debug: dashboard fragment $caloriesForDay $proteinForDay $fatsForDay $sugarsForDay $carbsForDay $spendingForMonth")
-            val handler = Handler(Looper.getMainLooper())
-
-            try {
-                val chartRunnable = Runnable {
-                    ChartHelper.updateMacrosPieChart(caloriesPieChart, Globals().getCalories(requireContext()).toFloat(), caloriesForDay!!.toFloat())
-                    ChartHelper.updateMacrosPieChart(fatsPieChart, Globals().getFats(requireContext()).toFloat(), fatsForDay!!.toFloat())
-                    ChartHelper.updateMacrosPieChart(carbsPieChart, Globals().getCarbs(requireContext()).toFloat(), carbsForDay!!.toFloat())
-                    ChartHelper.updateMacrosPieChart(proteinPieChart, Globals().getProtein(requireContext()).toFloat(), proteinForDay!!.toFloat())
-                }
-                requireActivity().runOnUiThread(chartRunnable)
-            } catch (e: Exception) { }
-        }
-
+        monthlySpendingChart.apply { invalidate() }
     }
 
 
@@ -236,11 +221,13 @@ class DashboardFragment : Fragment() {
         carbsPieChart = binding.carbsChart
         caloriesPieChart = binding.calChart
         proteinPieChart = binding.proteinChart
+        monthlySpendingChart = binding.monthlySpendChart
 
         ChartHelper.setupEmptyPieChart(fatsPieChart)
         ChartHelper.setupEmptyPieChart(carbsPieChart)
         ChartHelper.setupEmptyPieChart(caloriesPieChart)
         ChartHelper.setupEmptyPieChart(proteinPieChart)
+        ChartHelper.setupEmptyPieChart(monthlySpendingChart)
 
 
         dayInterval = Globals().getDateInterval(calendar.timeInMillis)
