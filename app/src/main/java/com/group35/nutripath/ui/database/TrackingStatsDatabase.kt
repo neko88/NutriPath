@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [TrackingStats::class], version = 1)
+@Database(entities = [TrackingStats::class], version = 2)
 abstract class TrackingStatsDatabase : RoomDatabase() {
     abstract fun trackingStatsDao(): TrackingStatsDao
 
@@ -19,7 +19,9 @@ abstract class TrackingStatsDatabase : RoomDatabase() {
                     context.applicationContext,
                     TrackingStatsDatabase::class.java,
                     "tracking_stats_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }

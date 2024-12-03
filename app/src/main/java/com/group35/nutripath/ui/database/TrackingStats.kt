@@ -8,5 +8,6 @@ data class TrackingStats(
     @PrimaryKey val date: String,
     val time: String,
     val distance: Double,
-    val calories: Int
+    val calories: Int,
+    val journal: String? = null
 )
