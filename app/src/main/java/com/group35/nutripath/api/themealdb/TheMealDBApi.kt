@@ -15,16 +15,17 @@ Reference: https://www.themealdb.com/api.php
 
  */
 interface TheMealDBApi {
-    // search meal by ingredient
-    @GET("search.php?s=")
-    suspend fun getMealsByIngredient(@Query("i") ingredient: String): Response<JsonObject>
+    // Search meal by name
+    @GET("search.php")
+    suspend fun getMealsByIngredient(@Query("s") ingredient: String): Response<JsonObject>
 
-    @GET("lookup.php?s=")
+    // Get meal information by ID
+    @GET("lookup.php")
     suspend fun getMealInformation(@Query("i") mealId: String): Response<JsonObject>
 
-    @GET("filter.php?s=")
-    suspend fun getMealsByCategory(@Query("c") category: String): ResponseMeal
-
+    // Filter meals by category
+    @GET("filter.php")
+    suspend fun getMealsByCategory(@Query("c") category: String): Response<JsonObject>
 }
 
 // API Caller

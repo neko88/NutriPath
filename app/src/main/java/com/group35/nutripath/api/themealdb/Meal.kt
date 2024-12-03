@@ -5,11 +5,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Meal(
-    val idMeal: String,
-    val strMeal: String,
-    val strMealThumb: String,
-    val strInstructions: String,
-    val ingredients: Map<String, String> //
+    val idMeal: String = "",
+    val strMeal: String = "",
+    val strMealThumb: String = "",
+    val strInstructions: String = "",
+    val ingredients: Map<String, String> = emptyMap()
 ) : Parcelable
 
 data class ResponseMeal(
@@ -26,6 +26,13 @@ data class MealInformation(
     val measurements: Map<String, String>
 ) : Parcelable
 
+val emptyMeal = Meal(
+    idMeal = "0",
+    strMeal = "",
+    strMealThumb = "",
+    strInstructions = "",
+    ingredients = emptyMap() // Empty ingredients
+)
 
 data class ResponseMealInformation(
     val mealInformation: List<MealInformation>

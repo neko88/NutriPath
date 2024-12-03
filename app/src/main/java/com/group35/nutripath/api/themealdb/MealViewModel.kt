@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.google.gson.JsonObject
 
+// For the recipe detail card
 class MealViewModel : ViewModel() {
     private val repository = TheMealDBRepository()
     val mealRecommendationList = MutableLiveData<List<Meal>>()
@@ -62,11 +63,12 @@ class MealViewModel : ViewModel() {
         viewModelScope.launch {
             val response = repository.getMealByIngredient(ingredient)
             val mealsJsonArray = response.body()?.getAsJsonArray("meals") ?: return@launch
-
             val meals = mealsJsonArray.map { mealJson ->
                 parseMeal(mealJson.asJsonObject)
             }
-            mealRecommendationList.value = meals
+          //  Log.d("MealViewModel", "Saerching meal by term: ${ingredient}...")
+          //  Log.d("MealViewModel", "Received: ${meals}...")
+            mealRecommendationList.postValue(meals)
         }
     }
 }

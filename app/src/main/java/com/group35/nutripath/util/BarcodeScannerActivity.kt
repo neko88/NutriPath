@@ -203,6 +203,6 @@ class BarcodeScannerActivity : AppCompatActivity() {
     }
 
     private fun setZoom(zoomRatio: Float): Boolean {
-        return camera?.cameraControl?.setZoomRatio(zoomRatio) != null
+        return camera?.cameraControl?.setZoomRatio(zoomRatio)  != null
     }
 }
