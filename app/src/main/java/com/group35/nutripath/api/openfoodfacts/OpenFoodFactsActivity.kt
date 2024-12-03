@@ -87,7 +87,7 @@ class OpenFoodFactsActivity : AppCompatActivity() {
         novascoreScoreTextView = findViewById(R.id.novascore_score_textview)
      //   novascoreGradeTextView = findViewById(R.id.novascore_grade_textview)
         ecoscoreScoreTextView = findViewById(R.id.ecoscore_score_textview)
-      //  ecoscoreGradeTextView = findViewById(R.id.ecoscore_grade_textview)
+     //   ecoscoreGradeTextView = findViewById(R.id.ecoscore_grade_textview)
 
         // Nutrition Facts Fields Initialization
         servingSizeTextView = findViewById(R.id.servingSizeTextView)
@@ -108,6 +108,10 @@ class OpenFoodFactsActivity : AppCompatActivity() {
         storesValue = findViewById(R.id.storesValue)
         countriesValue = findViewById(R.id.countriesValue)
         trackItemButton = findViewById(R.id.track_item_button)
+
+        nutriscoreImageView = findViewById(R.id.nutriscore_imageview)
+        novascoreImageView = findViewById(R.id.novascore_imageview)
+        ecoscoreImageView = findViewById(R.id.ecoscore_imageview)
 
         // Initialize the ViewModel
         foodViewModel = ViewModelProvider(this).get(OpenFoodFactsViewModel::class.java)
@@ -165,10 +169,6 @@ class OpenFoodFactsActivity : AppCompatActivity() {
                 quantityValue.text = product.product?.quantity ?: "N/A"
                 storesValue.text = product.product?.stores ?: "N/A"
                 countriesValue.text = product.product?.countries_tags?.joinToString(", ") ?: "N/A"
-
-                nutriscoreImageView = findViewById(R.id.nutriscore_imageview)
-                novascoreImageView = findViewById(R.id.novascore_imageview)
-                ecoscoreImageView = findViewById(R.id.ecoscore_imageview)
 
                 trackItemButton.setOnClickListener {
                     val bar = barcodeInputEditText.text.toString()
@@ -255,7 +255,7 @@ class OpenFoodFactsActivity : AppCompatActivity() {
                 novascoreScoreTextView.text = "N/A"
 //                novascoreGradeTextView.text = "N/A"
                 ecoscoreScoreTextView.text = "N/A"
-                ecoscoreGradeTextView.text = "N/A"
+             //   ecoscoreGradeTextView.text = "N/A"
 
                 // Set default images for scores
                 nutriscoreImageView.setImageResource(R.drawable.ic_nutripath_logo)
