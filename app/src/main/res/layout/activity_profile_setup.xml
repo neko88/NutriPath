@@ -65,6 +65,7 @@
 
                     <AutoCompleteTextView
                         android:id="@+id/editGender"
+                        android:enabled="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -184,6 +185,7 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/editActivityLevel"
+                    android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -202,6 +204,7 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/editHealthGoal"
+                    android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -220,6 +223,7 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/editDietaryPreference"
+                    android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
