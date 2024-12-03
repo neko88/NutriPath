@@ -3,6 +3,7 @@ package com.group35.nutripath.util
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -66,14 +67,12 @@ class BarcodeScannerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barcode)
-
+      // testingBarcode()
         previewView = findViewById(R.id.previewView)
         selectImageButton = findViewById(R.id.selectImageButton)
         requestPermissions()
 
         foodViewModel = ViewModelProvider(this).get(OpenFoodFactsViewModel::class.java)
-
-        // for choosing gallery barcodes
         galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 result.data?.data?.let { uri ->
@@ -81,19 +80,18 @@ class BarcodeScannerActivity : AppCompatActivity() {
                 }
             }
         }
-        // for gallery button
         selectImageButton.setOnClickListener {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
                 if (checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
                     openGallery()
                 } else {
-                    requestPermissions() // Request permission if not granted
+                    requestPermissions()
                 }
             } else {
                 if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     openGallery()
                 } else {
-                    requestPermissions() // Request permission if not granted
+                    requestPermissions()
                 }
             }
         }
@@ -108,9 +106,33 @@ class BarcodeScannerActivity : AppCompatActivity() {
         })
     }
 
+    fun testingBarcode() {
+        val barcodeImageResId = R.drawable.test_barcode
+        val bitmap = BitmapFactory.decodeResource(this.resources, barcodeImageResId)
+        val image = InputImage.fromBitmap(bitmap, 0)
+        val options = BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(
+                Barcode.FORMAT_UPC_A,
+                Barcode.FORMAT_EAN_13,
+                Barcode.FORMAT_QR_CODE
+            ).build()
+        val scanner = BarcodeScanning.getClient(options)
+        scanner.process(image)
+            .addOnSuccessListener { barcodes ->
+                for (barcode in barcodes) {
+                    val rawValue = barcode.rawValue
+                    handleBarcodeSuccess(barcodes)
+                    Log.d("TestBarcode", "Scanned barcode value: $rawValue")
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("TestBarcode", "Failed to scan barcode", e)
+            }
+    }
+
+
     private fun launchCamera() {
         val cameraProviderInstance = ProcessCameraProvider.getInstance(this@BarcodeScannerActivity)
-
         cameraProviderInstance.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderInstance.get()
             val preview = Preview.Builder().build().also {
@@ -136,14 +158,25 @@ class BarcodeScannerActivity : AppCompatActivity() {
 
     @androidx.annotation.OptIn(ExperimentalGetImage::class)
     private fun processImageProxy(imageProxy: ImageProxy) {
-        val mediaImage = imageProxy.image
-        if (mediaImage != null) {
-            val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-            scanBarcodes(image).addOnCompleteListener {
-                imageProxy.close()
+        val mediaImage = imageProxy.image ?: run {
+            imageProxy.close()
+            return
+        }
+        val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+        scanBarcodes(image).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val barcodes = task.result
+                barcodes?.forEach { barcode ->
+                    Log.d("Barcode", "Value: ${barcode.rawValue}")
+                }
+            } else {
+                Log.e("processImageProxy", "Error scanning barcodes", task.exception)
             }
+            imageProxy.close()
         }
     }
+
+
 
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK).apply {
@@ -166,36 +199,50 @@ class BarcodeScannerActivity : AppCompatActivity() {
     }
 
     private fun scanBarcodes(image: InputImage): Task<List<Barcode>> {
+        // Configure barcode scanner options
+        println("reached")
         val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(
                 Barcode.FORMAT_UPC_A,
                 Barcode.FORMAT_EAN_13,
                 Barcode.FORMAT_QR_CODE
-            ).setZoomSuggestionOptions(
+            )
+            .setZoomSuggestionOptions(
                 ZoomSuggestionOptions.Builder(::setZoom)
                     .setMaxSupportedZoomRatio(
-                        camera?.cameraInfo?.zoomState?.value?.maxZoomRatio ?: 1.0f)
-                    .build())
-            .build()
+                        camera?.cameraInfo?.zoomState?.value?.maxZoomRatio ?: 1.0f
+                    ).build()
+            ).build()
+
         val scanner = BarcodeScanning.getClient(options)
         return scanner.process(image)
             .addOnSuccessListener { barcodes ->
-                for (barcode in barcodes) {
-                    val rawValue = barcode.rawValue
-                    rawValue?.let {
-                        Log.e("BarcodeScannerActivity", "Raw Value: $rawValue")
-                        // Pass the barcode value to ViewModel
-                        foodViewModel.findFoodByBarcode(rawValue)
-                        val intent = Intent(this, OpenFoodFactsActivity::class.java)
-                        intent.putExtra("barcode", rawValue)
-                        startActivity(intent)
-                    }
-                }
+                handleBarcodeSuccess(barcodes)
             }
             .addOnFailureListener { e ->
                 Log.e("BarcodeScannerActivity", "Barcode scanning failed", e)
             }
     }
+
+    private fun handleBarcodeSuccess(barcodes: List<Barcode>) {
+        for (barcode in barcodes) {
+            val rawValue = barcode.rawValue
+            rawValue?.let {
+                Log.e("BarcodeScannerActivity", "Raw Value: $rawValue")
+                // Update ViewModel with the barcode
+                foodViewModel.findFoodByBarcode(rawValue)
+                navigateToFoodDetails(rawValue)
+            }
+        }
+    }
+
+    private fun navigateToFoodDetails(barcode: String) {
+        val intent = Intent(this, OpenFoodFactsActivity::class.java).apply {
+            putExtra("barcode", barcode)
+        }
+        startActivity(intent)
+    }
+
 
     private fun setZoom(zoomRatio: Float): Boolean {
         return camera?.cameraControl?.setZoomRatio(zoomRatio)  != null
