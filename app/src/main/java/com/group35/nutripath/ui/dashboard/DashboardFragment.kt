@@ -2,6 +2,10 @@ package com.group35.nutripath.ui.dashboard
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.Contacts
+import android.provider.Contacts.Intents.UI
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.charts.PieChart
@@ -97,12 +102,30 @@ class DashboardFragment : Fragment() {
         val root: View = binding.root
 
         initialize()
-        //foodViewModel.deleteAll()
         consumptionViewModel.allConsumptionLiveData.observe(viewLifecycleOwner){ it ->
             println("debug: Dashboard fragment: all consumption $it")
-            println("debug: Home fragment: all consumption: $it")
-            CoroutineScope(IO).launch {
-                getConsumptionData()
+            consumptionViewModel.updateMacros(dayInterval.first, dayInterval.second)
+        }
+        consumptionViewModel.dailyCalories.observe(viewLifecycleOwner) { calories ->
+            // Assuming you also fetch protein, fats, etc., similarly
+            lifecycleScope.launch {
+                ChartHelper.updateMacrosPieChart(caloriesPieChart, Globals().getCalories(requireContext()).toFloat(), calories.toFloat())
+            }
+        }
+        consumptionViewModel.dailyFats.observe(viewLifecycleOwner) { calories ->
+            // Assuming you also fetch protein, fats, etc., similarly
+            lifecycleScope.launch {
+                ChartHelper.updateMacrosPieChart(fatsPieChart, Globals().getFats(requireContext()).toFloat(), calories.toFloat())
+            }
+        }
+        consumptionViewModel.dailyCarbs.observe(viewLifecycleOwner) { it ->
+            lifecycleScope.launch {
+                ChartHelper.updateMacrosPieChart(carbsPieChart, Globals().getCarbs(requireContext()).toFloat(), it.toFloat())
+            }
+        }
+        consumptionViewModel.dailyProtein.observe(viewLifecycleOwner){it ->
+            lifecycleScope.launch {
+                ChartHelper.updateMacrosPieChart(proteinPieChart, Globals().getProtein(requireContext()).toFloat(), it.toFloat())
             }
         }
         consumptionViewModel.allFoodItemLiveData.observe(viewLifecycleOwner){ it ->
@@ -134,38 +157,53 @@ class DashboardFragment : Fragment() {
         binding.customToolbar.toolbarTitle.text = SimpleDateFormat("EEE MMM d yyyy", Locale.getDefault()).format(calendar.time)
 
         binding.customToolbar.btnNextDay.setOnClickListener(){
+            invalidateCharts()
             calendar.add(Calendar.DAY_OF_YEAR, 1)
             binding.customToolbar.toolbarTitle.text = SimpleDateFormat("EEE MMM d yyyy", Locale.getDefault()).format(calendar.time)
             dayInterval = Globals().getDateInterval(calendar.timeInMillis)
+            println("debug: time = ${calendar.time}")
             monthInterval = Globals().getMonthInterval(calendar.timeInMillis)
-            getConsumptionData()
+            consumptionViewModel.updateMacros(dayInterval.first, dayInterval.second)
         }
         binding.customToolbar.btnPreviousDay.setOnClickListener(){
+            invalidateCharts()
             calendar.add(Calendar.DAY_OF_YEAR, -1)
             binding.customToolbar.toolbarTitle.text = SimpleDateFormat("EEE MMM d yyyy", Locale.getDefault()).format(calendar.time)
-
+            println("debug: time = ${calendar.time}")
             dayInterval = Globals().getDateInterval(calendar.timeInMillis)
             monthInterval = Globals().getMonthInterval(calendar.timeInMillis)
-            getConsumptionData()
+            consumptionViewModel.updateMacros(dayInterval.first, dayInterval.second)
         }
 
         return root
     }
+    private fun invalidateCharts(){
+        caloriesPieChart.apply { invalidate() }
+        fatsPieChart.apply { invalidate() }
+        carbsPieChart.apply { invalidate()}
+        proteinPieChart.apply { invalidate() }
+    }
     private fun getConsumptionData(){
-        lifecycleScope.launch {
+        CoroutineScope(IO).launch {
             caloriesForDay = consumptionViewModel.getDailyCalories(dayInterval.first, dayInterval.second).value ?: 0.0
+
             proteinForDay = consumptionViewModel.getDailyProtein(dayInterval.first, dayInterval.second).value ?: 0.0
             fatsForDay = consumptionViewModel.getDailyFats(dayInterval.first, dayInterval.second).value?: 0.0
             sugarsForDay = consumptionViewModel.getDailySugars(dayInterval.first, dayInterval.second).value?: 0.0
             carbsForDay = consumptionViewModel.getDailyCarbs(dayInterval.first, dayInterval.second).value?: 0.0
             spendingForMonth = consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second).value ?: 0.0
-            println("debug: home fragment $caloriesForDay $proteinForDay $fatsForDay $sugarsForDay $carbsForDay $spendingForMonth")
-            withContext(Main){
-                ChartHelper.updateMacrosPieChart(caloriesPieChart, 2000f, caloriesForDay!!.toFloat())
-                ChartHelper.updateMacrosPieChart(fatsPieChart, 34f, fatsForDay!!.toFloat())
-                ChartHelper.updateMacrosPieChart(carbsPieChart, 225f, carbsForDay!!.toFloat())
-                ChartHelper.updateMacrosPieChart(proteinPieChart, 55f, proteinForDay!!.toFloat())
-            }
+            println("debug: dashboard fragment $caloriesForDay $proteinForDay $fatsForDay $sugarsForDay $carbsForDay $spendingForMonth")
+            val handler = Handler(Looper.getMainLooper())
+
+            try {
+                val chartRunnable = Runnable {
+                    ChartHelper.updateMacrosPieChart(caloriesPieChart, Globals().getCalories(requireContext()).toFloat(), caloriesForDay!!.toFloat())
+                    ChartHelper.updateMacrosPieChart(fatsPieChart, Globals().getFats(requireContext()).toFloat(), fatsForDay!!.toFloat())
+                    ChartHelper.updateMacrosPieChart(carbsPieChart, Globals().getCarbs(requireContext()).toFloat(), carbsForDay!!.toFloat())
+                    ChartHelper.updateMacrosPieChart(proteinPieChart, Globals().getProtein(requireContext()).toFloat(), proteinForDay!!.toFloat())
+                }
+                requireActivity().runOnUiThread(chartRunnable)
+            } catch (e: Exception) { }
         }
 
     }

@@ -6,25 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieEntry
 import com.group35.nutripath.data.BudgetRepository
+import org.apache.commons.lang3.mutable.Mutable
 
 class DashboardViewModel : ViewModel() {
-    private val repository = BudgetRepository()
+    private val _startDay =  MutableLiveData<Long>()
+    private val _endDay = MutableLiveData<Long>()
+    val startDay: MutableLiveData<Long> = _startDay
+    val endDay: MutableLiveData<Long> = _endDay
 
-    // Exposing LiveData for budget and expense entries
-    val budgetAllocations: LiveData<List<PieEntry>> get() = repository.budgetAllocations
-    val expenseEntries: LiveData<List<Entry>> get() = repository.expenseEntries
-
-    // Updating budget allocations and expenses by delegating to the repository
-    fun updateBudgetAllocations(monthlyBudget: Float) {
-        repository.updateBudgetAllocations(monthlyBudget)
-    }
-
-    // Set the total amount of money spent
-    fun setExpense(expenseAmount: Float){
-        repository.setTotalExpense(expenseAmount)
-    }
-    fun addExpense(expenseAmount: Float) {
-        repository.addExpense(expenseAmount)
-    }
 
 }

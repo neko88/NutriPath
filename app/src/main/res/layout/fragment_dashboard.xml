@@ -112,7 +112,7 @@
             <ListView
                 android:id="@+id/dashboard_food_item_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="300dp"
                 android:layout_below="@+id/dashboard_add_existing_text"/>
         </RelativeLayout>
     </LinearLayout>
