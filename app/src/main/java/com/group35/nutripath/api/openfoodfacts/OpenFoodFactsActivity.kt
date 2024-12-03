@@ -5,11 +5,19 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.group35.nutripath.R
+import com.group35.nutripath.ui.database.ConsumptionDao
+import com.group35.nutripath.ui.database.ConsumptionDatabase
+import com.group35.nutripath.ui.database.ConsumptionRepository
+import com.group35.nutripath.ui.database.ConsumptionViewModel
+import com.group35.nutripath.ui.database.ConsumptionViewModelFactory
+import com.group35.nutripath.ui.database.FoodItem
 import java.util.Locale
 
 class OpenFoodFactsActivity : AppCompatActivity() {
@@ -17,15 +25,16 @@ class OpenFoodFactsActivity : AppCompatActivity() {
 
     private lateinit var barcodeInputEditText: EditText
     private lateinit var fetchProductButton: Button
+    private lateinit var trackItemButton: Button
     private lateinit var productImageView: ImageView
     private lateinit var productNameTextView: TextView
     private lateinit var ingredientsTextView: TextView
 
     // Nutrition Scores Fields Initialization
     private lateinit var nutriscoreScoreTextView: TextView
-    private lateinit var nutriscoreGradeTextView: TextView
+//    private lateinit var nutriscoreGradeTextView: TextView
     private lateinit var novascoreScoreTextView: TextView
-    private lateinit var novascoreGradeTextView: TextView
+//    private lateinit var novascoreGradeTextView: TextView
     private lateinit var ecoscoreScoreTextView: TextView
     private lateinit var ecoscoreGradeTextView: TextView
 
@@ -54,6 +63,13 @@ class OpenFoodFactsActivity : AppCompatActivity() {
     private lateinit var nutriscoreImageView: ImageView
     private lateinit var novascoreImageView: ImageView
     private lateinit var ecoscoreImageView: ImageView
+
+    private lateinit var consumptionDB: ConsumptionDatabase
+    private lateinit var consumptionDao: ConsumptionDao
+    private lateinit var consumptionRepository: ConsumptionRepository
+
+    private lateinit var consumptionViewModelFactory: ConsumptionViewModelFactory
+    private lateinit var consumptionViewModel: ConsumptionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +107,7 @@ class OpenFoodFactsActivity : AppCompatActivity() {
         quantityValue = findViewById(R.id.quantityValue)
         storesValue = findViewById(R.id.storesValue)
         countriesValue = findViewById(R.id.countriesValue)
+        trackItemButton = findViewById(R.id.track_item_button)
 
         // Initialize the ViewModel
         foodViewModel = ViewModelProvider(this).get(OpenFoodFactsViewModel::class.java)
@@ -102,6 +119,8 @@ class OpenFoodFactsActivity : AppCompatActivity() {
                 foodViewModel.findFoodByBarcode(barcode)
             }
         }
+
+
 
         // Check if barcode was passed via intent and fetch product info
         val barcode = intent.getStringExtra("barcode")
@@ -123,11 +142,12 @@ class OpenFoodFactsActivity : AppCompatActivity() {
                         .error(R.drawable.ic_nutripath_logo)
                         .into(productImageView)
                 }
-
+                initConsumptionDB()
                 ingredientsTextView.text = product.product?.ingredients_text ?: "M/A"
-
                 // Set Nutrition Facts Table
                 val nutriments = product.product?.nutriments
+                println("debug: ${product.product}")
+
                 servingSizeTextView.text = product.product?.serving_size ?: "N/A"
                 caloriesTextView.text = nutriments?.energy_kcal?.toString() ?: "N/A"
                 totalFatTextView.text = nutriments?.fat?.toString() + " g" ?: "N/A"
@@ -150,11 +170,25 @@ class OpenFoodFactsActivity : AppCompatActivity() {
                 novascoreImageView = findViewById(R.id.novascore_imageview)
                 ecoscoreImageView = findViewById(R.id.ecoscore_imageview)
 
+                trackItemButton.setOnClickListener {
+                    val bar = barcodeInputEditText.text.toString()
+                    if(bar.isNotBlank()){
+                        val food = FoodItem()
+                        food.name = product.product?.product_name ?: "N/A"
+                        food.cals = nutriments?.energy_kcal ?: 0.0
+                        food.fats = nutriments?.fat ?: 0.0
+                        food.protein = nutriments?.proteins?: 0.0
+                        food.sugars = nutriments?.sugars?: 0.0
+                        food.carbs = nutriments?.carbohydrates?:0.0
+                        consumptionViewModel.insertFood(food) // Adds food item WITHOUT consumption.
+                        Toast.makeText(this, "Added ${food.name} to database. To track consumption of this item, navigate to dashboard fragment", Toast.LENGTH_LONG).show()
+                    }
+                }
                 // Set Nutrition Scores and Grades
                 val nutriScore = product.product?.nutriscore_score
                 val nutriGrade = product.product?.nutrition_grade_fr
                 nutriscoreScoreTextView.text = nutriScore?.toString() ?: "N/A"
-             //   nutriscoreGradeTextView.text = nutriGrade?.toUpperCase() ?: "N/A"
+//                nutriscoreGradeTextView.text = nutriGrade?.toUpperCase() ?: "N/A"
 
                 val novaScore = product.product?.nova_group
                 novascoreScoreTextView.text = novaScore?.toString() ?: "N/A"
@@ -217,9 +251,9 @@ class OpenFoodFactsActivity : AppCompatActivity() {
 
                 // Set default values for Nutrition Scores
                 nutriscoreScoreTextView.text = "N/A"
-                nutriscoreGradeTextView.text = "N/A"
+//                nutriscoreGradeTextView.text = "N/A"
                 novascoreScoreTextView.text = "N/A"
-                novascoreGradeTextView.text = "N/A"
+//                novascoreGradeTextView.text = "N/A"
                 ecoscoreScoreTextView.text = "N/A"
                 ecoscoreGradeTextView.text = "N/A"
 
@@ -230,5 +264,13 @@ class OpenFoodFactsActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    private fun initConsumptionDB(){
+        consumptionDB = ConsumptionDatabase.getInstance(this)
+        consumptionDao = consumptionDB.consumptionDao
+        consumptionRepository = ConsumptionRepository(consumptionDao)
+        consumptionViewModelFactory = ConsumptionViewModelFactory(consumptionRepository)
+        consumptionViewModel = ViewModelProvider(this, consumptionViewModelFactory).get(ConsumptionViewModel::class.java)
     }
 }

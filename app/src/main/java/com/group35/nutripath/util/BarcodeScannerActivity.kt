@@ -159,8 +159,10 @@ class BarcodeScannerActivity : AppCompatActivity() {
     private fun processImageFromUri(uri: Uri) {
         try {
             val image = InputImage.fromFilePath(this, uri)
+            println("debug: trying to scan barcode from image")
             scanBarcodes(image)
         } catch (e: Exception) {
+            println("debug: scanned barcode from image")
             Log.e("BarcodeScannerActivity", "Failed to load image from gallery: ${e.message}")
         }
     }
@@ -178,6 +180,7 @@ class BarcodeScannerActivity : AppCompatActivity() {
                     .build())
             .build()
         val scanner = BarcodeScanning.getClient(options)
+        println("debug: processed image")
         return scanner.process(image)
             .addOnSuccessListener { barcodes ->
                 for (barcode in barcodes) {
@@ -188,11 +191,13 @@ class BarcodeScannerActivity : AppCompatActivity() {
                         foodViewModel.findFoodByBarcode(rawValue)
                         val intent = Intent(this, OpenFoodFactsActivity::class.java)
                         intent.putExtra("barcode", rawValue)
+                        println("debug: barcode success")
                         startActivity(intent)
                     }
                 }
             }
             .addOnFailureListener { e ->
+                println("debug: barcode scan failed")
                 Log.e("BarcodeScannerActivity", "Barcode scanning failed", e)
             }
     }

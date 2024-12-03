@@ -159,9 +159,9 @@ class HomeMenuFragment : Fragment() {
         if (bannerRotationCount >= bannerSlideCollection.size) {
             bannerRotationCount = 0
         } else { bannerRotationCount += 1 }
-        fetchRandomRecipe { recipeSlide ->
-            sliderAdapter.updateSingleItem(bannerRotationCount, recipeSlide)
-        }
+//        fetchRandomRecipe { recipeSlide ->
+//            sliderAdapter.updateSingleItem(bannerRotationCount, recipeSlide)
+//        }
     }
 
     private fun setupAutoSlide() {

@@ -68,7 +68,6 @@ class DashboardFragment : Fragment() {
     private lateinit var consumptionDao: ConsumptionDao
     private lateinit var consumptionRepository: ConsumptionRepository
 
-    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var consumptionViewModelFactory: ConsumptionViewModelFactory
     private val consumptionViewModel: ConsumptionViewModel by activityViewModels() { consumptionViewModelFactory }
 
@@ -156,6 +155,9 @@ class DashboardFragment : Fragment() {
         }
         addFoodButton.setOnClickListener {
             val intent = Intent(requireContext(), FoodEntryActivity::class.java)
+            val bundle = Bundle()
+            bundle.putLong("DATE", calendar.timeInMillis)
+            intent.putExtras(bundle)
             startActivity(intent)
         }
 
@@ -169,6 +171,7 @@ class DashboardFragment : Fragment() {
             println("debug: time = ${calendar.time}")
             monthInterval = Globals().getMonthInterval(calendar.timeInMillis)
             consumptionViewModel.updateMacros(dayInterval.first, dayInterval.second)
+            consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second)
         }
         binding.customToolbar.btnPreviousDay.setOnClickListener(){
             invalidateCharts()
@@ -176,10 +179,8 @@ class DashboardFragment : Fragment() {
             binding.customToolbar.toolbarTitle.text = SimpleDateFormat("EEE MMM d yyyy", Locale.getDefault()).format(calendar.time)
             println("debug: time = ${calendar.time}")
             dayInterval = Globals().getDateInterval(calendar.timeInMillis)
-            if (monthInterval != Globals().getMonthInterval(calendar.timeInMillis)){
-                monthInterval = Globals().getMonthInterval(calendar.timeInMillis)
-                consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second)
-            }
+            monthInterval = Globals().getMonthInterval(calendar.timeInMillis)
+            consumptionViewModel.getTotalSpendingForMonth(monthInterval.first, monthInterval.second)
             consumptionViewModel.updateMacros(dayInterval.first, dayInterval.second)
         }
 
