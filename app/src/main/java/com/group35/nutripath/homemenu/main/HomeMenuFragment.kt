@@ -1,6 +1,8 @@
 package com.group35.nutripath.homemenu.fragment
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -44,6 +46,7 @@ class HomeMenuFragment : Fragment() {
     private var bannerRotationCount = 1
 
     private lateinit var bannerSlideCollection: MutableList<TopDataObject>
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +63,7 @@ class HomeMenuFragment : Fragment() {
         homePageViewModel.loadMiddleBannerItems()
         homePageViewModel.loadBottomBannerItems()
 
+        setupName()
         setupBannerCollection()
         setupSlider()
         setupAutoSlide()
@@ -89,12 +93,21 @@ class HomeMenuFragment : Fragment() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
+        binding.imageView2.setOnClickListener {
+            findNavController().navigate(R.id.homeMenu_to_profile)
+        }
         return binding.root
     }
 
     private fun convertRecipeToTopDataObject(recipe: Recipe): TopDataObject {
         val newTopDataObject = TopDataObject(resource=recipe.image, label=recipe.label, url=recipe.url)
         return newTopDataObject
+    }
+
+    private fun setupName() {
+        sharedPreferences = requireActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE)
+        val name = sharedPreferences.getString("name", "")
+        binding.textView4.text = name
     }
 
     // call edamam api for a recipe, if its been over a minute then post result here.
