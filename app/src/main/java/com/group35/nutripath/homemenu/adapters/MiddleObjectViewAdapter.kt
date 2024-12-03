@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.group35.nutripath.databinding.ViewHolderMidViewBinding
+import com.group35.nutripath.databinding.ItemHomeMiddleObjectBinding
 import com.group35.nutripath.homemenu.dataobject.MiddleDataObject
 
 
@@ -14,14 +14,13 @@ class MiddleObjectViewAdapter (val items: List<MiddleDataObject>) :
     RecyclerView.Adapter<MiddleObjectViewAdapter.Viewholder>(){
         private lateinit var context: Context
 
-        inner class Viewholder(val binding: ViewHolderMidViewBinding) :
+        inner class Viewholder(val binding: ItemHomeMiddleObjectBinding) :
             RecyclerView.ViewHolder(binding.root) {
-
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Viewholder {
             context = parent.context
-            val binding = ViewHolderMidViewBinding.inflate(LayoutInflater.from(context), parent, false)
+            val binding = ItemHomeMiddleObjectBinding.inflate(LayoutInflater.from(context), parent, false)
             return Viewholder(binding)
         }
 

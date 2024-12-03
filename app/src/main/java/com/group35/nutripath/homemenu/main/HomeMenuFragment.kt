@@ -10,17 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.group35.nutripath.NutriPathApplication
-import com.group35.nutripath.NutriPathApplicationViewModel
-import com.group35.nutripath.api.edamam.EdamamRepository
-import com.group35.nutripath.api.edamam.EdamamViewModel
+import com.group35.nutripath.NutriPathFoodViewModel
+import com.group35.nutripath.api.edamam.Recipe
 import com.group35.nutripath.api.openfoodfacts.OpenFoodFactsActivity
 import com.group35.nutripath.api.themealdb.MealActivity
+import com.group35.nutripath.api.themealdb.MealFragmentDirections
+import com.group35.nutripath.api.themealdb.emptyMeal
 import com.group35.nutripath.databinding.FragmentHomeMenuBinding
 import com.group35.nutripath.homemenu.adapters.BottomObjectViewAdapter
 import com.group35.nutripath.homemenu.adapters.MiddleObjectViewAdapter
@@ -29,20 +30,24 @@ import com.group35.nutripath.homemenu.dataobject.TopDataObject
 import com.group35.nutripath.homemenu.main.MainHomeViewModel
 import com.group35.nutripath.ui.home.AnalyticsActivity
 import com.group35.nutripath.util.BarcodeScannerActivity
-import kotlinx.coroutines.launch
 
 class HomeMenuFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeMenuBinding
     private val homePageViewModel = MainHomeViewModel()
-    private val edamamViewModel = EdamamViewModel()
     private val sliderHandler = Handler(Looper.getMainLooper())
     private lateinit var sliderAdapter: TopObjectViewAdapter
-    private val repository = EdamamRepository()
-    private lateinit var appViewModel: NutriPathApplicationViewModel
-    private var bannerRotationCount = 0
+    private lateinit var favouriteMealAdapter: BottomObjectViewAdapter
+    private val appFoodViewModel: NutriPathFoodViewModel by lazy {
+        (requireActivity().application as NutriPathApplication).nutripathFoodViewModel
+    }
+    private var bannerRotationCount = 1
 
     private lateinit var bannerSlideCollection: MutableList<TopDataObject>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
 
     override fun onCreateView(
@@ -51,20 +56,15 @@ class HomeMenuFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeMenuBinding.inflate(inflater, container, false)
-        appViewModel =
-            (requireActivity().application as NutriPathApplication).nutriPathApplicationViewModel
-
         homePageViewModel.loadTopBannerItems()
         homePageViewModel.loadMiddleBannerItems()
         homePageViewModel.loadBottomBannerItems()
 
-        middleBanner()
-        bottomBanner()
-
         setupBannerCollection()
         setupSlider()
         setupAutoSlide()
-        scheduleApiUpdates()
+        middleBanner()
+        bottomBanner()
 
         binding.analyticsButton.setOnClickListener {
             val intent = Intent(requireContext(), AnalyticsActivity::class.java)
@@ -89,35 +89,32 @@ class HomeMenuFragment : Fragment() {
             Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
-
-        /*
-        // observe recipes and update the slider
-        edamamViewModel.recipesLiveData.observe(viewLifecycleOwner) { recipes ->
-            if (recipes.isNotEmpty()) {
-                val recipe = recipes.first()
-                val recipeSlide = TopDataObject(
-                    resource = recipe.image,
-                    label = recipe.label,
-                    url = recipe.url
-                )
-                sliderAdapter.updateSingleItem(0, recipeSlide)
-            }
-        }*/
         return binding.root
     }
 
+    private fun convertRecipeToTopDataObject(recipe: Recipe): TopDataObject {
+        val newTopDataObject = TopDataObject(resource=recipe.image, label=recipe.label, url=recipe.url)
+        return newTopDataObject
+    }
 
+    // call edamam api for a recipe, if its been over a minute then post result here.
+    // update the banner slider on the home view.
     private fun setupBannerCollection() {
-        bannerSlideCollection =
-            homePageViewModel.topObjectInitialSlides as MutableList<TopDataObject>
-        homePageViewModel.topObjectSliderItems.observe(viewLifecycleOwner) { it ->
-            bannerSlideCollection = it as MutableList<TopDataObject>
+        bannerSlideCollection = homePageViewModel.topObjectInitialSlides as MutableList<TopDataObject>
+
+        // update the top slider whenever there is a new recipe fetched from Edamam.
+        appFoodViewModel.fetchedFoodList.observe(viewLifecycleOwner) { it ->
+            val newSlide = convertRecipeToTopDataObject(it.last())
+            Log.d("HomeMenuFragment", "Updated slide with ${newSlide.label}")
+            sliderAdapter.updateSingleItem(bannerRotationCount, newSlide)
+            if (bannerRotationCount >= bannerSlideCollection.size) {
+                bannerRotationCount = 0
+            } else { bannerRotationCount += 1 }
         }
     }
 
     private fun setupSlider() {
-        sliderAdapter =
-            TopObjectViewAdapter(bannerSlideCollection, binding.topObjectViewPagerSlider)
+        sliderAdapter = TopObjectViewAdapter(bannerSlideCollection, binding.topObjectViewPagerSlider)
         binding.topObjectViewPagerSlider.adapter = sliderAdapter
 
         // ViewPager2 settings
@@ -126,15 +123,6 @@ class HomeMenuFragment : Fragment() {
             clipToPadding = false
             clipChildren = false
             getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-        }
-    }
-
-    private fun changeRecipeBanner() {
-        if (bannerRotationCount >= bannerSlideCollection.size) {
-            bannerRotationCount = 0
-        } else { bannerRotationCount += 1 }
-        fetchRandomRecipe { recipeSlide ->
-            sliderAdapter.updateSingleItem(bannerRotationCount, recipeSlide)
         }
     }
 
@@ -160,68 +148,11 @@ class HomeMenuFragment : Fragment() {
         })
     }
 
-    // api calls every 1 minute due to restrictions.
-    private fun scheduleApiUpdates() {
-        val apiUpdateHandler = Handler(Looper.getMainLooper())
-        val apiUpdateRunnable = object : Runnable {
-            override fun run() {
-                if (isAdded && view != null) {
-                    if (appViewModel.edamamApiCallOK()) {
-                        changeRecipeBanner()
-                    } else {
-                        Log.d("HomeMenuFragment", "API call skipped since it's been less than a minute.")
-                    }
-                    apiUpdateHandler.postDelayed(this, 60000)
-                }
-            }
-        }
-        apiUpdateHandler.post(apiUpdateRunnable)
-    }
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         sliderHandler.removeCallbacksAndMessages(null) // Stop all updates
     }
 
-    private val appId = "d45fcd57"
-    private val appKey = "2f4ad82db15fbca9481a538196db68dd"
-
-    private fun fetchRandomRecipe(onSuccess: (TopDataObject) -> Unit) {
-        val randomQuery = edamamViewModel.getRandomFoodTagList()
-        if (randomQuery != null) {
-            viewLifecycleOwner.lifecycleScope.launch {
-                try {
-                    val result = repository.searchRecipes(
-                        query = randomQuery,
-                        appId = appId,
-                        appKey = appKey,
-                        //       cuisineType= "Asian",
-                        //       mealType = "",
-                        //       dishType = "",
-                        from = 0,
-                        to = 1
-                    )
-                    result.fold(onSuccess = { recipes ->
-                        if (recipes.isNotEmpty()) {
-                            val recipe = recipes.first()
-                            val recipeSlide = TopDataObject(
-                                resource = recipe.image,
-                                label = recipe.label,
-                                url = recipe.url
-                            )
-                            onSuccess(recipeSlide)
-                            edamamViewModel.saveRecipeToJson(requireContext(), recipe)
-                        }
-                    }, onFailure = { error ->
-                        Log.e("HomeMenuFragment", "Error fetching recipe: ${error.message}")
-                    })
-                } catch (e: Exception) {
-                    Log.e("HomeMenuFragment", "Unexpected error: ${e.message}")
-                }
-            }
-        }
-    }
 
     private fun middleBanner() {
         homePageViewModel.viewObjectMiddle.observe(viewLifecycleOwner, Observer {
@@ -229,12 +160,31 @@ class HomeMenuFragment : Fragment() {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             binding.midRecyclerViewModel.adapter = MiddleObjectViewAdapter(it)
         })
+
     }
 
+    // whenever a user favourites a recipe, update the bottom banner
     private fun bottomBanner() {
-        homePageViewModel.viewObjectBottom.observe(viewLifecycleOwner, Observer {
-            binding.bottomObjectViewRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
-            binding.bottomObjectViewRecycler.adapter = BottomObjectViewAdapter(it)
-        })
+        val placementBanners = listOf(emptyMeal, emptyMeal, emptyMeal, emptyMeal)
+
+        favouriteMealAdapter = BottomObjectViewAdapter { meal ->
+            val action = MealFragmentDirections.actionMealFragmentToMealDetailFragment(meal)
+            findNavController().navigate(action)
+        }
+
+        binding.bottomObjectViewRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.bottomObjectViewRecycler.adapter = favouriteMealAdapter
+
+        favouriteMealAdapter.submitList(placementBanners)
+
+        appFoodViewModel.favouriteMealList.observe(viewLifecycleOwner) { recipes ->
+            for (each in recipes){
+                println("${each.strMeal}, ${each.strMealThumb}")
+            }
+            favouriteMealAdapter.submitList(recipes)
+        }
     }
+
+
+
 }

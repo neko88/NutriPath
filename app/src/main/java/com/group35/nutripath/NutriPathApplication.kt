@@ -12,28 +12,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class NutriPathApplicationViewModel(application: Application) : AndroidViewModel(application) {
-
-    private var lastEdamamApiCall: Long = 0L
-    private val _edamamApiTimerOK = MutableLiveData<Boolean>(true)
-    private val callInterval = 60000L
-
-    fun edamamApiCallOK(): Boolean {
-        val currentTime = System.currentTimeMillis()
-        if (currentTime - lastEdamamApiCall >= callInterval) {
-            lastEdamamApiCall = currentTime
-            return true
-        }
-        return false
-    }
-}
-
-
 
 class NutriPathApplication: Application() {
 
-    val nutriPathApplicationViewModel by lazy {
-        NutriPathApplicationViewModel(this)
+    val nutripathFoodViewModel by lazy {
+        NutriPathFoodViewModel(this)
     }
 
     override fun onCreate() {

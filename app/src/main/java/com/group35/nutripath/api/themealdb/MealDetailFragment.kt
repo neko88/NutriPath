@@ -19,7 +19,6 @@ class MealDetailFragment : Fragment() {
     private var _binding: FragmentMealDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: MealViewModel
-    private lateinit var mealAdapter: MealAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,

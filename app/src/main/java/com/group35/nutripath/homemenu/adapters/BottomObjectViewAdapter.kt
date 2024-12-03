@@ -1,50 +1,61 @@
 package com.group35.nutripath.homemenu.adapters
 
-import android.content.Context
-import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.group35.nutripath.databinding.ViewholderBottomObjectViewBinding
-import com.group35.nutripath.homemenu.activity.DetailActivity
-import com.group35.nutripath.homemenu.dataobject.BottomDataObject
-
-class BottomObjectViewAdapter (val items: List<BottomDataObject>) :
-    RecyclerView.Adapter<BottomObjectViewAdapter.Viewholder>() {
-
-        private var context: Context? = null
-
-        class Viewholder(val binding: ViewholderBottomObjectViewBinding) :
-            RecyclerView.ViewHolder(binding.root)
+import com.group35.nutripath.NutriPathFoodViewModel
+import com.group35.nutripath.R
+import com.group35.nutripath.api.themealdb.Meal
+import com.group35.nutripath.api.themealdb.MealAdapter.MealDiffCallback
 
 
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-        ): Viewholder {
-            context = parent.context
-            val binding =
-                ViewholderBottomObjectViewBinding.inflate(LayoutInflater.from(context), parent, false)
-            return Viewholder(binding)
-        }
+class BottomObjectViewAdapter(
+    private val onClick: (Meal) -> Unit
+) : ListAdapter<Meal, BottomObjectViewAdapter.BottomViewHolder>(MealDiffCallback()) {
 
-        override fun onBindViewHolder(holder: Viewholder, position: Int) {
-            holder.binding.titleTxt.text = items[position].title
-/*
-            Glide.with(holder.itemView.context)
-                .load(items[position].picUrl[0])
-                .apply(RequestOptions.centerCropTransform())
-                .into(holder.binding.pic)
-
-            holder.itemView.setOnClickListener {
-                val intent = Intent(holder.itemView.context, DetailActivity::class.java)
-                intent.putExtra("object", items[position])
-                holder.itemView.context.startActivity(intent)
-            }
-*/
-        }
-
-        override fun getItemCount(): Int = items.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BottomViewHolder {
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_home_bottom_object, parent, false)
+        return BottomViewHolder(itemView, onClick)
     }
+
+    override fun onBindViewHolder(holder: BottomViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    class BottomViewHolder(itemView: View, private val onClick: (Meal) -> Unit) : RecyclerView.ViewHolder(itemView) {
+        private val favouriteMealTitle: TextView = itemView.findViewById(R.id.favouritedRecipeTitle)
+        private val favouriteMealImage: ImageView = itemView.findViewById(R.id.favouritedRecipeImage)
+
+        fun bind(meal: Meal) {
+            favouriteMealTitle.text = meal.strMeal
+            Glide.with(itemView.context)
+                .load(meal.strMealThumb)
+                .apply(RequestOptions().transform(RoundedCorners(50)))
+                .into(favouriteMealImage)
+
+            itemView.setOnClickListener {
+                onClick(meal)
+            }
+        }
+    }
+
+    class MealDiffCallback : DiffUtil.ItemCallback<Meal>() {
+        override fun areItemsTheSame(oldItem: Meal, newItem: Meal): Boolean {
+            return oldItem.idMeal == newItem.idMeal
+        }
+
+        override fun areContentsTheSame(oldItem: Meal, newItem: Meal): Boolean {
+            return oldItem == newItem
+        }
+    }
+}

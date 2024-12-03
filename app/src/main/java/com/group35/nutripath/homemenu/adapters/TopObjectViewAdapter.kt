@@ -51,7 +51,7 @@ class TopObjectViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.slider_home_top_item_container, parent, false)
+            .inflate(R.layout.item_home_top_object, parent, false)
         return SliderViewHolder(view)
     }
 
